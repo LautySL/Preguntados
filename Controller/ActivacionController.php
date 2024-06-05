@@ -10,12 +10,6 @@ class ActivacionController
         $this->presenter = $Presenter;
     }
 
-    // Configuración del enrutador
-    public static function getRouter()
-    {
-        return new Router(
-            "getHomeController", "get");
-    }
 
 
     public function activar(){
@@ -24,12 +18,12 @@ class ActivacionController
 
             // Verificar el código de activación
             if ($this->model->emailVerificado($codigo)) {
-                header('Location:index.php?controller=home&action=get');
+                header('Location:index.php?');
             } else {
-                // Redireccionar o mostrar mensaje de error
+                header('Location:index.php?');
             }
         } else {
-            // Redireccionar o mostrar mensaje de error
+            header('Location:index.php?');
         }
     }
 
