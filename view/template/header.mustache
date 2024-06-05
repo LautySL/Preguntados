@@ -14,10 +14,12 @@
       <img src="/public/img/logo.svg" alt="logo" class="logo"/>
       <h3 class="w3-left-align">Pregunta2</h3>
     </div>
+    {{#usuario}}
     <div class="contenedor-perfil">
       <a href="index.php?controller=verPerfil&method=get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Ver Perfil</a>
       <a href="index.php?controller=Login&action=logout" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Cerrar Sesión</a>
       {{! falsa foto de perfil que no tendría que aparecer si no estas logueado }}
       <div class="foto-perfil-header w3-circle w3-border w3-margin w3-blue"></div>
+        {{/usuario}}
     </div>
 </header>
