@@ -1,5 +1,7 @@
 <?php
-
+include_once ("vendor\mustache\PHPMailer\src\Exception.php");
+include_once ("vendor\mustache\PHPMailer\src\PHPMailer.php");
+include_once ("vendor\mustache\PHPMailer\src\SMTP.php");
 
 include_once ("Controller/RegistroController.php");
 include_once ("Controller/HomeController.php");
@@ -8,6 +10,7 @@ include_once ("Controller/JuegoController.php");
 include_once ("Controller/AdminController.php");
 include_once ("Controller/RankingController.php");
 include_once ("Controller/VerPerfilController.php");
+include_once ("Controller/ActivacionController.php");
 
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
@@ -36,6 +39,9 @@ class Configuration
     }
     public static function getAdminController(){
         return new AdminController(self::getUserModel(), self::getPresenter());
+    }
+    public static function getActivacionController(){
+        return new ActivacionController(self::getUserModel(), self::getPresenter());
     }
     public static function getRankingController(){
         return new RankingController(self::getUserModel(), self::getPresenter());
