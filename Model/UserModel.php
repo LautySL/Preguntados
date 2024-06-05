@@ -85,12 +85,11 @@ class UserModel
         // Configurar remitente y destinatario
         $this->mail->setFrom('correoverificador2023@hotmail.com', 'Admin');
         $this->mail->addAddress($email, $nombre);
-
+        $this->mail->CharSet = 'UTF-8';
         // Configurar contenido del correo
         $this->mail->isHTML(true);
-        $this->mail->Subject = 'Activación de cuenta';
-        $this->mail->Body    = "Hola $nombre,<br><br>Por favor haz clic en el siguiente enlace para activar tu cuenta:<br>";
-        $this->mail->Body    .= "<a href='http://localhost/index.php?controller=activacion&method=get&codigo=$hash_activacion'>Activar cuenta</a>";
+        $this->mail->Subject = 'Activación de Cuenta';
+        $this->getBodyMail($nombre, $hash_activacion);
 
         $this->mail->send();
         echo 'El correo electrónico de activación se ha enviado correctamente.';
@@ -107,5 +106,72 @@ class UserModel
         $resultado = $this->database->query($sql);
         $_SESSION['perfil'] = $resultado;
         return $resultado;
+    }
+
+
+    public function getBodyMail($nombre, $hash_activacion)
+    {
+        $this->mail->Body = "
+<!DOCTYPE html>
+
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .header {
+            background: #4CAF50;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #ffffff;
+            background: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #777777;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='header'>
+            <h1>Activación de Cuenta</h1>
+        </div>
+        <div class='content'>
+            <p>Hola $nombre,</p>
+            <p>¡Gracias por registrarte en nuestro sitio! Para completar el proceso de registro, por favor haz clic en el siguiente enlace para activar tu cuenta:</p>
+            <p><a class='button' href='http://localhost/index.php?controller=activacion&method=get&codigo=$hash_activacion'>Activar Cuenta</a></p>
+            <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
+            <p>Saludos cordiales,<br>El equipo de soporte</p>
+        </div>
+        <div class='footer'>
+            <p>Este es un correo electrónico generado automáticamente, por favor no respondas a este mensaje.</p>
+        </div>
+    </div>
+</body>
+</html>
+";
     }
 }
