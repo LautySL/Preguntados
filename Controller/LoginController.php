@@ -24,7 +24,7 @@ class LoginController
 
                 unset($_SESSION["error_login"]);
             } else {
-                $_SESSION["error_login"] = "Usuario o contraseña incorrectos. presta atencion mora";
+                $_SESSION["error_login"] = "Usuario o contraseña incorrectos.";
             }
         } else {
             // Si no se enviaron credenciales, establecer el mensaje de error
