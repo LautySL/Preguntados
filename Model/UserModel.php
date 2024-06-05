@@ -29,11 +29,11 @@ class UserModel
     public function LogInconsulta($usuario, $password)
     {
 
-        $sql = "SELECT * FROM usuario WHERE nombre_de_usuario = '$usuario' AND contrasena= '$password'";
+        $sql = "SELECT * FROM usuario WHERE nombre_de_usuario = '$usuario' AND contrasena= '$password' AND cuenta_verificada = 1";
 
         $result = $this->database->execute($sql);
 
-        if ($result->num_rows == 1 /*&& $this->emailVerificado()*/) {
+        if ($result->num_rows == 1 ) {
             $usuario = $result->fetch_assoc();
 
             $_SESSION["usuario"] = $usuario["nombre_de_usuario"];
@@ -44,28 +44,29 @@ class UserModel
             return false;
         }
     }
-    private function emailVerificado($hash_activacion){
-    if (isset($hash_activacion)) {
-        // Buscar usuario por código de activación en la base de datos
-        $usuario = $this->database->getUsuarioPorCodigoActivacion($hash_activacion);
+         public function emailVerificado($hash_activacion)
+         {
 
-        if ($usuario) {
-            if (!$usuario['activado']) {
-                // Activar cuenta en la base de datos
-                $this->database->activarUsuario($usuario['id']);
-                return true; // Cuenta activada correctamente
-            } else {
-                return false; // La cuenta ya está activada
-            }
-        } else {
-            return false; // Código de activación inválido
-        }
-    } else {
-        return false; // No se proporcionó un código en la URL
-    }
 
-    }
+             $query = "SELECT * FROM usuario WHERE hash_activacion = '$hash_activacion'";
+             $result = $this->database->execute($query);
+             $usuario = $result->fetch_assoc();
 
+
+             if (!$usuario['activado']) {
+                 // Actualizar el estado de activación del usuario en la base de datos
+                 $idUsuario = $usuario['id'];
+                 $updateQuery = "UPDATE usuario SET cuenta_verificada = 1 WHERE id = $idUsuario";
+                 $success = $this->database->execute($updateQuery);
+                 if ($success) {
+
+                     return true; //
+                 }else{
+                     return false;
+                 }
+
+             }
+         }
     
     function enviarCorreoActivacion($email, $nombre, $hash_activacion)
 {
@@ -89,7 +90,7 @@ class UserModel
         $this->mail->isHTML(true);
         $this->mail->Subject = 'Activación de cuenta';
         $this->mail->Body    = "Hola $nombre,<br><br>Por favor haz clic en el siguiente enlace para activar tu cuenta:<br>";
-        $this->mail->Body    .= "<a href='http://localhost/index.php?controller=activacion&method=activar&codigo=$hash_activacion'>Activar cuenta</a>";
+        $this->mail->Body    .= "<a href='http://localhost/index.php?controller=activacion&method=get&codigo=$hash_activacion'>Activar cuenta</a>";
 
         $this->mail->send();
         echo 'El correo electrónico de activación se ha enviado correctamente.';

@@ -10,21 +10,33 @@ class ActivacionController
         $this->presenter = $Presenter;
     }
 
+    public function get()
+    {
+        $codigo = isset($_GET['codigo']) ? htmlspecialchars($_GET['codigo']) : '';
 
 
-    public function activar(){
-        if (isset($_GET['codigo'])) {
-            $codigo = $_GET['codigo'];
+        $datos = array(
+            'codigo' => $codigo
+        );
 
-            // Verificar el código de activación
-            if ($this->model->emailVerificado($codigo)) {
-                header('Location:index.php?');
-            } else {
-                header('Location:index.php?');
-            }
+        $this->presenter->render("view/activar.mustache",$datos);
+    }
+
+    public function activar()
+    {
+
+        $codigo =$_GET['codigo'];
+        var_dump($codigo);
+        $verificado = $this->model->emailVerificado($codigo);
+        if ($verificado) {
+            // Redirigir al index
+            header("Location: index.php");
+            exit();
         } else {
-            header('Location:index.php?');
+            // Mostrar error
+            echo "Error: Código de verificación no válido.";
         }
+
     }
 
 }
