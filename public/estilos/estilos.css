@@ -1,0 +1,59 @@
+.contenedor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 0;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+}
+
+.contenedor-perfil {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.foto-perfil-header {
+    height: 3rem;
+    width: 3rem;
+}
+
+.boton-perfil {
+    margin: .2rem;
+}
+
+.logo {
+    height: 3rem;
+}
+
+.boton-home {
+    width: 60%;
+    height: 3rem;
+}
+
+.foto-perfil {
+    height: 5rem;
+    width: 5rem;
+}
+
+.encabezado {
+    margin: 0;
+}
+
+.cuerpo-home {
+    margin: 5rem;
+}
+
+.categoria {
+    height: 4rem;
+    text-align: center;
+}
+
+.respuesta {
+    width: 60%;
+    height: 3rem;
+}

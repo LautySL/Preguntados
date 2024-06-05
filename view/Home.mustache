@@ -1,15 +1,6 @@
-
-
-
-<body>
 <div class="container w3-center">
     {{#usuario}}
-    <h2 class="w3-pink w3-center w3-padding">Bienvenido, {{usuario}}!</h2><br>
-    <a href="index.php?controller=verPerfil&method=get" class="w3-button w3-round-xxlarge w3-gray">VerPerfil</a>
-
-    <a href="index.php?controller=Login&action=logout" class="w3-button w3-round-xxlarge w3-gray">Cerrar Sesión</a><br><br><br><br>
-
-    </form>
+    <h2 class="encabezado w3-pink w3-center w3-padding">Bienvenido, {{usuario}}!</h2><br>
     {{/usuario}}
     {{^usuario}}
     <form class="login-form" action="index.php?controller=Login&action=get" method="post">
@@ -28,11 +19,10 @@
     {{/error}}
 </div>
 
-<main  class="w3-center">
+<main  class="cuerpo-home w3-center">
 
-    <a href="index.php?controller=Juego&action=iniciarPartida" class="w3-btn w3-round-xxlarge w3-pink" style="width: 60%">Jugar</a><br><br>
-    <a href="index.php?controller=Edicion&action=get"class="w3-btn w3-round-xxlarge w3-pink" style="width: 60%">CrearPreguntas</a><br><br>
-    <a href="index.php?controller=Ranking&action=get"class="w3-btn w3-round-xxlarge w3-pink" style="width: 60%">Ver Ranking</a><br><br>
+    <a href="index.php?controller=Juego&action=iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
+    <a href="index.php?controller=Edicion&action=get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
+    <a href="index.php?controller=Ranking&action=get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
 
 </main>
-</body>
