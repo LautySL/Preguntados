@@ -11,11 +11,11 @@ class UserModel
         $this->mail =$mail;
     }
 
-    public function registrarJugador($nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $contrasena, $nombre_de_usuario, $foto_de_perfil, $hash_activacion)
+    public function registrarJugador($nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $contrasena, $nombre_de_usuario, $hash_activacion, $latitud, $longitud)
     {
 
-        $sql = "INSERT INTO usuario (nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion)
-                   VALUES ('$nombre_de_usuario', '$contrasena', '$nombre', '$apellido', '$ano_de_nacimiento', '$sexo', '$mail', '$foto_de_perfil', '...', '..', FALSE, '$hash_activacion')";
+        $sql = "INSERT INTO usuario (nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion, latitud, longitud)
+                   VALUES ('$nombre_de_usuario', '$contrasena', '$nombre', '$apellido', '$ano_de_nacimiento', '$sexo', '$mail', '$foto_de_perfil', '$pais', '$ciudad', FALSE, '$hash_activacion', '$latitud', '$longitud')";
         
         $this->database->execute($sql);
 
@@ -70,22 +70,23 @@ class UserModel
     
     function enviarCorreoActivacion($email, $nombre, $hash_activacion)
 {
-
-
     try {
+        $configMail = Configuration::getConfigMail();
+
         // Configurar servidor SMTP
         $this->mail->isSMTP();
-        $this->mail->Host = 'smtp.office365.com';
+        $this->mail->Host = $configMail['Host'];
         $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'correoverificador2023@hotmail.com';
-        $this->mail->Password = 'admin2023';
-        $this->mail->SMTPSecure = 'tls';
-        $this->mail->Port = 587;
+        $this->mail->Username = $configMail['Username'];
+        $this->mail->Password = $configMail['Password'];
+        $this->mail->SMTPSecure = $configMail['SMTPSecure'];
+        $this->mail->Port = $configMail['Port'];
 
         // Configurar remitente y destinatario
-        $this->mail->setFrom('correoverificador2023@hotmail.com', 'Admin');
+        $this->mail->setFrom($configMail['Username'], 'Admin');
         $this->mail->addAddress($email, $nombre);
         $this->mail->CharSet = 'UTF-8';
+        
         // Configurar contenido del correo
         $this->mail->isHTML(true);
         $this->mail->Subject = 'Activación de Cuenta';

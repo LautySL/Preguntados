@@ -88,6 +88,11 @@ class Configuration
         return new Database($config["servername"], $config["username"], $config["database"], $config["password"]);
     }
 
+    public static function getConfigMail()
+    {
+        return parse_ini_file("config/mail.ini");
+    }
+
     private static function getMail()
     {
         return new PHPMailer();

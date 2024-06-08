@@ -25,9 +25,13 @@ class RegistroController
             $apellido = $_POST['apellido'] ?? '';
             $ano_de_nacimiento = $_POST['ano_de_nacimiento'] ?? 0;
             $sexo = $_POST['sexo'] ?? '';
+            $pais =  $_POST['pais'] ?? '';
+            $ciudad =  $_POST['ciudad'] ?? '';
             $mail = $_POST['mail'] ?? '';
             $contrasena = $_POST['contrasena'] ?? '';
             $nombre_de_usuario = $_POST['nombre_de_usuario'] ?? '';
+            $latitud = $_POST['latitud'] ?? '';
+            $longitud = $_POST['longitud'] ?? '';
 
             if (isset($_FILES['foto_de_perfil'])) {
                 $archivo_nombre = $_FILES['foto_de_perfil']['name'];
@@ -38,9 +42,9 @@ class RegistroController
 
                 $ruta_destino = $directorio_destino . $archivo_nombre;
                 move_uploaded_file($archivo_temporal, $ruta_destino);
-                // } else {
-                //     //Si no se proporciona una nueva imagen, conserva la imagen existente
-                //      $ruta_destino = $directorio_destino . $_FILES['fotoPokemon']['name'];
+                //} else {
+                //Si no se proporciona una nueva imagen, conserva la imagen existente
+                //$ruta_destino = $directorio_destino . $_FILES['foto_de_perfil']['name'];
             }
 
 
@@ -49,7 +53,7 @@ class RegistroController
             }
             $hash_activacion = md5(uniqid(rand(), true));
             $this->model->enviarCorreoActivacion($mail, $nombre, $hash_activacion);
-            $this->model->registrarJugador($nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $contrasena, $nombre_de_usuario, $foto_de_perfil, $hash_activacion);
+            $this->model->registrarJugador($nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $pais, $ciudad, $contrasena, $nombre_de_usuario, $foto_de_perfil, $hash_activacion, $latitud, $longitud);
         }
 
         header('Location:index.php?controller=home&action=get');

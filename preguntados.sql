@@ -8,11 +8,14 @@ CREATE TABLE usuario(
     sexo ENUM('Femenino', 'Masculino', 'Prefiero no cargarlo'),
     mail varchar(50),
     foto_de_perfil varchar(50),
-    pais varchar(50),
+    pais ENUM('Argentina', 'Chile', 'Uruguay', 'Paraguay'),
     ciudad varchar(50),
     cuenta_verificada boolean,
-    hash_activacion varchar(500)
+    hash_activacion varchar(500),
+    latitud DECIMAL(10, 8),
+    longitud DECIMAL(11, 8)
 );
+
 
 CREATE TABLE administrador(
 	 id int,
