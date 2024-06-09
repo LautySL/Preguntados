@@ -8,10 +8,78 @@ class GameModel
     {
         $this->database = $database;
     }
-    //falta agregar q no se repitan preguntas y que te de una de tu misma dificultad
 
+    public function obtenerDataParaPartida($idUsuario, $puntaje, $finalizado, $puntajeFinal): array
+    {
+        $preguntaData = $this->obtenerPreguntaYRespuestas($idUsuario);
+        $categoriaEstilo = $this->obtenerEstiloCategoria($preguntaData['categoria']);
 
-    public function obtenerPreguntaYRespuestas($idUsuario)
+        $data = [
+            'nombreUsuario' => $_SESSION['usuario'],
+            'pregunta' => $preguntaData['pregunta'],
+            'pregunta_id' => $preguntaData['pregunta_id'],
+            'respuestas' => $preguntaData['respuestas'],
+            'categoria' => $preguntaData['categoria'],
+            'categoria_estilo' => $categoriaEstilo,
+            'puntaje' => $puntaje,
+            'finalizado' => $finalizado,
+            'puntajeFinal' => $finalizado ? $puntajeFinal : null
+        ];
+        return $data;
+    }
+
+    public function verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId)
+    {
+        $esCorrecta = $this->esRespuestaCorrecta($preguntaId, $respuestaId);
+        $this->guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta);
+        return $esCorrecta;
+    }
+
+    public function crearPartida($idUsuario)
+    {
+        try {
+            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador) VALUES (0, '$idUsuario')";
+            $this->database->execute($queryInsertPartida);
+            $partidaId = $this->database->getLastInsertId();
+            return $partidaId;
+        } catch (Exception $e) {
+            echo "Error al crear la partida: " . $e->getMessage();
+            return null;
+        }
+    }
+    public function actualizarPuntajeFinal($idPartida, $puntajeFinal)
+    {
+        try {
+            $queryUpdatePartida = "UPDATE partida SET puntaje = '$puntajeFinal' WHERE id = '$idPartida'";
+            $this->database->execute($queryUpdatePartida);
+        } catch (Exception $e) {
+            echo "Error al actualizar el puntaje final: " . $e->getMessage();
+        }
+    }
+
+    private function guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta)
+    {
+        try {
+            $queryInsertPartidaPregunta = "INSERT INTO partida_pregunta (partida, pregunta, se_respondio_bien) VALUES ('$idPartida', '$preguntaId', '$esCorrecta')";
+            $this->database->execute($queryInsertPartidaPregunta);
+        } catch (Exception $e) {
+            echo "Error al guardar la respuesta: " . $e->getMessage();
+        }
+    }
+
+    private function esRespuestaCorrecta($preguntaId, $respuestaId)
+    {
+        $query = "SELECT es_la_correcta FROM respuesta WHERE id = '$respuestaId' AND pregunta = '$preguntaId'";
+        $result = $this->database->execute($query);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return (bool) $row['es_la_correcta'];
+        } else {
+            return false;
+        }
+    }
+    private function obtenerPreguntaYRespuestas($idUsuario)
     {
         $preguntas = $this->queryPregunta($idUsuario);
 
@@ -35,54 +103,7 @@ class GameModel
         return $resultado;
     }
 
-
-    public function crearPartida($idUsuario)
-    {
-        try {
-            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador) VALUES (0, '$idUsuario')";
-            $this->database->execute($queryInsertPartida);
-            $partidaId = $this->database->getLastInsertId();
-            return $partidaId;
-        } catch (Exception $e) {
-            echo "Error al crear la partida: " . $e->getMessage();
-            return null;
-        }
-    }
-
-    public function guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta)
-    {
-        try {
-            $queryInsertPartidaPregunta = "INSERT INTO partida_pregunta (partida, pregunta, se_respondio_bien) VALUES ('$idPartida', '$preguntaId', '$esCorrecta')";
-            $this->database->execute($queryInsertPartidaPregunta);
-        } catch (Exception $e) {
-            echo "Error al guardar la respuesta: " . $e->getMessage();
-        }
-    }
-
-
-    public function actualizarPuntajeFinal($idPartida, $puntajeFinal)
-    {
-        try {
-            $queryUpdatePartida = "UPDATE partida SET puntaje = '$puntajeFinal' WHERE id = '$idPartida'";
-            $this->database->execute($queryUpdatePartida);
-        } catch (Exception $e) {
-            echo "Error al actualizar el puntaje final: " . $e->getMessage();
-        }
-    }
-
-    public function esRespuestaCorrecta($preguntaId, $respuestaId)
-    {
-        $query = "SELECT es_la_correcta FROM respuesta WHERE id = '$respuestaId' AND pregunta = '$preguntaId'";
-        $result = $this->database->execute($query);
-
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            return (bool) $row['es_la_correcta'];
-        } else {
-            return false;
-        }
-    }
-    public function obtenerEstiloCategoria($categoria) {
+    private function obtenerEstiloCategoria($categoria) {
         $categoriaEstilos = [
             'Ciencia' => 'w3-green',
             'Historia' => 'w3-yellow',
@@ -106,7 +127,7 @@ class GameModel
     }
 
 
-    public function queryRespuestas(int $preguntaId)
+    private function queryRespuestas(int $preguntaId)
     {
         $queryRespuestas = "SELECT respuesta, es_la_correcta,id FROM respuesta WHERE pregunta = $preguntaId";
         $respuestas = $this->database->query($queryRespuestas);
@@ -115,8 +136,10 @@ class GameModel
     }
 
 
-    public function queryPregunta($idUsuario)
+    private function queryPregunta($idUsuario)
     {
+        $porcentajeAciertos = $this->obtenerPorcentajeAciertos($idUsuario);
+
         $idUsuario=(int)$idUsuario;
         $queryPregunta = "
             SELECT p.id, p.pregunta, p.categoría 
@@ -131,6 +154,30 @@ class GameModel
             LIMIT 1";
         $preguntas = $this->database->query($queryPregunta);
         return $preguntas;
+    }
+
+
+    private function obtenerPorcentajeAciertos($idUsuario)
+    {
+        $query = "
+        SELECT 
+            COUNT(*) as partidas_jugadas,
+            SUM(puntaje) as puntaje_total
+        FROM partida
+        WHERE jugador = '$idUsuario'
+    ";
+        $result = $this->database->query($query);
+
+        if ($result[0]['partidas_jugadas'] > 0) {
+            $partidasJugadas = $result[0]['partidas_jugadas'];
+            $puntajeTotal = $result[0]['puntaje_total'];
+
+            $respuestasCorrectas = $puntajeTotal;
+
+            return ($respuestasCorrectas / ($partidasJugadas * 1.0)) * 100;
+        } else {
+            return 0;
+        }
     }
 
 
