@@ -53,7 +53,7 @@ class RegistroController
             }
             $hash_activacion = md5(uniqid(rand(), true));
             $this->model->enviarCorreoActivacion($mail, $nombre, $hash_activacion);
-            $this->model->registrarJugador($nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $pais, $ciudad, $contrasena, $nombre_de_usuario, $foto_de_perfil, $hash_activacion, $latitud, $longitud);
+            $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud);
         }
 
         header('Location:index.php?controller=home&action=get');

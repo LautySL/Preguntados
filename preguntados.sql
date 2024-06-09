@@ -1,3 +1,4 @@
+
 CREATE TABLE usuario(
 	id int auto_increment primary key,
     nombre_de_usuario varchar(50),
@@ -12,8 +13,8 @@ CREATE TABLE usuario(
     ciudad varchar(50),
     cuenta_verificada boolean,
     hash_activacion varchar(500),
-    latitud DECIMAL(10, 8),
-    longitud DECIMAL(11, 8)
+    latitud decimal(10, 8),
+    longitud decimal(11, 8)
 );
 
 
