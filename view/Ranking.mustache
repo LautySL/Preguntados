@@ -1,10 +1,19 @@
-<h1>Ranking de Jugadores</h1>
-<table>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking de Jugadores</title>
+</head>
+<body>
+
+<h1 class="encabezado w3-center">Ranking de Jugadores</h1>
+<table class="w3-table w3-bordered w3-centered">
     <thead>
     <tr>
-        <th>ID</th>
-        <th>Nombre de Usuario</th>
-        <th>Máximo Puntaje</th>
+        <th class="w3-pink">ID</th>
+        <th class="w3-pink">Nombre de Usuario</th>
+        <th class="w3-pink">Máximo Puntaje</th>
     </tr>
     </thead>
     <tbody>
@@ -15,6 +24,31 @@
             <td>{{max_puntaje}}</td>
         </tr>
     {{/players}}
-    <?php var_dump($players); ?> <!-- Debugging -->
     </tbody>
 </table>
+
+<div class="container w3-center">
+    {{#usuario}}
+        <h2 class="encabezado w3-pink w3-center w3-padding">¡Bienvenido, {{usuario}}!</h2><br>
+    {{/usuario}}
+    {{^usuario}}
+
+    {{/usuario}}
+
+    {{#error}}
+        <div class="errors">
+            {{error}}
+        </div>
+    {{/error}}
+</div>
+
+<main class="cuerpo-home w3-center">
+    {{#usuario}}
+        <a href="index.php?controller=Juego&action=iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
+        <a href="index.php?controller=Edicion&action=get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
+        <a href="index.php?controller=Ranking&action=get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
+    {{/usuario}}
+</main>
+
+</body>
+</html>
