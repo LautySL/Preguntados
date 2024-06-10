@@ -25,7 +25,10 @@ class JuegoController
             $respuestaId = $_POST['respuesta_id'];
             $preguntaId=$_POST['pregunta_id'];
             $idPartida = $_SESSION['id_partida'];
-            $esCorrecta = $this->model->verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId);
+            $puntaje = $_SESSION['puntaje'] ?? 0;
+
+            $esCorrecta = $this->model->procesarRespuesta($idPartida, $preguntaId, $respuestaId, $puntaje);
+            $_SESSION['puntaje'] = $puntaje;
 
             if ($esCorrecta) {
                 $this->continuaJugando();
@@ -53,7 +56,6 @@ class JuegoController
     private function gameOver()
     {
         $_SESSION['puntaje_final'] =$_SESSION['puntaje'] ?? 0;
-        $_SESSION['puntaje'] = 0;
         unset($_SESSION['pagina_cargada']);
         header("Location: index.php?controller=Juego&action=get&finalizado=true");
         exit;
@@ -61,8 +63,7 @@ class JuegoController
 
     private function continuaJugando()
     {
-        $_SESSION['puntaje'] = isset($_SESSION['puntaje']) ? $_SESSION['puntaje'] + 1 : 1;
-        $this->model->actualizarPuntajeFinal( $_SESSION['id_partida'],$_SESSION['puntaje']);
+
         unset($_SESSION['pagina_cargada']);
         header('Location: index.php?controller=Juego&action=get');
         exit;

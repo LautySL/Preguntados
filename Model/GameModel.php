@@ -27,6 +27,18 @@ class GameModel
         ];
         return $data;
     }
+    public function procesarRespuesta($idPartida, $preguntaId, $respuestaId, &$puntaje)
+    {
+        $esCorrecta = $this->verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId);
+        if ($esCorrecta) {
+            $puntaje++;
+            $this->actualizarPuntajeFinal($idPartida, $puntaje);
+            return true;
+        } else {
+
+            return false;
+        }
+    }
 
     public function verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId)
     {
