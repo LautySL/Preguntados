@@ -173,7 +173,7 @@ class GameModel
         )
         ORDER BY diferencia_aciertos ASC
         LIMIT 1";
-        
+
         $preguntas = $this->database->query($queryPregunta);
         return $preguntas;
     }
@@ -228,6 +228,10 @@ class GameModel
             echo "Error al actualizar las estadísticas: " . $e->getMessage();
         }
     }
+
+
+
+
 
 
 }

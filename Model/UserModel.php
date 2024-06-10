@@ -110,6 +110,35 @@ class UserModel
     }
 
 
+
+     public function obtenerRankingJugadores()
+{
+        try {
+            // Consulta SQL para obtener el ranking de jugadores
+            $query = "
+            SELECT u.nombre, MAX(pa.puntaje) AS puntaje_mas_alto
+            FROM usuario u
+            JOIN jugador j ON u.id = j.id
+            JOIN partida pa ON j.id = pa.jugador
+            GROUP BY u.id
+            ORDER BY puntaje_mas_alto DESC";
+
+            // Ejecutar la consulta
+            $result = $this->database->query($query);
+
+
+            return $result;
+        } catch (PDOException $e) {
+            // Manejar errores de base de datos
+            echo "Error al obtener el ranking de jugadores: " . $e->getMessage();
+            return false;
+        }
+    }
+
+
+
+
+
     public function getBodyMail($nombre, $hash_activacion)
     {
         $this->mail->Body = "
