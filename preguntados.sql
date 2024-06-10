@@ -52,6 +52,7 @@ CREATE TABLE respuesta(
   CREATE TABLE estadistica_pregunta(
 	pregunta int,
     veces_que_salio int,
+    veces_correcta int,
     dificultad decimal(2),
     ultima_vez_que_salio date,
     constraint primary key (pregunta),

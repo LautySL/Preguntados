@@ -47,12 +47,18 @@ class GameModel
         return $esCorrecta;
     }
 
-    public function crearPartida($idUsuario)
-    {
+    public function crearPartida($idUsuario) {
         try {
-            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador) VALUES (0, '$idUsuario')";
+
+            $idUsuario = intval($idUsuario);
+
+
+            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador) VALUES (0, $idUsuario)";
             $this->database->execute($queryInsertPartida);
+
+
             $partidaId = $this->database->getLastInsertId();
+
             return $partidaId;
         } catch (Exception $e) {
             echo "Error al crear la partida: " . $e->getMessage();
@@ -74,6 +80,8 @@ class GameModel
         try {
             $queryInsertPartidaPregunta = "INSERT INTO partida_pregunta (partida, pregunta, se_respondio_bien) VALUES ('$idPartida', '$preguntaId', '$esCorrecta')";
             $this->database->execute($queryInsertPartidaPregunta);
+            $this->actualizarEstadisticasPregunta($preguntaId, $esCorrecta);
+
         } catch (Exception $e) {
             echo "Error al guardar la respuesta: " . $e->getMessage();
         }
@@ -189,6 +197,28 @@ class GameModel
             return ($respuestasCorrectas / ($partidasJugadas * 1.0)) * 100;
         } else {
             return 0;
+        }
+    }
+
+
+    private function actualizarEstadisticasPregunta($preguntaId, $esCorrecta) {
+        try {
+            // Incrementar contador de veces que salió
+            $queryUpdateVecesSalio = "UPDATE estadistica_pregunta SET veces_que_salio = veces_que_salio + 1 WHERE pregunta = '$preguntaId'";
+            $this->database->execute($queryUpdateVecesSalio);
+
+            // Actualizar contador de veces correctas y calcular % de dificultad
+            if ($esCorrecta) {
+                $queryUpdateCorrectas = "UPDATE estadistica_pregunta SET veces_correcta = veces_correcta + 1 WHERE pregunta = '$preguntaId'";
+                $this->database->execute($queryUpdateCorrectas);
+
+                // Calcular % de dificultad
+                $queryPorcentajeDificultad = "UPDATE estadistica_pregunta SET dificultad = (veces_correcta / veces_que_salio) * 100 WHERE pregunta = '$preguntaId'";
+                $this->database->execute($queryPorcentajeDificultad);
+            }
+
+        } catch (Exception $e) {
+            echo "Error al actualizar las estadísticas: " . $e->getMessage();
         }
     }
 

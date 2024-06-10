@@ -37,7 +37,7 @@ class UserModel
             $usuario = $result->fetch_assoc();
 
             $_SESSION["usuario"] = $usuario["nombre_de_usuario"];
-            $_SESSION['id_usuario'] = $usuario['id_usuario'];
+            $_SESSION['id_usuario'] = $usuario['id'];
 
             return true;
         } else {
