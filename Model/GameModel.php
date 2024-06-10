@@ -47,12 +47,18 @@ class GameModel
         return $esCorrecta;
     }
 
-    public function crearPartida($idUsuario)
-    {
+    public function crearPartida($idUsuario) {
         try {
-            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador) VALUES (0, '$idUsuario')";
+
+            $idUsuario = intval($idUsuario);
+
+
+            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador) VALUES (0, $idUsuario)";
             $this->database->execute($queryInsertPartida);
+
+
             $partidaId = $this->database->getLastInsertId();
+
             return $partidaId;
         } catch (Exception $e) {
             echo "Error al crear la partida: " . $e->getMessage();
@@ -74,6 +80,8 @@ class GameModel
         try {
             $queryInsertPartidaPregunta = "INSERT INTO partida_pregunta (partida, pregunta, se_respondio_bien) VALUES ('$idPartida', '$preguntaId', '$esCorrecta')";
             $this->database->execute($queryInsertPartidaPregunta);
+            $this->actualizarEstadisticasPregunta($preguntaId, $esCorrecta);
+
         } catch (Exception $e) {
             echo "Error al guardar la respuesta: " . $e->getMessage();
         }
@@ -154,16 +162,18 @@ class GameModel
 
         $idUsuario=(int)$idUsuario;
         $queryPregunta = "
-            SELECT p.id, p.pregunta, p.categoría 
-            FROM pregunta p
-            WHERE p.id NOT IN (
-                SELECT pp.pregunta 
-                FROM partida_pregunta pp
-                JOIN partida pa ON pp.partida = pa.id
-                WHERE pa.jugador = '$idUsuario'
-            )
-            ORDER BY RAND() 
-            LIMIT 1";
+        SELECT p.id, p.pregunta, p.categoría,
+               ABS(p.dificultad - $porcentajeAciertos) AS diferencia_aciertos
+        FROM pregunta p
+        WHERE p.id NOT IN (
+            SELECT pp.pregunta 
+            FROM partida_pregunta pp
+            JOIN partida pa ON pp.partida = pa.id
+            WHERE pa.jugador = '$idUsuario'
+        )
+        ORDER BY diferencia_aciertos ASC
+        LIMIT 1";
+
         $preguntas = $this->database->query($queryPregunta);
         return $preguntas;
     }
@@ -191,6 +201,37 @@ class GameModel
             return 0;
         }
     }
+
+
+    private function actualizarEstadisticasPregunta($preguntaId, $esCorrecta) {
+        try {
+            if ($esCorrecta) {
+                $queryUpdate = "UPDATE pregunta 
+                            SET veces_que_salio = veces_que_salio + 1, 
+                                veces_correcta = veces_correcta + 1, 
+                                ultima_vez_que_salio = CURRENT_DATE 
+                            WHERE id = '$preguntaId'";
+            } else {
+                $queryUpdate = "UPDATE pregunta 
+                            SET veces_que_salio = veces_que_salio + 1, 
+                                ultima_vez_que_salio = CURRENT_DATE 
+                            WHERE id = '$preguntaId'";
+            }
+            $this->database->execute($queryUpdate);
+
+            $queryPorcentajeDificultad = "UPDATE pregunta 
+                                      SET dificultad = ((veces_que_salio - veces_correcta) / veces_que_salio) * 100 
+                                      WHERE id = '$preguntaId'";
+            $this->database->execute($queryPorcentajeDificultad);
+
+        } catch (Exception $e) {
+            echo "Error al actualizar las estadísticas: " . $e->getMessage();
+        }
+    }
+
+
+
+
 
 
 }

@@ -39,8 +39,13 @@ CREATE TABLE jugador(
 CREATE TABLE pregunta(
 	id int auto_increment primary key,
     pregunta varchar(150),
-    categoría ENUM('Geografía', 'Ciencia', 'Historia', 'Deporte', 'Arte', 'Entretenimiento')
+    categoría ENUM('Geografía', 'Ciencia', 'Historia', 'Deporte', 'Arte', 'Entretenimiento'),
+    veces_que_salio INT DEFAULT 0,
+    veces_correcta INT DEFAULT 0,
+    dificultad DECIMAL(5,2) DEFAULT 0.00,
+    ultima_vez_que_salio DATE
 );
+
 
 CREATE TABLE respuesta(
 	id int auto_increment primary key,
@@ -49,14 +54,7 @@ CREATE TABLE respuesta(
 	pregunta int references pregunta(id)
   );
   
-  CREATE TABLE estadistica_pregunta(
-	pregunta int,
-    veces_que_salio int,
-    dificultad decimal(2),
-    ultima_vez_que_salio date,
-    constraint primary key (pregunta),
-    foreign key (pregunta) references pregunta(id)
-  );
+
 
 CREATE TABLE partida (
 	id int auto_increment primary key,
@@ -72,6 +70,7 @@ CREATE TABLE partida_pregunta (
     foreign key (partida) references partida(id),
     foreign key (pregunta) references pregunta(id)
 );
+
 
 INSERT INTO pregunta (pregunta, categoría) VALUES
 ('¿Cuál es la capital de Francia?', 'Geografía'),

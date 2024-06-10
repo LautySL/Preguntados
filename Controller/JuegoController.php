@@ -46,7 +46,8 @@ class JuegoController
         unset($_SESSION['puntaje']);
         unset($_SESSION['puntaje_final']);
 
-        $idUsuario = $_SESSION['id_usuario'];
+        $idUsuario = $_SESSION['id_usuario'] ;
+
         $idPartida = $this->model->crearPartida($idUsuario);
         $_SESSION['id_partida'] = $idPartida;
         header("Location: index.php?controller=Juego&action=get");

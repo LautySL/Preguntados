@@ -52,3 +52,31 @@
 
 </body>
 </html>
+
+
+<body>
+<div class="ranking-container">
+    <h2>Ranking</h2>
+
+    <div class="ranking-list">
+        <table>
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Puntaje</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#rankingList}}
+            <tr>
+                <td>{{nombre}}</td>
+                <td>{{puntaje_mas_alto}}</td>
+            </tr>
+            {{/rankingList}}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="index.php?controller=Home&method=get"><button>Cerrar</button></a>
+</div>
+</body>

@@ -12,8 +12,11 @@ class RankingController {
         $this->presenter = $Presenter;
     }
 
-    public function get() {
+
+    public function get()
+    {
         $rankingData = $this->model->getRankingData();
         $this->presenter->render("view/Ranking.mustache", ['players' => $rankingData]);
     }
+
 }
