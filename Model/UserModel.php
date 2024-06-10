@@ -99,6 +99,23 @@ class UserModel
     }
 }
 
+    public function getRankingData() {
+        $sql = "SELECT u.id, u.nombre_de_usuario, MAX(puntaje) AS max_puntaje
+        FROM usuario u
+        JOIN jugador j ON u.id = j.id
+        JOIN partida p ON j.id = p.jugador
+        GROUP BY u.id, u.nombre_de_usuario
+        ORDER BY max_puntaje DESC";
+
+        $result = $this->database->execute($sql);
+
+        $rankingData = array();
+        while ($row = $result->fetch_assoc()) {
+            $rankingData[] = $row;
+        }
+
+        return $rankingData;
+    }
 
     public function verPerfil()
     {
