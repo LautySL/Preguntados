@@ -100,7 +100,7 @@ class UserModel
 }
 
     public function getRankingData() {
-        $sql = "SELECT u.id, u.nombre_de_usuario, MAX(puntaje) AS max_puntaje
+        $sql = "SELECT u.id, u.nombre_de_usuario, SUM(puntaje) AS max_puntaje
         FROM usuario u
         JOIN jugador j ON u.id = j.id
         JOIN partida p ON j.id = p.jugador
