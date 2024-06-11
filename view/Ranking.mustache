@@ -7,20 +7,27 @@
 </head>
 <body>
 
-<h1 class="encabezado w3-center">Ranking de Jugadores</h1>
+<h1 class="w3-center">Ranking de Jugadores</h1>
 <table class="w3-table w3-bordered w3-centered">
     <thead>
-    <tr>
-        <th class="w3-pink">ID</th>
-        <th class="w3-pink">Nombre de Usuario</th>
-        <th class="w3-pink">Puntajes Acumulados</th>
+    <tr class="w3-pink">
+        <th>ID</th>
+        <th>Nombre de Usuario</th>
+        <th>Puntajes Acumulados</th>
     </tr>
     </thead>
     <tbody>
     {{#players}}
         <tr>
             <td>{{id}}</td>
-            <td>{{nombre_de_usuario}}</td>
+            <td>
+                <form action="/verPerfilAjeno/get" method="POST" style="display:inline;">
+                <input type="hidden" name="id" value="{{id}}">
+                <button type="submit" style="background:none;border:none;text-decoration:underline;cursor:pointer;padding:0;">
+                    {{nombre_de_usuario}}
+                </button>
+        </form>
+            </td>
             <td>{{max_puntaje}}</td>
         </tr>
     {{/players}}
@@ -31,6 +38,6 @@
 <body>
 
 <div class="w3-center">
-    <a  href="/home/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Cerrar</a>
+    <a  href="/home/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Cerrar</a>
 </div>
 </body>

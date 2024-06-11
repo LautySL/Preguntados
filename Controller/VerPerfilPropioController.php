@@ -1,5 +1,5 @@
 <?php
-class VerPerfilController
+class VerPerfilPropioController
 {
     private $presenter;
     private $model;
@@ -12,7 +12,7 @@ class VerPerfilController
 
     public function get()
     {
-        $perfil = $this->model->verPerfil();
+        $perfil = $this->model->verPerfilPropio();
         if (!empty($perfil)) {
             $this->presenter->render('view/Perfil.mustache', $perfil[0]);
 

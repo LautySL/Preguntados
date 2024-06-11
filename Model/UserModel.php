@@ -5,10 +5,10 @@ class UserModel
 {
     private $database;
     private $mail;
-    public function __construct($database,$mail)
+    public function __construct($database, $mail)
     {
         $this->database = $database;
-        $this->mail =$mail;
+        $this->mail = $mail;
     }
 
     public function registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud)
@@ -16,7 +16,7 @@ class UserModel
 
         $sql = "INSERT INTO usuario (nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion, latitud, longitud)
                    VALUES ('$nombre_de_usuario', '$contrasena', '$nombre', '$apellido', '$ano_de_nacimiento', '$sexo', '$mail', '$foto_de_perfil', '$pais', '$ciudad', FALSE, '$hash_activacion', '$latitud', '$longitud')";
-        
+
         $this->database->execute($sql);
 
 
@@ -33,7 +33,7 @@ class UserModel
 
         $result = $this->database->execute($sql);
 
-        if ($result->num_rows == 1 ) {
+        if ($result->num_rows == 1) {
             $usuario = $result->fetch_assoc();
 
             $_SESSION["usuario"] = $usuario["nombre_de_usuario"];
@@ -44,62 +44,63 @@ class UserModel
             return false;
         }
     }
-         public function emailVerificado($hash_activacion)
-         {
+    public function emailVerificado($hash_activacion)
+    {
 
 
-             $query = "SELECT * FROM usuario WHERE hash_activacion = '$hash_activacion'";
-             $result = $this->database->execute($query);
-             $usuario = $result->fetch_assoc();
+        $query = "SELECT * FROM usuario WHERE hash_activacion = '$hash_activacion'";
+        $result = $this->database->execute($query);
+        $usuario = $result->fetch_assoc();
 
 
-             if (!$usuario['activado']) {
-                 // Actualizar el estado de activación del usuario en la base de datos
-                 $idUsuario = $usuario['id'];
-                 $updateQuery = "UPDATE usuario SET cuenta_verificada = 1 WHERE id = $idUsuario";
-                 $success = $this->database->execute($updateQuery);
-                 if ($success) {
+        if (!$usuario['activado']) {
+            // Actualizar el estado de activación del usuario en la base de datos
+            $idUsuario = $usuario['id'];
+            $updateQuery = "UPDATE usuario SET cuenta_verificada = 1 WHERE id = $idUsuario";
+            $success = $this->database->execute($updateQuery);
+            if ($success) {
 
-                     return true; //
-                 }else{
-                     return false;
-                 }
+                return true; //
+            } else {
+                return false;
+            }
 
-             }
-         }
-    
-    function enviarCorreoActivacion($email, $nombre, $hash_activacion)
-{
-    try {
-        $configMail = Configuration::getConfigMail();
-
-        // Configurar servidor SMTP
-        $this->mail->isSMTP();
-        $this->mail->Host = $configMail['Host'];
-        $this->mail->SMTPAuth = true;
-        $this->mail->Username = $configMail['Username'];
-        $this->mail->Password = $configMail['Password'];
-        $this->mail->SMTPSecure = $configMail['SMTPSecure'];
-        $this->mail->Port = $configMail['Port'];
-
-        // Configurar remitente y destinatario
-        $this->mail->setFrom($configMail['Username'], 'Admin');
-        $this->mail->addAddress($email, $nombre);
-        $this->mail->CharSet = 'UTF-8';
-        
-        // Configurar contenido del correo
-        $this->mail->isHTML(true);
-        $this->mail->Subject = 'Activación de Cuenta';
-        $this->getBodyMail($nombre, $hash_activacion);
-
-        $this->mail->send();
-        echo 'El correo electrónico de activación se ha enviado correctamente.';
-    } catch (Exception $e) {
-        echo "Error al enviar el correo electrónico: {$this->mail->ErrorInfo}";
+        }
     }
-}
 
-    public function getRankingData() {
+    function enviarCorreoActivacion($email, $nombre, $hash_activacion)
+    {
+        try {
+            $configMail = Configuration::getConfigMail();
+
+            // Configurar servidor SMTP
+            $this->mail->isSMTP();
+            $this->mail->Host = $configMail['Host'];
+            $this->mail->SMTPAuth = true;
+            $this->mail->Username = $configMail['Username'];
+            $this->mail->Password = $configMail['Password'];
+            $this->mail->SMTPSecure = $configMail['SMTPSecure'];
+            $this->mail->Port = $configMail['Port'];
+
+            // Configurar remitente y destinatario
+            $this->mail->setFrom($configMail['Username'], 'Admin');
+            $this->mail->addAddress($email, $nombre);
+            $this->mail->CharSet = 'UTF-8';
+
+            // Configurar contenido del correo
+            $this->mail->isHTML(true);
+            $this->mail->Subject = 'Activación de Cuenta';
+            $this->getBodyMail($nombre, $hash_activacion);
+
+            $this->mail->send();
+            echo 'El correo electrónico de activación se ha enviado correctamente.';
+        } catch (Exception $e) {
+            echo "Error al enviar el correo electrónico: {$this->mail->ErrorInfo}";
+        }
+    }
+
+    public function getRankingData()
+    {
         $sql = "SELECT u.id, u.nombre_de_usuario, SUM(puntaje) AS max_puntaje
         FROM usuario u
         JOIN jugador j ON u.id = j.id
@@ -117,7 +118,7 @@ class UserModel
         return $rankingData;
     }
 
-    public function verPerfil()
+    public function verPerfilPropio()
     {
         $usuario = $_SESSION["usuario"];
         $sql = "SELECT * FROM usuario WHERE nombre_de_usuario = '$usuario'";
@@ -126,6 +127,25 @@ class UserModel
         return $resultado;
     }
 
+    public function VerPerfilAjeno()
+    {
+        if (isset($_SESSION['perfil_ajeno_id'])) {
+            $id = $_SESSION['perfil_ajeno_id'];
+            $sql = "SELECT * FROM usuario WHERE id = '$id'";
+            $result = $this->database->query($sql);
+
+            if ($result && count($result) > 0) {
+                $datosPerfil = $result[0]; // Obtenemos el primer (y único) resultado
+                return $datosPerfil;
+            } else {
+                echo "No se encontraron datos para el ID: " . $id;
+                return null;
+            }
+        } else {
+            echo "ID de perfil ajeno no está seteado en la sesión.";
+            return null;
+        }
+    }
 
     public function getBodyMail($nombre, $hash_activacion)
     {

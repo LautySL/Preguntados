@@ -13,7 +13,8 @@ include_once ("Controller/LoginController.php");
 include_once ("Controller/JuegoController.php");
 include_once ("Controller/AdminController.php");
 include_once ("Controller/RankingController.php");
-include_once ("Controller/VerPerfilController.php");
+include_once ("Controller/VerPerfilPropioController.php");
+include_once ("Controller/VerPerfilAjenoController.php");
 include_once ("Controller/ActivacionController.php");
 
 include_once ("helper/Router.php");
@@ -51,8 +52,12 @@ class Configuration
         return new RankingController(self::getUserModel(), self::getPresenter());
     }
 
-    public static function getVerPerfilController(){
-        return new VerPerfilController(self::getUserModel(), self::getPresenter());
+    public static function getVerPerfilPropioController(){
+        return new VerPerfilPropioController(self::getUserModel(), self::getPresenter());
+    }
+
+    public static function getVerPerfilAjenoController(){
+        return new VerPerfilAjenoController(self::getUserModel(), self::getPresenter());
     }
 
     //model

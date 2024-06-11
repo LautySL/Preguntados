@@ -57,3 +57,17 @@
     width: 60%;
     height: 3rem;
 }
+
+.perfil-ajeno {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.encabezado-perfil-ajeno{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; 
+}

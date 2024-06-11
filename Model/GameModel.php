@@ -47,7 +47,8 @@ class GameModel
         return $esCorrecta;
     }
 
-    public function crearPartida($idUsuario) {
+    public function crearPartida($idUsuario)
+    {
         try {
 
             $idUsuario = intval($idUsuario);
@@ -123,7 +124,8 @@ class GameModel
         return $resultado;
     }
 
-    private function obtenerEstiloCategoria($categoria) {
+    private function obtenerEstiloCategoria($categoria)
+    {
         $categoriaEstilos = [
             'Ciencia' => 'w3-green',
             'Historia' => 'w3-yellow',
@@ -160,7 +162,7 @@ class GameModel
     {
         $porcentajeAciertos = $this->obtenerPorcentajeAciertos($idUsuario);
 
-        $idUsuario=(int)$idUsuario;
+        $idUsuario = (int) $idUsuario;
         $queryPregunta = "
         SELECT p.id, p.pregunta, p.categoría,
                ABS(p.dificultad - $porcentajeAciertos) AS diferencia_aciertos
@@ -203,7 +205,8 @@ class GameModel
     }
 
 
-    private function actualizarEstadisticasPregunta($preguntaId, $esCorrecta) {
+    private function actualizarEstadisticasPregunta($preguntaId, $esCorrecta)
+    {
         try {
             if ($esCorrecta) {
                 $queryUpdate = "UPDATE pregunta 
@@ -228,10 +231,4 @@ class GameModel
             echo "Error al actualizar las estadísticas: " . $e->getMessage();
         }
     }
-
-
-
-
-
-
 }
