@@ -2,11 +2,11 @@
 
 <body>
 
-<form action="index.php?controller=Activacion&method=activar" method="GET">
+<form action="/activacion/activar" method="GET">
 
     <input type="hidden" name="codigo" value="{{codigo}}">
 
-    <a href="index.php?controller=Activacion&action=activar&codigo={{codigo}}" class="w3-btn w3-round-xxlarge w3-pink" style="width: 60%">hola mundo</a><br><br>
+    <a href="/activacion/activar/{{codigo}}" class="w3-btn w3-round-xxlarge w3-pink" style="width: 60%">hola mundo</a><br><br>
 </form>
 </body>
 </html>

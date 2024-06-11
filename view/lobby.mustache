@@ -24,7 +24,7 @@
 
         <div id="respuestas" >
             {{#respuestas}}
-            <form method="post" action="index.php?controller=juego&action=verificarRespuesta" id="timeoutForm" class="w3-center">
+            <form method="post" action="/juego/verificarRespuesta" id="timeoutForm" class="w3-center">
                 <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
                 <button name="respuesta_id" id="respuesta_id" value="{{id}}" class="respuesta w3-button w3-round-xxlarge {{categoria_estilo}}">{{respuesta}}</button><br><br>
             </form>
@@ -71,13 +71,13 @@
 
     // Redirigir al inicio al hacer clic en "Aceptar"
     document.getElementById('homeButton').addEventListener('click', function() {
-        window.location.href = 'index.php';
+        window.location.href = '/';
     });
 
 
 
     document.getElementById('Volver_a_jugar').addEventListener('click', function() {
-        window.location.href = "index.php?controller=Juego&action=iniciarPartida";
+        window.location.href = "/juego/iniciarPartida";
     });
 
 </script>

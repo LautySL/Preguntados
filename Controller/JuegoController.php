@@ -16,7 +16,7 @@ class JuegoController
         $this->checkLoggedIn();
         $this->filtroAntiF5();
         $data = $this->obtenerDataParaPartida();
-        $this->presenter->render("View/lobby.mustache", $data);
+        $this->presenter->render("view/lobby.mustache", $data);
     }
 
     public function verificarRespuesta()
@@ -50,7 +50,7 @@ class JuegoController
 
         $idPartida = $this->model->crearPartida($idUsuario);
         $_SESSION['id_partida'] = $idPartida;
-        header("Location: index.php?controller=Juego&action=get");
+        header("Location: /juego/get");
         exit();
     }
 
@@ -58,7 +58,7 @@ class JuegoController
     {
         $_SESSION['puntaje_final'] =$_SESSION['puntaje'] ?? 0;
         unset($_SESSION['pagina_cargada']);
-        header("Location: index.php?controller=Juego&action=get&finalizado=true");
+        header("Location: /juego/get/true");
         exit;
     }
 
@@ -66,7 +66,7 @@ class JuegoController
     {
 
         unset($_SESSION['pagina_cargada']);
-        header('Location: index.php?controller=Juego&action=get');
+        header('Location: /juego/get');
         exit;
     }
 
@@ -83,7 +83,7 @@ class JuegoController
     private function checkLoggedIn()
     {
         if (!isset($_SESSION['usuario'])) {
-            header('Location: index.php');
+            header('Location: /');
             exit();
         }
     }

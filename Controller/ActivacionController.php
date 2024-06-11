@@ -30,7 +30,7 @@ class ActivacionController
         $verificado = $this->model->emailVerificado($codigo);
         if ($verificado) {
             // Redirigir al index
-            header("Location: index.php");
+            header("Location: /");
             exit();
         } else {
             // Mostrar error

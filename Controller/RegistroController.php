@@ -56,7 +56,7 @@ class RegistroController
             $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud);
         }
 
-        header('Location:index.php?controller=home&action=get');
+        header('Location: /home/get');
         exit();
     }
 }

@@ -14,10 +14,15 @@ class LoginController
 
 
     public function get()
+
+
+
     {
+       
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["usuario"]) && isset($_POST["password"])) {
             $usuario = $_POST["usuario"];
             $password = $_POST["password"];
+
 
             // Realizar la validación del usuario y contraseña
             if ($this->model->LogInconsulta($usuario, $password)) {
@@ -31,7 +36,7 @@ class LoginController
             $_SESSION["error_login"] = "Por favor, ingresa tus credenciales.";
         }
 
-        header("Location:index.php?controller=Home&action=get");
+        header("Location: /home/get");
         exit();
     }
 
@@ -40,7 +45,7 @@ class LoginController
 
         session_destroy();
         session_unset();
-        header("Location:index.php?controller=Home&action=get");
+        header("Location: /home/get");
 
         exit();
     }

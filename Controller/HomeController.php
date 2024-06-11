@@ -15,7 +15,7 @@ class HomeController
     public function get()
     {
          $templateData = $this->contextoParaPasarALaVista();
-        $this->presenter->render("View/Home.mustache",$templateData);
+        $this->presenter->render("view/Home.mustache",$templateData);
     }
 
 
