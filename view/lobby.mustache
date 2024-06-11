@@ -31,10 +31,11 @@
             </form>
             {{/respuestas}}
         </div>
-        <label>
-            <input type="checkbox" name="reportar_pregunta" value="{{pregunta_id}}">
-            Reportar pregunta
-        </label>
+        <form method="post" action="/juego/reportarPregunta.php" class="w3-center">
+            <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
+            <button type="submit" class="w3-button w3-round-xxlarge w3-red">Reportar pregunta</button>
+        </form>
+
         <div class="encabezado w3-center w3-pink w3-padding">
             <p>Puntaje: <span>{{puntaje}}</span></p>
         </div>

@@ -14,21 +14,22 @@ class JuegoController
     public function get()
     {
         $this->checkLoggedIn();
-        $this->filtroAntiF5();
-        $data = $this->obtenerDataParaPartida();
+        $data = $this->filtroAntiF5();
         $this->presenter->render("view/lobby.mustache", $data);
     }
 
     public function verificarRespuesta()
     {
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $respuestaId = $_POST['respuesta_id'];
             $preguntaId=$_POST['pregunta_id'];
             $idPartida = $_SESSION['id_partida'];
             $puntaje = $_SESSION['puntaje'] ?? 0;
 
+
             $esCorrecta = $this->model->procesarRespuesta($idPartida, $preguntaId, $respuestaId, $puntaje);
-            $_SESSION['puntaje'] = $puntaje;
+
 
             if ($esCorrecta) {
                 $this->continuaJugando();
@@ -41,8 +42,8 @@ class JuegoController
 
     public function iniciarPartida()
     {
-        // Limpiar todas las variables de sesión relacionadas con el juego
-        unset($_SESSION['pagina_cargada']);
+
+        unset($_SESSION['flag-partida']);
         unset($_SESSION['puntaje']);
         unset($_SESSION['puntaje_final']);
         unset ($_SESSION['finalizado']) ;
@@ -55,11 +56,19 @@ class JuegoController
         exit();
     }
 
+    public function reportarPregunta(){
+        $preguntaId=$_POST['pregunta_id'];
+        $this->model->reportarPregunta($preguntaId);
+    }
+
+
+
+
     private function gameOver()
     {
         $_SESSION['finalizado']= true;
         $_SESSION['puntaje_final'] =$_SESSION['puntaje'] ?? 0;
-        unset($_SESSION['pagina_cargada']);
+        unset($_SESSION['flag-partida']);
 
         header("Location: /juego/get");
         exit;
@@ -67,15 +76,15 @@ class JuegoController
 
     private function continuaJugando()
     {
-
-        unset($_SESSION['pagina_cargada']);
+        unset ($_SESSION['start_time']);
+        unset($_SESSION['flag-partida']);
         header('Location: /juego/get');
         exit;
     }
 
     private function obtenerDataParaPartida(): array
     {
-        $_SESSION['pagina_cargada'] = true;
+        $_SESSION['flag-partida'] = true;
         $nombreUsuario = $_SESSION['usuario'];
         $puntaje = $_SESSION['puntaje'] ?? 0;
         $finalizado = $_SESSION['finalizado'] ?? null;
@@ -93,9 +102,18 @@ class JuegoController
 
     private function filtroAntiF5()
     {
-        if (isset($_SESSION['pagina_cargada']) && !isset($_GET['finalizado'])) {
-            $this->gameOver();
-            exit;
+
+             if (isset($_SESSION['flag-partida'])) {
+                   return $_SESSION['data'];
         }
-    }
+            else{
+                $data = $this->obtenerDataParaPartida();
+                $_SESSION['data']= $data;
+                return $data;
+            }
+
+        }
+
+
+
 }

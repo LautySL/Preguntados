@@ -27,24 +27,39 @@ class GameModel
         ];
         return $data;
     }
-    public function procesarRespuesta($idPartida, $preguntaId, $respuestaId, &$puntaje)
+    public function procesarRespuesta($idPartida, $preguntaId, $respuestaId, $puntaje)
     {
         $esCorrecta = $this->verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId);
+
         if ($esCorrecta) {
             $puntaje++;
+            $_SESSION['puntaje'] = $puntaje;
             $this->actualizarPuntajeFinal($idPartida, $puntaje);
             return true;
         } else {
-
             return false;
         }
     }
 
     public function verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId)
     {
-        $esCorrecta = $this->esRespuestaCorrecta($preguntaId, $respuestaId);
+        $esCorrecta =$this->esRespuestaCorrecta($preguntaId, $respuestaId);
+
         $this->guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta);
         return $esCorrecta;
+    }
+
+    private function esRespuestaCorrecta($preguntaId, $respuestaId)
+    {
+        $query = "SELECT es_la_correcta FROM respuesta WHERE id = '$respuestaId' AND pregunta = '$preguntaId'";
+        $result = $this->database->execute($query);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return (bool) $row['es_la_correcta'];
+        } else {
+            return false;
+        }
     }
 
     public function crearPartida($idUsuario)
@@ -66,10 +81,10 @@ class GameModel
             return null;
         }
     }
-    public function actualizarPuntajeFinal($idPartida, $puntajeFinal)
+    public function actualizarPuntajeFinal($idPartida, $puntaje)
     {
         try {
-            $queryUpdatePartida = "UPDATE partida SET puntaje = '$puntajeFinal' WHERE id = '$idPartida'";
+            $queryUpdatePartida = "UPDATE partida SET puntaje = '$puntaje' WHERE id = '$idPartida'";
             $this->database->execute($queryUpdatePartida);
         } catch (Exception $e) {
             echo "Error al actualizar el puntaje final: " . $e->getMessage();
@@ -88,18 +103,7 @@ class GameModel
         }
     }
 
-    private function esRespuestaCorrecta($preguntaId, $respuestaId)
-    {
-        $query = "SELECT es_la_correcta FROM respuesta WHERE id = '$respuestaId' AND pregunta = '$preguntaId'";
-        $result = $this->database->execute($query);
 
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            return (bool) $row['es_la_correcta'];
-        } else {
-            return false;
-        }
-    }
     private function obtenerPreguntaYRespuestas($idUsuario)
     {
         $preguntas = $this->queryPregunta($idUsuario);
@@ -231,4 +235,6 @@ class GameModel
             echo "Error al actualizar las estadísticas: " . $e->getMessage();
         }
     }
+
+
 }
