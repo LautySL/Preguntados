@@ -45,6 +45,7 @@ class JuegoController
         unset($_SESSION['pagina_cargada']);
         unset($_SESSION['puntaje']);
         unset($_SESSION['puntaje_final']);
+        unset ($_SESSION['finalizado']) ;
 
         $idUsuario = $_SESSION['id_usuario'] ;
 
@@ -56,9 +57,11 @@ class JuegoController
 
     private function gameOver()
     {
+        $_SESSION['finalizado']= true;
         $_SESSION['puntaje_final'] =$_SESSION['puntaje'] ?? 0;
         unset($_SESSION['pagina_cargada']);
-        header("Location: /juego/get/true");
+
+        header("Location: /juego/get");
         exit;
     }
 
@@ -75,7 +78,7 @@ class JuegoController
         $_SESSION['pagina_cargada'] = true;
         $nombreUsuario = $_SESSION['usuario'];
         $puntaje = $_SESSION['puntaje'] ?? 0;
-        $finalizado = isset($_GET['finalizado']) && $_GET['finalizado'] == 'true';
+        $finalizado = $_SESSION['finalizado'] ?? null;
         $puntajeFinal = $_SESSION['puntaje_final'] ?? null;
         return $this->model->obtenerDataParaPartida($_SESSION['id_usuario'], $puntaje, $finalizado, $puntajeFinal);
     }
