@@ -29,7 +29,7 @@ class GameModel
     }
     public function procesarRespuesta($idPartida, $preguntaId, $respuestaId, $puntaje)
     {
-        $esCorrecta = $this->verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId);
+        $esCorrecta = $this->verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId) && $this->checkTimeLimit();
 
         if ($esCorrecta) {
             $puntaje++;
@@ -57,6 +57,15 @@ class GameModel
         if ($result && $result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return (bool) $row['es_la_correcta'];
+        } else {
+            return false;
+        }
+    }
+    private function checkTimeLimit()
+    {
+        $elapsedTime = time() - $_SESSION['start_time'];
+        if ($elapsedTime < 30) {
+            return true;
         } else {
             return false;
         }
@@ -235,6 +244,5 @@ class GameModel
             echo "Error al actualizar las estadísticas: " . $e->getMessage();
         }
     }
-
 
 }

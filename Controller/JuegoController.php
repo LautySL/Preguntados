@@ -42,7 +42,7 @@ class JuegoController
 
     public function iniciarPartida()
     {
-
+        unset ($_SESSION['start_time']);
         unset($_SESSION['flag-partida']);
         unset($_SESSION['puntaje']);
         unset($_SESSION['puntaje_final']);
@@ -108,6 +108,7 @@ class JuegoController
         }
             else{
                 $data = $this->obtenerDataParaPartida();
+                $_SESSION['start_time']=time();
                 $_SESSION['data']= $data;
                 return $data;
             }
