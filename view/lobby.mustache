@@ -27,13 +27,14 @@
             <form method="post" action="/juego/verificarRespuesta" id="timeoutForm" class="w3-center">
                 <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
                 <button name="respuesta_id" id="respuesta_id" value="{{id}}" class="respuesta w3-button w3-round-xxlarge {{categoria_estilo}}">{{respuesta}}</button><br><br>
-                <label>
-                    <input type="checkbox" name="reportar_pregunta" value="{{pregunta_id}}">
-                    Reportar pregunta
-                </label>
+
             </form>
             {{/respuestas}}
         </div>
+        <label>
+            <input type="checkbox" name="reportar_pregunta" value="{{pregunta_id}}">
+            Reportar pregunta
+        </label>
         <div class="encabezado w3-center w3-pink w3-padding">
             <p>Puntaje: <span>{{puntaje}}</span></p>
         </div>

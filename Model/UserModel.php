@@ -68,7 +68,7 @@ class UserModel
         }
     }
 
-    function enviarCorreoActivacion($email, $nombre, $hash_activacion)
+    public function enviarCorreoActivacion($email, $nombre, $hash_activacion)
     {
         try {
             $configMail = Configuration::getConfigMail();
@@ -147,7 +147,7 @@ class UserModel
         }
     }
 
-    public function getBodyMail($nombre, $hash_activacion)
+    private function getBodyMail($nombre, $hash_activacion)
     {
         $this->mail->Body = "
 <!DOCTYPE html>
