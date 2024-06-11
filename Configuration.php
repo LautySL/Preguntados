@@ -1,8 +1,8 @@
 <?php
 
 
-
 use PHPMailer\PHPMailer\PHPMailer;
+
 include_once("vendor\PHPMailer\src\Exception.php");
 include_once("vendor\PHPMailer\src\PHPMailer.php");
 include_once("vendor\PHPMailer\src\SMTP.php");
@@ -22,6 +22,8 @@ include_once ("helper/DataBase.php");
 include_once ("helper/MustachePresenter.php");
 include_once ("vendor/mustache/src/Mustache/Autoloader.php");
 include_once ('vendor/PHPMailer/src/PHPMailer.php');
+
+include_once ('Model/AdminModel.php');
 include_once ('Model/UserModel.php');
 include_once ('Model/GameModel.php');
 
@@ -68,6 +70,10 @@ class Configuration
     public static function getGameModel()
     {
         return new GameModel(self::Database());
+    }
+    public static function AdminModel()
+    {
+        return new AdminModel(self::Database());
     }
 
     //Helper
