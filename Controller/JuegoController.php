@@ -67,9 +67,7 @@ class JuegoController
     private function gameOver()
     {
         $_SESSION['finalizado']= true;
-
         unset($_SESSION['flag-partida']);
-
         header("Location: /juego/get");
         exit;
     }
