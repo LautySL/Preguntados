@@ -23,11 +23,11 @@ class GameModel
             'categoria_estilo' => $categoriaEstilo,
             'puntaje' => $puntaje,
             'finalizado' => $finalizado,
-            'puntajeFinal' => $finalizado ? $puntajeFinal : null,
             'time_left'=>$this->getTimeLeft()
         ];
         return $data;
     }
+
     public function procesarRespuesta($idPartida, $preguntaId, $respuestaId, $puntaje)
     {
         $esCorrecta = $this->verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId) && $this->checkTimeLimit();
@@ -49,6 +49,7 @@ class GameModel
         $this->guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta);
         return $esCorrecta;
     }
+
     public function getTimeLeft()
     {
         if (!isset($_SESSION['start_time'])) {
@@ -60,7 +61,7 @@ class GameModel
 
         return max(0, $timeLeft);
     }
-    
+
     public function crearPartida($idUsuario)
     {
         try {
@@ -80,6 +81,7 @@ class GameModel
             return null;
         }
     }
+
     public function actualizarPuntajeFinal($idPartida, $puntaje)
     {
         try {
@@ -89,6 +91,7 @@ class GameModel
             echo "Error al actualizar el puntaje final: " . $e->getMessage();
         }
     }
+
     private function esRespuestaCorrecta($preguntaId, $respuestaId)
     {
         $query = "SELECT es_la_correcta FROM respuesta WHERE id = '$respuestaId' AND pregunta = '$preguntaId'";
@@ -101,6 +104,7 @@ class GameModel
             return false;
         }
     }
+
     private function checkTimeLimit()
     {
         $elapsedTime = time() - $_SESSION['start_time'];
@@ -110,7 +114,6 @@ class GameModel
             return false;
         }
     }
-
 
     private function guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta)
     {
@@ -123,7 +126,6 @@ class GameModel
             echo "Error al guardar la respuesta: " . $e->getMessage();
         }
     }
-
 
     private function obtenerPreguntaYRespuestas($idUsuario)
     {
@@ -173,7 +175,6 @@ class GameModel
         $this->database->execute($queryLimpiar);
     }
 
-
     private function queryRespuestas(int $preguntaId)
     {
         $queryRespuestas = "SELECT respuesta, es_la_correcta,id FROM respuesta WHERE pregunta = $preguntaId";
@@ -181,7 +182,6 @@ class GameModel
         shuffle($respuestas);
         return $respuestas;
     }
-
 
     private function queryPregunta($idUsuario)
     {
@@ -205,7 +205,6 @@ class GameModel
         return $preguntas;
     }
 
-
     private function obtenerPorcentajeAciertos($idUsuario)
     {
         $query = "
@@ -228,7 +227,6 @@ class GameModel
             return 0;
         }
     }
-
 
     private function actualizarEstadisticasPregunta($preguntaId, $esCorrecta)
     {
@@ -256,7 +254,5 @@ class GameModel
             echo "Error al actualizar las estadísticas: " . $e->getMessage();
         }
     }
-
-
 
 }

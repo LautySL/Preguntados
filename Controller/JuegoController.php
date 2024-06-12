@@ -67,7 +67,7 @@ class JuegoController
     private function gameOver()
     {
         $_SESSION['finalizado']= true;
-        $_SESSION['puntaje_final'] =$_SESSION['puntaje'] ?? 0;
+
         unset($_SESSION['flag-partida']);
 
         header("Location: /juego/get");
@@ -88,8 +88,8 @@ class JuegoController
         $nombreUsuario = $_SESSION['usuario'];
         $puntaje = $_SESSION['puntaje'] ?? 0;
         $finalizado = $_SESSION['finalizado'] ?? null;
-        $puntajeFinal = $_SESSION['puntaje_final'] ?? null;
-        return $this->model->obtenerDataParaPartida($_SESSION['id_usuario'], $puntaje, $finalizado, $puntajeFinal);
+
+        return $this->model->obtenerDataParaPartida($_SESSION['id_usuario'], $puntaje, $finalizado, $puntaje);
     }
 
     private function checkLoggedIn()
