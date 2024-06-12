@@ -42,7 +42,7 @@
     </div>
 
     <div>
-        <p class="encabezado w3-center w3-pink w3-padding">Tiempo restante: <span id="timer">30</span> segundos</p>
+        <p class="encabezado w3-center w3-pink w3-padding">Tiempo restante: <span id="timer">{{time_left}}</span> segundos</p>
     </div>
 
 
@@ -52,7 +52,7 @@
 
 <script>
     // Temporizador de 30 segundos
-    let timeLeft = 30;
+    let timeLeft = {{time_left}};
     const timerElement = document.getElementById('timer');
 
     const countdown = setInterval(() => {

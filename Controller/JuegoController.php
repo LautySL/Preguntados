@@ -104,7 +104,9 @@ class JuegoController
     {
 
              if (isset($_SESSION['flag-partida'])) {
+                 $_SESSION['data']['time_left'] = $this->model->getTimeLeft();
                    return $_SESSION['data'];
+
         }
             else{
                 $data = $this->obtenerDataParaPartida();

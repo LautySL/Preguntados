@@ -23,7 +23,8 @@ class GameModel
             'categoria_estilo' => $categoriaEstilo,
             'puntaje' => $puntaje,
             'finalizado' => $finalizado,
-            'puntajeFinal' => $finalizado ? $puntajeFinal : null
+            'puntajeFinal' => $finalizado ? $puntajeFinal : null,
+            'time_left'=>$this->getTimeLeft()
         ];
         return $data;
     }
@@ -48,29 +49,18 @@ class GameModel
         $this->guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta);
         return $esCorrecta;
     }
-
-    private function esRespuestaCorrecta($preguntaId, $respuestaId)
+    public function getTimeLeft()
     {
-        $query = "SELECT es_la_correcta FROM respuesta WHERE id = '$respuestaId' AND pregunta = '$preguntaId'";
-        $result = $this->database->execute($query);
-
-        if ($result && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            return (bool) $row['es_la_correcta'];
-        } else {
-            return false;
+        if (!isset($_SESSION['start_time'])) {
+            return 30;
         }
-    }
-    private function checkTimeLimit()
-    {
+
         $elapsedTime = time() - $_SESSION['start_time'];
-        if ($elapsedTime < 30) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+        $timeLeft = 30 - $elapsedTime;
 
+        return max(0, $timeLeft);
+    }
+    
     public function crearPartida($idUsuario)
     {
         try {
@@ -99,6 +89,28 @@ class GameModel
             echo "Error al actualizar el puntaje final: " . $e->getMessage();
         }
     }
+    private function esRespuestaCorrecta($preguntaId, $respuestaId)
+    {
+        $query = "SELECT es_la_correcta FROM respuesta WHERE id = '$respuestaId' AND pregunta = '$preguntaId'";
+        $result = $this->database->execute($query);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return (bool) $row['es_la_correcta'];
+        } else {
+            return false;
+        }
+    }
+    private function checkTimeLimit()
+    {
+        $elapsedTime = time() - $_SESSION['start_time'];
+        if ($elapsedTime < 30) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     private function guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta)
     {
@@ -244,5 +256,7 @@ class GameModel
             echo "Error al actualizar las estadísticas: " . $e->getMessage();
         }
     }
+
+
 
 }
