@@ -14,9 +14,6 @@ class LoginController
 
 
     public function get()
-
-
-
     {
        
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["usuario"]) && isset($_POST["password"])) {

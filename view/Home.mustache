@@ -20,9 +20,14 @@
 </div>
 
 <main  class="cuerpo-home w3-center">
-    {{#usuario}}
+    {{#esJugador}}
     <a href="/juego/iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
-    <a href="/edicion/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
     <a href="/ranking/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
-    {{/usuario}}
+    {{/esJugador}}
+    {{#esEditor}}
+    <a href="/edicion/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
+    {{/esEditor}}
+    {{#esAdministrador}}
+    <a href="/admin/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Graficos</a><br><br>
+    {{/esAdministrador}}
 </main>

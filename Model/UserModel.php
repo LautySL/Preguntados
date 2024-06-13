@@ -147,6 +147,33 @@ class UserModel
         }
     }
 
+
+
+    public function obtenerTipoUsuario($idUsuario) {
+    
+    $query = "SELECT 
+                CASE
+                    WHEN j.id IS NOT NULL THEN 'esJugador'
+                    WHEN e.id IS NOT NULL THEN 'esEditor'
+                    WHEN a.id IS NOT NULL THEN 'esAdministrador'
+                    ELSE ''
+                END AS tipoUsuario
+            FROM usuario u
+            LEFT JOIN jugador j ON u.id = j.id
+            LEFT JOIN editor e ON u.id = e.id
+            LEFT JOIN administrador a ON u.id = a.id
+            WHERE u.id = $idUsuario";
+
+    $result = $this->database->query($query);
+    // $result = mysqli_query($conexion, $query); // Suponiendo que estás utilizando MySQLi
+
+    $tipoUsuario = mysqli_fetch_assoc($result)['tipoUsuario'];
+
+    return $tipoUsuario;
+    
+    }
+
+
     private function getBodyMail($nombre, $hash_activacion)
     {
         $this->mail->Body = "

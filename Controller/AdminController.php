@@ -16,7 +16,6 @@ class AdminController
 
     public function get()
     {
-
         $this->presenter->render("view/Home.mustache");
     }
 

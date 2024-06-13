@@ -15,6 +15,17 @@ class HomeController
     public function get()
     {
          $templateData = $this->contextoParaPasarALaVista();
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["usuario"])) {
+            $idUsuario = $_POST["id"];
+            $tipoUsuario = $this->model->obtenerTipoUsuario($idUsuario);
+            
+
+            $templateData["esJugador"] = ($tipoUsuario == 'esJugador');
+            $templateData["esEditor"] = ($tipoUsuario == 'esEditor');
+            $templateData["esAdministrador"] = ($tipoUsuario == 'esAdministrador');
+        }
+
         $this->presenter->render("view/Home.mustache",$templateData);
     }
 
