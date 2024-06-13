@@ -155,11 +155,11 @@ class GameModel
     {
         $categoriaEstilos = [
             'Ciencia' => 'w3-green',
-            'Historia' => 'w3-yellow',
+            'Historia' => 'w3-purple',
             'Entretenimiento' => 'w3-blue',
-            'Geografía' => 'w3-light-blue',
+            'Geografía' => 'w3-deep-orange',
             'Arte' => 'w3-red',
-            'Deporte' => 'w3-grey'
+            'Deporte' => 'w3-dark-grey'
         ];
 
         return $categoriaEstilos[$categoria] ?? 'w3-light-grey';
