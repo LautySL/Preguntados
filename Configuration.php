@@ -16,6 +16,7 @@ include_once ("Controller/RankingController.php");
 include_once ("Controller/VerPerfilPropioController.php");
 include_once ("Controller/VerPerfilAjenoController.php");
 include_once ("Controller/ActivacionController.php");
+include_once ("Controller/EdicionController.php");
 
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
@@ -26,6 +27,7 @@ include_once ('vendor/PHPMailer/src/PHPMailer.php');
 include_once ('Model/AdminModel.php');
 include_once ('Model/UserModel.php');
 include_once ('Model/GameModel.php');
+include_once ('Model/EdicionModel.php');
 
 class Configuration
 {
@@ -61,6 +63,10 @@ class Configuration
     public static function getVerPerfilAjenoController(){
         return new VerPerfilAjenoController(self::getUserModel(), self::getPresenter());
     }
+    public static function getEdicionController()
+    {
+        return new EdicionController(self::getEdicionModel(), self::getPresenter());
+    }
 
     //model
     public static function getUserModel()
@@ -74,6 +80,10 @@ class Configuration
     public static function getAdminModel()
     {
         return new AdminModel(self::Database());
+    }
+    public static function getEdicionModel()
+    {
+        return new EdicionModel(self::Database());
     }
 
     //Helper

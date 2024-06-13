@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+
+
 <body>
-<a href="/home/get"><button type="button">Volver</button></a>
+<div class="container w3-center">
+    <h2 class="encabezado w3-pink w3-center w3-padding">Preguntas Reportadas</h2><br>
+    <table class="w3-table-all">
+        <thead>
+        <tr class="w3-pink">
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Fecha</th>
+            <th>Respuestas</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#reportedQuestions}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{usuario}}</td>
+            <td>{{fecha}}</td>
+            <td>{{pregunta}}</td>
+            <td>
+                <ul>
+                    {{#respuestas}}
+                    <li>{{.}}</li>
+                    {{/respuestas}}
+                </ul>
+            </td>
+        </tr>
+        {{/reportedQuestions}}
+        </tbody>
+    </table>
+</div>
+
+<a href="/home/get"><button type="button" class="w3-button w3-round-xxlarge w3-dark-gray">Volver</button></a>
 </body>
-</html>
