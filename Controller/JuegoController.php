@@ -58,7 +58,9 @@ class JuegoController
 
     public function reportarPregunta(){
         $preguntaId=$_POST['pregunta_id'];
-        $this->model->reportarPregunta($preguntaId);
+        $idUsuario=$_SESSION['id_usuario'];
+        $this->model->reportarPregunta($preguntaId, $idUsuario);
+        header("Location: /juego/get");
     }
 
 

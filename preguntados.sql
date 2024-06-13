@@ -71,6 +71,14 @@ CREATE TABLE partida_pregunta (
     foreign key (pregunta) references pregunta(id)
 );
 
+CREATE TABLE reportes_preguntas (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     pregunta_id INT NOT NULL,
+     usuario_id INT NOT NULL,
+     fecha_reporte TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     FOREIGN KEY (pregunta_id) REFERENCES pregunta(id),
+     FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+);
 
 INSERT INTO pregunta (pregunta, categoría) VALUES
 ('¿Cuál es la capital de Francia?', 'Geografía'),

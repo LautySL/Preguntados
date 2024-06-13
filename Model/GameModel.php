@@ -91,6 +91,21 @@ class GameModel
             echo "Error al actualizar el puntaje final: " . $e->getMessage();
         }
     }
+    public function reportarPregunta($preguntaId, $idUsuario)
+    {
+        try {
+            $queryreport ="INSERT INTO reportes_preguntas (pregunta_id, usuario_id) VALUES ($preguntaId,$idUsuario)";;
+            $this->database->execute( $queryreport);
+        } catch (Exception $e) {
+            echo "Error al actualizar el puntaje final: " . $e->getMessage();
+
+        }
+    }
+
+
+
+
+
 
     private function esRespuestaCorrecta($preguntaId, $respuestaId)
     {
