@@ -16,15 +16,6 @@ class HomeController
     {
          $templateData = $this->contextoParaPasarALaVista();
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST["usuario"])) {
-            $idUsuario = $_POST["id"];
-            $tipoUsuario = $this->model->obtenerTipoUsuario($idUsuario);
-            
-
-            $templateData["esJugador"] = ($tipoUsuario == 'esJugador');
-            $templateData["esEditor"] = ($tipoUsuario == 'esEditor');
-            $templateData["esAdministrador"] = ($tipoUsuario == 'esAdministrador');
-        }
 
         $this->presenter->render("view/Home.mustache",$templateData);
     }
@@ -34,13 +25,23 @@ class HomeController
     {
         $usuario = $_SESSION['usuario'] ?? null;
         $error = $_SESSION["error_login"] ?? null;
-
+        $tipo= $_SESSION["tipo_cuenta"]?? null;
+        
         $templateData = [
             "error" => $error
         ];
 
         if ($usuario !== null) {
-            $templateData["usuario"] = $usuario;
+            $templateData=[
+                'usuario'=> $_SESSION['usuario'] ?? null,
+                 'tipoCuenta'=>$_SESSION["tipo_cuenta"]?? null,
+                'isJugador' =>$tipo['esJugador'],
+                'isEditor' =>$tipo['esEditor'],
+                'isAdministrador'=>$tipo['esAdministrador']
+
+
+
+            ];
         }
 
         return $templateData;

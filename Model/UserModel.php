@@ -38,6 +38,13 @@ class UserModel
 
             $_SESSION["usuario"] = $usuario["nombre_de_usuario"];
             $_SESSION['id_usuario'] = $usuario['id'];
+            $tipoUsuario = $this->obtenerTipoUsuario($usuario['id']);
+
+            $_SESSION['tipo_cuenta'] =[
+                "esJugador" => ($tipoUsuario == 'esJugador'),
+                "esEditor" => ($tipoUsuario == 'esEditor'),
+                "esAdministrador" => ($tipoUsuario == 'esAdministrador'),
+            ];
 
             return true;
         } else {
@@ -149,7 +156,7 @@ class UserModel
 
 
 
-    public function obtenerTipoUsuario($idUsuario) {
+    private function obtenerTipoUsuario($idUsuario) {
     
     $query = "SELECT 
                 CASE
@@ -164,7 +171,7 @@ class UserModel
             LEFT JOIN administrador a ON u.id = a.id
             WHERE u.id = $idUsuario";
 
-    $result = $this->database->query($query);
+    $result = $this->database->execute($query);
     // $result = mysqli_query($conexion, $query); // Suponiendo que estás utilizando MySQLi
 
     $tipoUsuario = mysqli_fetch_assoc($result)['tipoUsuario'];
