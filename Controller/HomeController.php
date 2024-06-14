@@ -44,7 +44,7 @@ class HomeController
 
             ];
         }
-       
+
         return $templateData;
     }
 }
