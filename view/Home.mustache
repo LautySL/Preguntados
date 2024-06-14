@@ -1,6 +1,8 @@
 <div class="container w3-center">
     {{#usuario}}
     <h2 class="encabezado w3-pink w3-center w3-padding">Bienvenido, {{usuario}}!</h2><br>
+    <span class="w3-left">Tu puntuación más alta es :</span>
+    <span class="w3-left">{{puntuacion}}</span>
     {{/usuario}}
     {{^usuario}}
     <form class="login-form" action="/login/get" method="post">
@@ -23,15 +25,15 @@
 
     {{#isJugador}}
     <a href="/juego/iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
-    <a href="/ranking/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
+    <a href="/ranking/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
     {{/isJugador}}
     {{#isEditor}}
-    <a href="/edicion/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
+    <a href="/edicion/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
     {{/isEditor}}
     {{#isAdministrador}}
-    <a href="/admin/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Graficos</a><br><br>
+    <a href="/admin/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Graficos</a><br><br>
     {{/isAdministrador}}
 
     <!--borrar este boton despues-->
-    <a href="/edicion/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
+    <a href="/edicion/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
 </main>

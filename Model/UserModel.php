@@ -153,7 +153,21 @@ class UserModel
             return null;
         }
     }
+    public function getMaxPuntaje($usuario)
+    {
+        $query = "SELECT MAX(puntaje) AS max_puntaje FROM partida WHERE jugador=$usuario";
 
+        $resultado = $this->database->query($query);
+
+        if ($resultado && isset($resultado[0]['max_puntaje'])) {
+            // Convertir el valor de "max_puntaje" a entero y devolverlo
+            return (int) $resultado[0]['max_puntaje'];
+        } else {
+            return 0;
+        }
+
+
+    }
 
 
     private function obtenerTipoUsuario($idUsuario) {
@@ -179,6 +193,7 @@ class UserModel
     return $tipoUsuario;
     
     }
+
 
 
     private function getBodyMail($nombre, $hash_activacion)
