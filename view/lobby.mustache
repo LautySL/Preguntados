@@ -17,9 +17,9 @@
         {{/finalizado}}
         {{^finalizado}}
 
-        <div class="w3-center {{categoria_estilo}}">
-            <img src="../public/img/{{categoria}}.svg" alt="categoria" class="encabezado categoria w3-center {{categoria_estilo}}">
-            <h2 class="encabezado categoria w3-center {{categoria_estilo}}">{{categoria}}</h2>
+        <div class="w3-center w3-pink">
+            <img src="../public/img/{{categoria}}.svg" alt="categoria" class="encabezado categoria w3-center ">
+            <h2 class="encabezado categoria w3-center w3-pink">{{categoria}}</h2>
         </div>
 
         <h3 class="w3-center w3-pink>"> {{pregunta}} </h3>
@@ -38,9 +38,9 @@
             <button type="submit" class="w3-button w3-round-xxlarge w3-red w3-padding">Reportar pregunta</button>
         </form>
 
-        <div class="encabezado w3-center {{categoria_estilo}} w3-padding">
+        <div class="encabezado w3-center w3-pink w3-padding">
             <p>Puntaje: <span>{{puntaje}}</span></p>
-            <p class="encabezado w3-center {{categoria_estilo}} w3-padding">Tiempo restante: <span id="timer">{{time_left}}</span> segundos</p>
+            <p class="encabezado w3-center w3-pink w3-padding">Tiempo restante: <span id="timer">{{time_left}}</span> segundos</p>
         </div>
     </div>
 
