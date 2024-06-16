@@ -25,6 +25,7 @@
 
     {{#isJugador}}
     <a href="/juego/iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
+<<<<<<< Updated upstream
     <a href="/ranking/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
     {{/isJugador}}
     {{#isEditor}}
@@ -32,6 +33,17 @@
     {{/isEditor}}
     {{#isAdministrador}}
     <a href="/admin/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Graficos</a><br><br>
+=======
+    <a href="/ranking/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
+    <a href="/edicion/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Crear Preguntas</a><br><br>
+    {{/isJugador}}
+    {{#isEditor}}
+    <a href="/edicion/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Reportadas</a><br><br>
+    <a href="/edicion/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Sugeridas</a><br><br>
+    {{/isEditor}}
+    {{#isAdministrador}}
+    <a href="/admin/get"class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Estadisticas del Juego</a><br><br>
+>>>>>>> Stashed changes
     {{/isAdministrador}}
 
 </main>

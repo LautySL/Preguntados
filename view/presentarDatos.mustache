@@ -1,0 +1,69 @@
+<!-- presentarDatos.mustache -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentar Datos</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- Agregar cualquier otro CSS necesario para la presentación -->
+</head>
+<body>
+
+<div class="w3-container">
+   
+
+    <!-- Formulario para filtrar por día, semana, mes, año -->
+    <form class="w3-row-padding" action="/admin/totalJugadores" method="get">
+        <div class="w3-quarter">
+            <label for="filtro">Filtrar por:</label>
+            <select id="filtro" name="filtro">
+                <option value="dia">Día</option>
+                <option value="semana">Semana</option>
+                <option value="mes">Mes</option>
+                <option value="ano">Año</option>
+            </select>
+        </div>
+        <!-- Agregar más opciones de filtrado según sea necesario -->
+
+        <button type="submit" class="boton-home w3-btn w3-round-xxlarge w3-pink">Aplicar Filtro</button>
+    </form>
+
+    <!-- Opciones para elegir entre gráfico y lista -->
+    <div>
+        <label for="tipo_visualizacion">Tipo de visualización:</label>
+        <input type="radio" id="grafico" name="tipo_visualizacion" value="grafico">
+        <label for="grafico">Gráfico</label>
+
+        <input type="radio" id="lista" name="tipo_visualizacion" value="lista">
+        <label for="lista">Lista</label>
+    </div>
+
+    <!-- Contenedor para mostrar gráfico o lista según la opción seleccionada -->
+    <div class="w3-container">
+        <h2>Datos Estadísticos</h2>
+
+        <!-- Mostrar los datos recibidos -->
+        <p>Total de jugadores: {{total_jugadores}}</p>
+        <p>Total de partidas: {{total_partidas}}</p>
+        <p>Total de preguntas: {{total_preguntas}}</p>
+         {{#grafico}}
+            <!-- Aquí se muestra el gráfico generado por JPGraph -->
+            <img src="data:image/png;base64,{{grafico}}" alt="Gráfico de {{titulo}}">
+        {{/grafico}}
+        {{#lista}}
+            <!-- Aquí se muestra la lista de datos -->
+            <ul>
+                {{#datos}}
+                    <li>{{nombre}}: {{valor}}</li>
+                {{/datos}}
+            </ul>
+        {{/lista}}  
+        
+        
+    </div>
+</div>
+
+</body>
+</html>
