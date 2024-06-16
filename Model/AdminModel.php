@@ -12,12 +12,18 @@ class AdminModel
 
     public function totalJugadores(){
         $query = "SELECT COUNT(*) AS total_jugadores FROM jugador";
-        return $this->database->execute($query);
+       $result =$this->database->execute($query);
+        $row = $result->fetch_assoc();
+        return $row['total_jugadores'];
+
     }
 
     public function totalPartidas(){
         $query = "SELECT COUNT(*) AS total_partidas FROM partida";
-        return $this->database->execute($query);
+        $result =$this->database->execute($query);
+        $row = $result->fetch_assoc();
+        return $row['total_partidas'];
+
     }
 
     public function totalPreguntas(){
