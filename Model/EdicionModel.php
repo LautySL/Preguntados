@@ -31,11 +31,10 @@ public function getPreguntaById($id)
 
 public function getPreguntasReportadas()
     {
-    $query = "SELECT rp.id AS reporte_id, rp.fecha_reporte, p.pregunta, r.respuesta
-              FROM reportes_preguntas rp
-              JOIN pregunta p ON rp.pregunta_id = p.id
-              JOIN respuesta r ON p.id = r.pregunta
-              ORDER BY rp.fecha_reporte DESC";
+    $query = "SELECT p.id, p.pregunta, p.categoría, r.fecha_reporte, u.nombre_de_usuario as reportado_por
+                  FROM pregunta p
+                  INNER JOIN reportes_preguntas r ON p.id = r.pregunta_id
+                  INNER JOIN usuario u ON r.usuario_id = u.id";
 
     $result = $this->database->execute($query);
     $preguntas = [];

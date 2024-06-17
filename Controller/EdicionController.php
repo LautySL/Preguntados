@@ -49,12 +49,14 @@ class EdicionController
         $data = [];
     
         foreach ($preguntasReportadas as $reporte) {
-            
+
+            $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($reporte['id']);
+
             $data['preguntas_reportadas'][] = [
-                'id' => $reporte['reporte_id'],
+                'id' => $reporte['id'],
                 'fecha' => $reporte['fecha_reporte'],
                 'pregunta' => $reporte['pregunta'],
-                'respuesta' => $reporte['respuesta']
+                'respuesta' => $respuesta
             ];
         }
     
