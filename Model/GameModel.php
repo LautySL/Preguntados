@@ -68,8 +68,7 @@ class GameModel
 
             $idUsuario = intval($idUsuario);
 
-
-            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador) VALUES (0, $idUsuario)";
+            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida) VALUES (0, $idUsuario, CURRENT_DATE)";
             $this->database->execute($queryInsertPartida);
 
 
@@ -101,11 +100,6 @@ class GameModel
 
         }
     }
-
-
-
-
-
 
     private function esRespuestaCorrecta($preguntaId, $respuestaId)
     {

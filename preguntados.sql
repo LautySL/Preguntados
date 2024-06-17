@@ -14,7 +14,8 @@ CREATE TABLE usuario(
     cuenta_verificada boolean,
     hash_activacion varchar(500),
     latitud decimal(10, 8),
-    longitud decimal(11, 8)
+    longitud decimal(11, 8),
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -43,7 +44,8 @@ CREATE TABLE pregunta(
     veces_que_salio INT DEFAULT 0,
     veces_correcta INT DEFAULT 0,
     dificultad DECIMAL(5,2) DEFAULT 0.00,
-    ultima_vez_que_salio DATE
+    ultima_vez_que_salio DATE,
+    fecha_creacion_pregunta TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -59,7 +61,8 @@ CREATE TABLE respuesta(
 CREATE TABLE partida (
 	id int auto_increment primary key,
 	puntaje int,
-	jugador int references jugador(id)
+	jugador int references jugador(id),
+    fecha_creacion_partida TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE partida_pregunta (

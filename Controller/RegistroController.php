@@ -32,6 +32,7 @@ class RegistroController
             $nombre_de_usuario = $_POST['nombre_de_usuario'] ?? '';
             $latitud = $_POST['latitud'] ?? '';
             $longitud = $_POST['longitud'] ?? '';
+            $fecha_creacion = 'CURRENTDATE';
 
             if (isset($_FILES['foto_de_perfil'])) {
                 $archivo_nombre = $_FILES['foto_de_perfil']['name'];
@@ -53,7 +54,7 @@ class RegistroController
             }
             $hash_activacion = md5(uniqid(rand(), true));
             $this->model->enviarCorreoActivacion($mail, $nombre, $hash_activacion);
-            $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud);
+            $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud, $fecha_creacion);
         }
 
         header('Location: /home/get');

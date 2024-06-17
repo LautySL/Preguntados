@@ -1,36 +1,103 @@
 
-
 <body>
 <div class="container w3-center">
-    <h2 class="encabezado w3-pink w3-center w3-padding">Preguntas Reportadas</h2><br>
+
+    <h2 class="encabezado w3-pink w3-center w3-padding"><a href="/home/get" class="w3-left"><</a>Preguntas:</h2><br>
+    
     <table class="w3-table-all">
         <thead>
         <tr class="w3-pink">
             <th>ID</th>
-            <th>Usuario</th>
             <th>Fecha</th>
-            <th>Respuestas</th>
+            <th>Pregunta</th>
+            <th>Respuesta
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
-        {{#reportedQuestions}}
+        {{#total_preguntas}}
         <tr>
             <td>{{id}}</td>
-            <td>{{usuario}}</td>
             <td>{{fecha}}</td>
             <td>{{pregunta}}</td>
             <td>
                 <ul>
-                    {{#respuestas}}
-                    <li>{{.}}</li>
-                    {{/respuestas}}
+                    <li>{{respuesta}}</li>
+                </ul>
+            </td>
+            <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-pink" onclick="abrirPopup('{{id}}', '{{pregunta}}', '{{respuesta}}')">Modificar</button></td>
+
+            <td><a href="/edicion/eliminarPregunta?id={{id}}"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
+        </tr>
+        {{/total_preguntas}}
+        {{#preguntas_reportadas}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{fecha}}</td>
+            <td>{{pregunta}}</td>
+            <td>
+                <ul>
+                    <li>{{respuesta}}</li>
                 </ul>
             </td>
         </tr>
-        {{/reportedQuestions}}
+        {{/preguntas_reportadas}}
+        {{#preguntas_sugeridas}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{fecha}}</td>
+            <td>{{pregunta}}</td>
+            <td>
+                <ul>
+                    <li>{{respuesta}}</li>
+                </ul>
+            </td>
+        </tr>
+        {{/preguntas_sugeridas}}
         </tbody>
     </table>
+</div><br><br>
+
+<!-- Popup para modificar pregunta y respuesta -->
+<div id="popupModificar" class="w3-modal">
+    <div class="w3-modal-content w3-animate-zoom">
+        <div class="w3-container w3-padding">
+            <span onclick="cerrarPopup()" class="w3-button w3-display-topright">&times;</span>
+            <h2 class="w3-center">Modificar Pregunta</h2>
+            <form action="/edicion/modificarPregunta" method="POST" class="w3-container">
+                <input type="hidden" name="id" id="idPregunta">
+                <label for="modificarPregunta">Pregunta:</label>
+                <input type="text" id="modificarPregunta" name="modificarPregunta" class="w3-input w3-border" required>
+                <label for="modificarRespuesta">Respuesta:</label>
+                <input type="text" id="modificarRespuesta" name="modificarRespuesta" class="w3-input w3-border" required>
+                <button type="submit" class="w3-button w3-block w3-pink w3-margin-top">Actualizar</button>
+            </form>
+        </div>
+    </div>
 </div>
 
-<a href="/home/get"><button type="button" class="w3-button w3-round-xxlarge w3-dark-gray">Volver</button></a>
+<script>
+function abrirPopup(id, pregunta, respuesta) {
+    var popup = document.getElementById("popupModificar");
+    var idInput = document.getElementById("idPregunta");
+    var preguntaInput = document.getElementById("modificarPregunta");
+    var respuestaInput = document.getElementById("modificarRespuesta");
+
+    // Asignar valores a los campos del formulario
+    idInput.value = id;
+    preguntaInput.value = pregunta;
+    respuestaInput.value = respuesta;
+
+    // Mostrar el popup
+    popup.style.display = "block";
+}
+
+function cerrarPopup() {
+    var popup = document.getElementById("popupModificar");
+    popup.style.display = "none";
+}
+</script>
+
+
 </body>

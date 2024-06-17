@@ -37,7 +37,7 @@ class HomeController
             $templateData=[
                 'puntuacion'=>$puntaje,
                 'usuario'=> $_SESSION['usuario'] ?? null,
-                 'tipoCuenta'=>$_SESSION["tipo_cuenta"]?? null,
+                'tipoCuenta'=>$_SESSION["tipo_cuenta"]?? null,
                 'isJugador' =>$tipo['esJugador'],
                 'isEditor' =>$tipo['esEditor'],
                 'isAdministrador'=>$tipo['esAdministrador']

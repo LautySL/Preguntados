@@ -131,33 +131,48 @@ class AdminController
         $img_data = ob_get_clean();
 
         // Renderizar la vista Mustache con los datos del gráfico
-        $data['grafico'] = base64_encode($img_data); // Convertir imagen a base64 para mostrar en la vista
-        $this->presenter->render('view/presentarDatos.mustache', $data);
+        $grafico = base64_encode($img_data);
+
+    // Preparar datos para la plantilla Mustache
+    return [
+        'grafico' => $grafico,
+        'titulo' => 'Ejemplo de Gráfico'
+    ];
     }
 
-    //     // Datos para el gráfico
-    //     $valores = [];
-    //     $categorias = [];
+    public function tipoDeVisualizacion()
+    {
+        // Obtener los datos según el filtro seleccionado
+        $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'dia'; // Valor por defecto
+    
+        $datos = [
+            'filtro' => $filtro,
+            'total_jugadores' => $this->model->totalJugadores(),
+            'total_partidas' => $this->model->totalPartidas(),
+            'total_preguntas' => $this->model->totalPreguntas(),
+            'total_preguntas_creadas' => $this->model->totalPreguntasCreadas(),
+            'usuarios_nuevos' => $this->model->usuariosNuevos(),
+            'total_correctas' => $this->model->totalCorrectas(),
+            'total_usuarios_por_pais' => $this->model->totalUsuariosPorPais(),
+            'total_usuarios_por_sexo' => $this->model->totalUsuariosPorSexo(),
+            'total_usuarios_por_rango' => $this->model->totalUsuariosPorRango()
+        ];
+    
+        // Generar gráfico usando JPGraph
+        $graficoData = $this->generarGraficoJPGraph($datos);
+        $datos['grafico'] = $graficoData['grafico'];
+        $datos['titulo'] = 'Ejemplo de Gráfico'; // Puedes personalizar el título según sea necesario
+    
+        // Preparar datos para la lista
+        $datos['lista'] = [
+            ['nombre' => 'Ejemplo1', 'valor' => 'Valor1'],
+            ['nombre' => 'Ejemplo2', 'valor' => 'Valor2'],
+            // Agregar más datos según sea necesario
+        ];
+    
+        // Renderizar la vista Mustache con los datos
+        $this->presenter->render('view/presentarDatos.mustache', $datos);
+    }
 
-    //     foreach ($datos as $dato) {
-    //         $valores[] = $dato['valor'];
-    //         $categorias[] = $dato['nombre'];
-    //     }
-
-    //     // Crear el gráfico
-    //     $graph = new Graph(800, 600);
-    //     $graph->SetScale('textlin');
-    //     $graph->title->Set('Gráfico de Ejemplo');
-    //     $graph->SetBox(false);
-
-    //     // Crear la barra de datos
-    //     $barplot = new BarPlot($valores);
-    //     $barplot->SetFillColor('lightblue');
-    //     $barplot->value->Show();
-
-    //     // Añadir la barra al gráfico
-    //     $graph->Add($barplot);
-    //     $graph->Stroke();
-    // }
     
 }
