@@ -148,19 +148,6 @@ class EdicionController
             echo "No se ha proporcionado el ID de la pregunta o el tipo.";
         }
     }
-
-    public function eliminarPreguntaReportada($id_reporte)
-    {
-        $queryPregunta = "DELETE FROM pregunta WHERE id = (
-        SELECT pregunta_id FROM reportes_preguntas WHERE id = '$id_reporte'
-    )";
-        $this->database->execute($queryPregunta);
-
-        $queryReporte = "DELETE FROM reportes_preguntas WHERE id = '$id_reporte'";
-        $this->database->execute($queryReporte);
-
-        return true;
-    }
     
     public function modificarPregunta()
     {

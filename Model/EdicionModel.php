@@ -22,23 +22,27 @@ class EdicionModel
     return $preguntas;
     }
 
-    public function getPreguntaById($id)
+public function getPreguntaById($id)
     {
-        $query = "SELECT * FROM pregunta WHERE id = $id";
-        $result = $this->database->execute($query);
+    $query = "SELECT * FROM pregunta WHERE id = $id";
+    $result = $this->database->execute($query);
+    return $result;
+    }
 
-        if ($result) {
-            return $result->fetch_assoc();
-        }
-        return null;
+    public function getCategoriaByReporte($pregunta_id)
+    {
+    $query = "SELECT * FROM reportes_preguntas WHERE pregunta_id = $pregunta_id";
+    $result = $this->database->execute($query);
+    return $result;
     }
 
 public function getPreguntasReportadas()
     {
-    $query = "SELECT p.id, p.pregunta, p.categoría, r.fecha_reporte, u.nombre_de_usuario as reportado_por
-                  FROM pregunta p
-                  INNER JOIN reportes_preguntas r ON p.id = r.pregunta_id
-                  INNER JOIN usuario u ON r.usuario_id = u.id";
+    $query = "SELECT rp.id AS reporte_id, rp.fecha_reporte, p.pregunta, r.respuesta
+              FROM reportes_preguntas rp
+              JOIN pregunta p ON rp.pregunta_id = p.id
+              JOIN respuesta r ON p.id = r.pregunta
+              ORDER BY rp.fecha_reporte DESC";
 
     $result = $this->database->execute($query);
     $preguntas = [];
@@ -64,14 +68,10 @@ public function getPreguntasSugeridas()
 
     public function getRespuestaCorrectaByPreguntaId($preguntaId)
     {
-        $query = "SELECT respuesta FROM respuesta WHERE pregunta = $preguntaId AND es_la_correcta = 1";
-        $result = $this->database->execute($query);
-
-        if ($result) {
-            $row = $result->fetch_assoc();
-            return $row['respuesta'];
-        }
-        return null;
+    $query = "SELECT respuesta FROM respuesta WHERE pregunta = $preguntaId AND es_la_correcta = TRUE LIMIT 1";
+    $result = $this->database->execute($query);
+    $row = $result->fetch_assoc();
+    return $row['respuesta'] ?? null;
     }
 
     public function modificarPregunta($id, $nuevaPregunta, $nuevaRespuesta)
