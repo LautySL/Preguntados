@@ -42,22 +42,91 @@ class EdicionController
         $this->Presenter->render('view/vistaEditor.mustache', $data);
     }
 
+    public function verPreguntasReportadas()
+    {
+        $preguntasReportadas = $this->model->getPreguntasReportadas();
+    
+        $data = [];
+    
+        foreach ($preguntasReportadas as $reporte) {
+            
+            $data['preguntas_reportadas'][] = [
+                'id' => $reporte['reporte_id'],
+                'fecha' => $reporte['fecha_reporte'],
+                'pregunta' => $reporte['pregunta'],
+                'respuesta' => $reporte['respuesta']
+            ];
+        }
+    
+        $this->Presenter->render('view/vistaEditor.mustache', $data);
+    }
+
+    public function verPreguntasSugerida()
+    {
+        $preguntas = $this->model->getPreguntasSugeridas();
+    
+        $data = [];
+    
+        foreach ($preguntas as $pregunta) {
+            
+            $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($pregunta['id']);
+    
+            $data['total_preguntas'][] = [
+                'id' => $pregunta['id'],
+                'fecha' => $pregunta['fecha_creacion_pregunta'],
+                'pregunta' => $pregunta['pregunta'],
+                'respuesta' => $respuesta
+            ];
+        }
+    
+        // Renderizar la vista Mustache con los datos estructurados
+        $this->Presenter->render('view/vistaEditor.mustache', $data);
+    }
+
     public function eliminarPregunta()
     {
-        if (isset($_GET['id'])) {
+        if (isset($_GET['id']) && isset($_GET['tipo'])) {
             $id = $_GET['id'];
-            $eliminar = $this->model->eliminarPregunta($id);
+            $tipo = $_GET['tipo'];
     
-            if ($eliminar) {
-                header('Location: /edicion/verPreguntas');
-                exit;
-            } else {
-                echo "Error al intentar eliminar la pregunta.";
+            switch ($tipo) {
+                case 'normal':
+                    $eliminar = $this->model->eliminarPregunta($id);
+                    if ($eliminar) {
+                        header('Location: /edicion/verPreguntas');
+                        exit;
+                    } else {
+                        echo "Error al intentar eliminar la pregunta.";
+                    }
+                    break;
+                case 'reportada':
+                    $eliminar = $this->model->eliminarPreguntaReportada($id);
+                    if ($eliminar) {
+                        header('Location: /edicion/verPreguntasReportadas');
+                        exit;
+                    } else {
+                        echo "Error al intentar eliminar la pregunta reportada.";
+                    }
+                    break;
+                case 'sugeridas':
+                    $eliminar = $this->model->eliminarPreguntaSugeridas($id);
+                    if ($eliminar) {
+                        header('Location: /edicion/verPreguntasSugeridas');
+                        exit;
+                    } else {
+                        echo "Error al intentar eliminar la pregunta sugerida.";
+                    }
+                    break;
+                default:
+                    echo "Tipo de pregunta no válido.";
+                    return;
             }
+    
         } else {
-            echo "No se ha proporcionado el ID de la pregunta a eliminar.";
+            echo "No se ha proporcionado el ID de la pregunta o el tipo.";
         }
     }
+    
     
     public function modificarPregunta()
     {
@@ -76,6 +145,27 @@ class EdicionController
             }
         } else {
             echo "Método no permitido para modificar la pregunta.";
+        }
+    }
+    public function sugerirPregunta()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            $pregunta = $_POST['sugerirPregunta'];
+            $respuesta = $_POST['sugerirRespuesta'];
+            $categoria = $_POST['sugerirCategoria'];
+    
+            $sugerido = $this->model->sugerirPregunta($id, $pregunta, $respuesta, $categoria);
+    
+            if ($sugerido) {
+                echo "Gracias por tua aporte, consideraremos tu sugerencia.";
+                header('Location: /home/get');
+                exit;
+            } else {
+                echo "Error al intentar sugerir la pregunta.";
+            }
+        } else {
+            echo "Método no permitido para sugerir la pregunta.";
         }
     }
     

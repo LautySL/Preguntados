@@ -27,8 +27,7 @@
                 </ul>
             </td>
             <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-pink" onclick="abrirPopup('{{id}}', '{{pregunta}}', '{{respuesta}}')">Modificar</button></td>
-
-            <td><a href="/edicion/eliminarPregunta?id={{id}}"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
+            <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=normal"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
         </tr>
         {{/total_preguntas}}
         {{#preguntas_reportadas}}
@@ -41,6 +40,8 @@
                     <li>{{respuesta}}</li>
                 </ul>
             </td>
+            <td><a href="/edicion/agregarPregunta?id={{id}}&tipo=reportada"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Agregar</button></a></td>
+            <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=reportada"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
         </tr>
         {{/preguntas_reportadas}}
         {{#preguntas_sugeridas}}
@@ -53,6 +54,8 @@
                     <li>{{respuesta}}</li>
                 </ul>
             </td>
+            <td><a href="/edicion/agregarPregunta?id={{id}}&tipo=sugeridas"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Agregar</button></a></td>
+            <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=sugeridas"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
         </tr>
         {{/preguntas_sugeridas}}
         </tbody>

@@ -45,8 +45,10 @@ CREATE TABLE pregunta(
     veces_correcta INT DEFAULT 0,
     dificultad DECIMAL(5,2) DEFAULT 0.00,
     ultima_vez_que_salio DATE,
-    fecha_creacion_pregunta TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    fecha_creacion_pregunta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sugerida BOOLEAN DEFAULT 0
 );
+
 
 
 CREATE TABLE respuesta(

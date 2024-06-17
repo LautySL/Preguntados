@@ -1,8 +1,7 @@
 <div class="container w3-center">
     {{#usuario}}
     <h2 class="encabezado w3-pink w3-center w3-padding">Bienvenido, {{usuario}}!</h2><br>
-    <span class="w3-left">Tu puntuación más alta es :</span>
-    <span class="w3-left">{{puntuacion}}</span>
+    <h3 class="w3-center">Tu puntuación más alta es : {{puntuacion}}</h3>
     {{/usuario}}
     {{^usuario}}
     <form class="login-form" action="/login/get" method="post">
@@ -26,12 +25,13 @@
     {{#isJugador}}
     <a href="/juego/iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
     <a href="/ranking/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
+    <button type="button" class="boton-home w3-btn w3-round-xxlarge w3-pink" onclick="abrirPopup('{{id}}', '{{pregunta}}', '{{respuesta}}', '{{categoria}}')">Sugerir Pregunta</button><br><br>
     {{/isJugador}}
 
     {{#isEditor}}
     <a href="/edicion/verPreguntas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Modificar Preguntas</a><br><br>
-    <a href="/edicion/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Reportadas</a><br><br>
-    <a href="/edicion/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Sugeridas</a><br><br>
+    <a href="/edicion/verPreguntasReportadas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Reportadas</a><br><br>
+    <a href="/edicion/verPreguntasSugeridas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Sugeridas</a><br><br>
     {{/isEditor}}
 
     {{#isAdministrador}}
@@ -39,3 +39,54 @@
     <a href="/admin/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Estadisticas del Juego</a><br><br>
     {{/isAdministrador}}
 </main>
+
+<!-- Popup para sugerir pregunta y respuesta -->
+<div id="popupSugerir" class="w3-modal">
+    <div class="w3-modal-content w3-animate-zoom">
+        <div class="w3-container w3-padding">
+            <span onclick="cerrarPopup()" class="w3-button w3-display-topright">&times;</span>
+            <h2 class="w3-center">Sugerir Pregunta</h2>
+            <form action="/edicion/sugerirPregunta" method="POST" class="w3-container">
+                <input type="hidden" name="id" id="idPregunta">
+                <label for="sugerirPregunta">Pregunta:</label>
+                <input type="text" id="sugerirPregunta" name="sugerirPregunta" class="w3-input w3-border" required>
+                <label for="sugerirRespuesta">Respuesta:</label>
+                <input type="text" id="sugerirRespuesta" name="sugerirRespuesta" class="w3-input w3-border" required><br><br>
+                <label for="sugerirCategoria">Categoria:</label>
+                <select id="sugerirCategoria" name="sugerirCategoria" class="w3-round-xxlarge" required>
+                    <option value="Geografía">Geografía</option>
+                    <option value="Ciencia">Ciencia</option>
+                    <option value="Historia">Historia</option>
+                    <option value="Deporte">Deporte</option>
+                    <option value="Arte">Arte</option>
+                    <option value="Entretenimiento">Entretenimiento</option>
+                </select><br><br>
+                <button type="submit" class="w3-button w3-block w3-pink w3-margin-top">Sugerir</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function abrirPopup(id, pregunta, respuesta, categoria) {
+    var popup = document.getElementById("popupSugerir");
+    var idInput = document.getElementById("idPregunta");
+    var preguntaInput = document.getElementById("sugerirPregunta");
+    var respuestaInput = document.getElementById("sugerirRespuesta");
+    var categoriaInput = document.getElementById("sugerirCategoria");
+
+    // Asignar valores a los campos del formulario
+    idInput.value = id;
+    preguntaInput.value = pregunta;
+    respuestaInput.value = respuesta;
+    categoriaInput.value = categoria;
+
+    // Mostrar el popup
+    popup.style.display = "block";
+}
+
+function cerrarPopup() {
+    var popup = document.getElementById("popupSugerir");
+    popup.style.display = "none";
+}
+</script>

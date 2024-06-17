@@ -10,18 +10,54 @@ class EdicionModel
     }
 
     public function getPreguntas()
-{
+    {
     $query = "SELECT * FROM pregunta";
     $result = $this->database->execute($query);
     $preguntas = [];
 
     while ($row = $result->fetch_assoc()) {
-        // Agregar cada fila (pregunta) al array de preguntas
         $preguntas[] = $row;
     }
 
     return $preguntas;
-}
+    }
+
+public function getPreguntaById($id)
+    {
+    $query = "SELECT * FROM pregunta WHERE id = $id";
+    $result = $this->database->execute($query);
+    return $result;
+    }
+
+public function getPreguntasReportadas()
+    {
+    $query = "SELECT rp.id AS reporte_id, rp.fecha_reporte, p.pregunta, r.respuesta
+              FROM reportes_preguntas rp
+              JOIN pregunta p ON rp.pregunta_id = p.id
+              JOIN respuesta r ON p.id = r.pregunta
+              ORDER BY rp.fecha_reporte DESC";
+
+    $result = $this->database->execute($query);
+    $preguntas = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $preguntas[] = $row;
+    }
+
+    return $preguntas;
+    }
+public function getPreguntasSugeridas()
+{
+    $query = "SELECT * FROM pregunta WHERE sugerida = 1";
+    $result = $this->database->execute($query);
+    $preguntas = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $preguntas[] = $row;
+    }
+
+    return $preguntas;
+    }
 
     public function getRespuestaCorrectaByPreguntaId($preguntaId)
     {
@@ -42,6 +78,20 @@ class EdicionModel
         return true;
     }
 
+    
+    public function sugerirPregunta($id, $pregunta, $respuesta, $categoria)
+    {
+        $queryPregunta = "INSERT INTO `pregunta`(`id`, `pregunta`, `categoría`, `veces_que_salio`, `veces_correcta`, `dificultad`, `ultima_vez_que_salio`, `fecha_creacion_pregunta`, `sugerida`) 
+                                        VALUES ('$id','$pregunta','$categoria','0','0','0.00',NULL, CURRENT_TIMESTAMP, TRUE)";
+        $this->database->execute($queryPregunta);
+    
+        $queryRespuesta = "INSERT INTO `respuesta`(`id`, `respuesta`, `es_la_correcta`, `pregunta`) 
+                                        VALUES ('','$respuesta',TRUE,'$id')";
+        $this->database->execute($queryRespuesta);
+    
+        return true;
+    }
+
 
     public function eliminarPregunta($id_a_eliminar)
     {
@@ -50,15 +100,25 @@ class EdicionModel
         return true;
     }
 
-
-    public function getPreguntasReportadas()
+    public function eliminarPreguntaReportada($id_reporte)
     {
+        $queryReporte = "DELETE FROM reportes_preguntas WHERE id = '$id_reporte'"; 
+        $this->database->execute($queryReporte);
 
+        $queryPregunta = "DELETE FROM pregunta WHERE id = (
+            SELECT pregunta_id FROM reportes_preguntas WHERE id = '$id_reporte'
+        )";
+        $this->database->execute($queryPregunta);
+    
+        return true;
     }
 
-    public function getPreguntasSugeridas()
+
+    public function eliminarPreguntaSugerida($id_a_eliminar)
     {
-  
+        $query = "DELETE FROM pregunta WHERE id = '$id_a_eliminar'"; 
+        $this->database->execute($query);
+        return true;
     }
 
 }
