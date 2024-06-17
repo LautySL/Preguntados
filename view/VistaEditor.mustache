@@ -31,19 +31,34 @@
         </tr>
         {{/total_preguntas}}
         {{#preguntas_reportadas}}
-        <tr>
-            <td>{{id}}</td>
-            <td>{{fecha}}</td>
-            <td>{{pregunta}}</td>
-            <td>
-                <ul>
-                    <li>{{respuesta}}</li>
-                </ul>
-            </td>
-            <td><a href="/edicion/agregarPregunta?id={{id}}&tipo=reportada"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Agregar</button></a></td>
-            <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=reportada"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
-        </tr>
+            <tr>
+                <td>{{id}}</td>
+                <td>{{fecha}}</td>
+                <td>{{pregunta}}</td>
+                <td>
+                    <ul>
+                        <li>{{respuesta}}</li>
+                    </ul>
+                </td>
+                <td>
+                    <a href="/edicion/verPreguntas?id={{id}}">
+                    <button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Modificar</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="/edicion/eliminarPregunta?id={{id}}&tipo=reportada">
+                    <button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button>
+                    </a>
+                </td>
+            </tr>
         {{/preguntas_reportadas}}
+        {{#modificar_pregunta}}
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    abrirPopup('{{modificar_pregunta.id}}', '{{modificar_pregunta.pregunta}}', '{{modificar_pregunta.respuesta}}');
+                });
+            </script>
+        {{/modificar_pregunta}}
         {{#preguntas_sugeridas}}
         <tr>
             <td>{{id}}</td>

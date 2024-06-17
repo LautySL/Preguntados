@@ -22,11 +22,15 @@ class EdicionModel
     return $preguntas;
     }
 
-public function getPreguntaById($id)
+    public function getPreguntaById($id)
     {
-    $query = "SELECT * FROM pregunta WHERE id = $id";
-    $result = $this->database->execute($query);
-    return $result;
+        $query = "SELECT * FROM pregunta WHERE id = $id";
+        $result = $this->database->execute($query);
+
+        if ($result) {
+            return $result->fetch_assoc();
+        }
+        return null;
     }
 
 public function getPreguntasReportadas()
@@ -60,10 +64,14 @@ public function getPreguntasSugeridas()
 
     public function getRespuestaCorrectaByPreguntaId($preguntaId)
     {
-    $query = "SELECT respuesta FROM respuesta WHERE pregunta = $preguntaId AND es_la_correcta = TRUE LIMIT 1";
-    $result = $this->database->execute($query);
-    $row = $result->fetch_assoc();
-    return $row['respuesta'] ?? null;
+        $query = "SELECT respuesta FROM respuesta WHERE pregunta = $preguntaId AND es_la_correcta = 1";
+        $result = $this->database->execute($query);
+
+        if ($result) {
+            $row = $result->fetch_assoc();
+            return $row['respuesta'];
+        }
+        return null;
     }
 
     public function modificarPregunta($id, $nuevaPregunta, $nuevaRespuesta)

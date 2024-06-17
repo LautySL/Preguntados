@@ -23,13 +23,12 @@ class EdicionController
     public function verPreguntas()
     {
         $preguntas = $this->model->getPreguntas();
-    
+
         $data = [];
-    
+
         foreach ($preguntas as $pregunta) {
-            
             $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($pregunta['id']);
-    
+
             $data['total_preguntas'][] = [
                 'id' => $pregunta['id'],
                 'fecha' => $pregunta['fecha_creacion_pregunta'],
@@ -37,8 +36,29 @@ class EdicionController
                 'respuesta' => $respuesta
             ];
         }
-    
-        // Renderizar la vista Mustache con los datos estructurados
+
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $pregunta = $this->model->getPreguntaById($id);
+
+            if ($pregunta) {
+                $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($id);
+
+                $data['modificar_pregunta'] = [
+                    'id' => $pregunta['id'],
+                    'pregunta' => $pregunta['pregunta'],
+                    'respuesta' => $respuesta
+                ];
+            } else {
+                // Manejar el caso donde no se encuentra la pregunta
+                $data['modificar_pregunta'] = [
+                    'id' => $id,
+                    'pregunta' => 'Pregunta no encontrada',
+                    'respuesta' => 'Respuesta no encontrada'
+                ];
+            }
+        }
+
         $this->Presenter->render('view/vistaEditor.mustache', $data);
     }
 
@@ -128,7 +148,19 @@ class EdicionController
             echo "No se ha proporcionado el ID de la pregunta o el tipo.";
         }
     }
-    
+
+    public function eliminarPreguntaReportada($id_reporte)
+    {
+        $queryPregunta = "DELETE FROM pregunta WHERE id = (
+        SELECT pregunta_id FROM reportes_preguntas WHERE id = '$id_reporte'
+    )";
+        $this->database->execute($queryPregunta);
+
+        $queryReporte = "DELETE FROM reportes_preguntas WHERE id = '$id_reporte'";
+        $this->database->execute($queryReporte);
+
+        return true;
+    }
     
     public function modificarPregunta()
     {
