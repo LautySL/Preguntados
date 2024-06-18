@@ -13,6 +13,9 @@ class UserModel
 
     public function registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud, $fecha_creacion)
     {
+        if($foto_de_perfil == ""){
+            $foto_de_perfil = "fotoGenerica.png";
+        }
 
         $sql = "INSERT INTO usuario (nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion, latitud, longitud, fecha_creacion)
                    VALUES ('$nombre_de_usuario', '$contrasena', '$nombre', '$apellido', '$ano_de_nacimiento', '$sexo', '$mail', '$foto_de_perfil', '$pais', '$ciudad', FALSE, '$hash_activacion', '$latitud', '$longitud', '$fecha_creacion')";
@@ -26,7 +29,11 @@ class UserModel
         $this->database->execute($sqlJugador);
     }
 
-    public function actualizarUsuario($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $latitud, $longitud){
+    public function actualizarUsuario($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $latitud, $longitud)
+    {
+        if($foto_de_perfil == ""){
+            $foto_de_perfil = "fotoGenerica.png";
+        }
         $sql = "UPDATE usuario 
                 SET nombre_de_usuario = '$nombre_de_usuario',
                 contrasena = '$contrasena',
@@ -42,7 +49,7 @@ class UserModel
                 longitud = '$longitud'
                 WHERE nombre_de_usuario = '$nombre_de_usuario'";
 
-$this->database->execute($sql);
+        $this->database->execute($sql);
 
     }
 
@@ -60,7 +67,7 @@ $this->database->execute($sql);
             $_SESSION['id_usuario'] = $usuario['id'];
             $tipoUsuario = $this->obtenerTipoUsuario($usuario['id']);
 
-            $_SESSION['tipo_cuenta'] =[
+            $_SESSION['tipo_cuenta'] = [
                 "esJugador" => ($tipoUsuario == 'esJugador'),
                 "esEditor" => ($tipoUsuario == 'esEditor'),
                 "esAdministrador" => ($tipoUsuario == 'esAdministrador'),
@@ -190,9 +197,10 @@ $this->database->execute($sql);
     }
 
 
-    private function obtenerTipoUsuario($idUsuario) {
-    
-    $query = "SELECT 
+    private function obtenerTipoUsuario($idUsuario)
+    {
+
+        $query = "SELECT 
                 CASE
                     WHEN j.id IS NOT NULL THEN 'esJugador'
                     WHEN e.id IS NOT NULL THEN 'esEditor'
@@ -205,13 +213,13 @@ $this->database->execute($sql);
             LEFT JOIN administrador a ON u.id = a.id
             WHERE u.id = $idUsuario";
 
-    $result = $this->database->execute($query);
-    // $result = mysqli_query($conexion, $query); // Suponiendo que estás utilizando MySQLi
+        $result = $this->database->execute($query);
+        // $result = mysqli_query($conexion, $query); // Suponiendo que estás utilizando MySQLi
 
-    $tipoUsuario = mysqli_fetch_assoc($result)['tipoUsuario'];
+        $tipoUsuario = mysqli_fetch_assoc($result)['tipoUsuario'];
 
-    return $tipoUsuario;
-    
+        return $tipoUsuario;
+
     }
 
 

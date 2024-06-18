@@ -48,7 +48,7 @@
         <input type="text" id="nombre_de_usuario" name="nombre_de_usuario" class="w3-round-xxlarge" value="{{nombre_de_usuario}}"><br><br>
 
         <label for="foto_de_perfil">Foto de perfil:</label>
-        <input type="file" id="foto_de_perfil" name="foto_de_perfil" class="w3-round-xxlarge"><br><br>
+        <input type="file" id="foto_de_perfil" name="foto_de_perfil" class="w3-round-xxlarge" value="{{foto_de_perfil}}"><br><br>
 
         <p>Foto de perfil actual: </p>
         <img src="/public/img/fotoPerfil/{{foto_de_perfil}}" class="foto-perfil w3-circle w3-border w3-margin"/><br><br>
@@ -67,6 +67,7 @@
 
     boton.addEventListener("click", () => {
         info.classList.add("no-se-ve");
+        boton.classList.add("no-se-ve");
         oculto.classList.remove("no-se-ve");
         oculto.classList.add("se-ve");
     });
