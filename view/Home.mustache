@@ -20,6 +20,7 @@
     {{/error}}
 </div>
 
+
 <main  class="cuerpo-home w3-center">
 
     {{#isJugador}}
@@ -66,6 +67,16 @@
         </div>
     </div>
 </div>
+{{#cuentaActivada}}
+<!-- Contenedor del popup y fondo oscuro -->
+<div id="popupBackground" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 500;"></div>
+<div id="mensajePopup" class="w3-round-xxlarge w3-pink" style="display: block; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
+    <h3 class="w3-center">Cuenta Activada</h3>
+    <p class="w3-center">{{mensajeCuentaActivada}}</p>
+    <button id="cerrarPopupCuenta" class="w3-button w3-round-xxlarge w3-light-gray">Cerrar</button>
+
+</div>
+{{/cuentaActivada}}
 
 <script>
 function abrirPopup(id, pregunta, respuesta, categoria) {
@@ -89,4 +100,26 @@ function cerrarPopup() {
     var popup = document.getElementById("popupSugerir");
     popup.style.display = "none";
 }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var popupBackground = document.getElementById('popupBackground');
+        var mensajePopup = document.getElementById('mensajePopup');
+        var cerrarPopup = document.getElementById('cerrarPopupCuenta');
+
+        // Verificar si hay un mensaje de cuenta activada para mostrar
+        var cuentaActivada = {{cuentaActivada}}; // Asegúrate de que cuentaActivada sea un valor booleano
+
+        if (cuentaActivada) {
+            popupBackground.style.display = 'block';
+            mensajePopup.style.display = 'block';
+
+            // Cerrar el popup al hacer clic en el botón Cerrar
+            cerrarPopup.addEventListener('click', function() {
+                popupBackground.style.display = 'none';
+                mensajePopup.style.display = 'none';
+            });
+        }
+    });
 </script>

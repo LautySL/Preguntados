@@ -32,6 +32,15 @@ class HomeController
             "error" => $error
         ];
 
+        if (isset($_SESSION['mensajeCuentaActivada']) && isset($_SESSION['cuentaActivada'])) {
+            $templateData['mensajeCuentaActivada'] = $_SESSION['mensajeCuentaActivada'];
+            $templateData['cuentaActivada'] = $_SESSION['cuentaActivada'];
+
+
+            unset($_SESSION['mensajeCuentaActivada']);
+            unset($_SESSION['cuentaActivada']);
+        }
+
         if ($usuario !== null) {
             $puntaje=$this->model->getMaxPuntaje($iduser);
             $templateData=[

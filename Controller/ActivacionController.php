@@ -13,8 +13,6 @@ class ActivacionController
     public function get()
     {
         $codigo = isset($_GET['codigo']) ? htmlspecialchars($_GET['codigo']) : '';
-
-
         $datos = array(
             'codigo' => $codigo
         );
@@ -24,19 +22,27 @@ class ActivacionController
 
     public function activar()
     {
+        try {
+            $codigo = $_GET['codigo'];
 
-        $codigo =$_GET['codigo'];
-        var_dump($codigo);
-        $verificado = $this->model->emailVerificado($codigo);
-        if ($verificado) {
-            // Redirigir al index
+            $verificado = $this->model->emailVerificado($codigo);
+
+            if ($verificado) {
+                // Redirigir al index si el código es válido
+                $_SESSION['mensajeCuentaActivada'] = "¡Tu cuenta ha sido activada correctamente!";
+                $_SESSION['cuentaActivada'] = true;
+                header("Location: /");
+                exit();
+            } else {
+                throw new Exception("Código de verificación no válido.");
+            }
+        } catch (Exception $e) {
+            // Capturar la excepción y mostrar el mensaje de error
+            $_SESSION['mensajeCuentaActivada'] = $e->getMessage();
+            $_SESSION['cuentaActivada'] = false;
             header("Location: /");
             exit();
-        } else {
-            // Mostrar error
-            echo "Error: Código de verificación no válido.";
         }
-
     }
 
 }

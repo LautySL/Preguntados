@@ -14,7 +14,18 @@ class RegistroController
 
     public function get()
     {
-        $this->presenter->render("view/register_form.mustache");
+        $mensaje = isset($_SESSION['mensaje']) ? $_SESSION['mensaje'] : null;
+        $exito = isset($_SESSION['exito']) ? $_SESSION['exito'] : null;
+
+        unset($_SESSION['mensaje']);
+        unset($_SESSION['exito']);
+        $data = [
+            'mensaje' => $mensaje,
+            'exito' => $exito
+        ];
+
+
+        $this->presenter->render("view/register_form.mustache", $data);
     }
 
     public function insertar()
@@ -25,8 +36,8 @@ class RegistroController
             $apellido = $_POST['apellido'] ?? '';
             $ano_de_nacimiento = $_POST['ano_de_nacimiento'] ?? 0;
             $sexo = $_POST['sexo'] ?? '';
-            $pais =  $_POST['pais'] ?? '';
-            $ciudad =  $_POST['ciudad'] ?? '';
+            $pais = $_POST['pais'] ?? '';
+            $ciudad = $_POST['ciudad'] ?? '';
             $mail = $_POST['mail'] ?? '';
             $contrasena = $_POST['contrasena'] ?? '';
             $nombre_de_usuario = $_POST['nombre_de_usuario'] ?? '';
@@ -52,12 +63,26 @@ class RegistroController
             if (!empty($foto_de_perfil)) {
                 move_uploaded_file($_FILES['foto_de_perfil']['tmp_name'], 'public/img/fotoPerfil/' . $archivo_nombre);
             }
+        }
+
+        try {
             $hash_activacion = md5(uniqid(rand(), true));
             $this->model->enviarCorreoActivacion($mail, $nombre, $hash_activacion);
             $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud, $fecha_creacion);
+
+            $_SESSION['mensaje'] = "Registro exitoso. Por favor, revisa tu correo para activar tu cuenta.";
+            $_SESSION['exito'] = true;
+        } catch (Exception $e) {
+            $_SESSION['mensaje'] = "Hubo un error en el registro. Por favor, intenta nuevamente.";
+            $_SESSION['exito'] = false;
         }
 
-        header('Location: /home/get');
+        header('Location: /registro');
         exit();
     }
+
+
+
+
+
 }
