@@ -1,8 +1,8 @@
 <h1 class="encabezado w3-pink w3-center w3-padding">Tu perfil</h1><br><br>
 
-<div class="infoNoForm w3-center">
+<div class="w3-center" id="infoNoForm">
  <img src="/public/img/fotoPerfil/{{foto_de_perfil}}" class="foto-perfil w3-circle w3-border w3-margin"/><br>
-<p>{{nombre_de_usuario}}</p>
+<h3>{{nombre_de_usuario}}</h3>
 <p>({{nombre}} {{apellido}} | {{sexo}})</p>
 <p>Año de nacimiento: {{ano_de_nacimiento}}</p>
 <p>Correo electrónico: {{mail}}</p>
@@ -11,8 +11,8 @@
 
 </div>
 
-<div class="popupForm"style="display: none;">
-    <form action="/registro/insertar" method="post" enctype="multipart/form-data">
+<div id="oculto" class="no-se-ve">
+    <form action="/registro/actualizar" method="post" enctype="multipart/form-data">
 
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" class="w3-round-xxlarge" value="{{nombre}}"><br><br>
@@ -24,13 +24,11 @@
         <input type="text" id="ano_de_nacimiento" name="ano_de_nacimiento" class="w3-round-xxlarge" value={{ano_de_nacimiento}}><br><br>
 
         <label for="sexo">Sexo:</label>
-        <input type="text" id="sexo" name="sexo" class="w3-round-xxlarge" value={{sexo}}><br><br>
-
-        {{! <select id="sexo" name="sexo">
-            <option value="Masculino">Masculino</option>
-            <option value="Femenino">Femenino</option>
-            <option value="Prefiero no cargarlo">Prefiero no cargarlo</option>
-        </select><br><br> }}
+         <select id="sexo" name="sexo" class="w3-round-xxlarge">
+                <option value="Masculino" {{#isMasculino}}selected{{/isMasculino}}>Masculino</option>
+                <option value="Femenino" {{#isFemenino}}selected{{/isFemenino}}>Femenino</option>
+                <option value="Prefiero no cargarlo" {{#isNoCargar}}selected{{/isNoCargar}}>Prefiero no cargarlo</option>
+            </select><br><br>
 
         <label for="pais">Pais:</label>
         <input type="text" id="pais" name="pais" class="w3-round-xxlarge" value="{{pais}}"><br><br>
@@ -59,3 +57,29 @@
     </form>
 </div>
 <a href="/home/get" class="w3-button w3-round-xxlarge w3-gray">Volver</a>
+<button id="aparecer" class="w3-button w3-round-xxlarge w3-gray">Modificar perfil</button>
+
+<script>
+    console.log("Archivo popUp.js cargado correctamente");
+    let boton = document.getElementById("aparecer");
+    let oculto = document.getElementById("oculto");
+    let info = document.getElementById("infoNoForm");
+
+    boton.addEventListener("click", () => {
+        info.classList.add("no-se-ve");
+        oculto.classList.remove("no-se-ve");
+        oculto.classList.add("se-ve");
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+            // Obtén el valor de sexo del perfil y preselecciona la opción correspondiente
+            var sexo = "{{sexo}}";
+            var selectSexo = document.getElementById('sexo');
+            for (var option, i = 0; option = selectSexo.options[i]; i++) {
+                if (option.value === sexo) {
+                    selectSexo.selectedIndex = i;
+                    break;
+                }
+            }
+        });
+</script>

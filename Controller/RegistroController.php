@@ -30,7 +30,6 @@ class RegistroController
 
     public function insertar()
     {
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = $_POST['nombre'] ?? '';
             $apellido = $_POST['apellido'] ?? '';
@@ -54,9 +53,6 @@ class RegistroController
 
                 $ruta_destino = $directorio_destino . $archivo_nombre;
                 move_uploaded_file($archivo_temporal, $ruta_destino);
-                //} else {
-                //Si no se proporciona una nueva imagen, conserva la imagen existente
-                //$ruta_destino = $directorio_destino . $_FILES['foto_de_perfil']['name'];
             }
 
 
@@ -81,8 +77,36 @@ class RegistroController
         exit();
     }
 
+    public function actualizar(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nombre = $_POST['nombre'] ?? '';
+            $apellido = $_POST['apellido'] ?? '';
+            $ano_de_nacimiento = $_POST['ano_de_nacimiento'] ?? 0;
+            $sexo = $_POST['sexo'] ?? '';
+            $pais = $_POST['pais'] ?? '';
+            $ciudad = $_POST['ciudad'] ?? '';
+            $mail = $_POST['mail'] ?? '';
+            $contrasena = $_POST['contrasena'] ?? '';
+            $nombre_de_usuario = $_POST['nombre_de_usuario'] ?? '';
+            $latitud = $_POST['latitud'] ?? '';
+            $longitud = $_POST['longitud'] ?? '';
 
+            if (isset($_FILES['foto_de_perfil'])) {
+                $archivo_nombre = $_FILES['foto_de_perfil']['name'];
+                $archivo_temporal = $_FILES['foto_de_perfil']['tmp_name'];
+                $directorio_destino = 'public/img/fotoPerfil/';
 
+                $ruta_destino = $directorio_destino . $archivo_nombre;
+                move_uploaded_file($archivo_temporal, $ruta_destino);
+            }
 
-
+            if (!empty($foto_de_perfil)) {
+                move_uploaded_file($_FILES['foto_de_perfil']['tmp_name'], 'public/img/fotoPerfil/' . $archivo_nombre);
+            }
+        }
+        
+        $this->model->actualizarUsuario($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $archivo_nombre, $pais, $ciudad, $latitud, $longitud);
+        header('Location: /verPerfilPropio/get');
+        exit();
+    }
 }

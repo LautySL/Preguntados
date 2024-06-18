@@ -63,10 +63,18 @@
     align-items: center;
 }
 
-.encabezado-perfil-ajeno{
+.encabezado-perfil-ajeno {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; 
+    gap: 10px;
+}
+
+.no-se-ve {
+    display: none;
+}
+
+.se-ve {
+    display: block;
 }

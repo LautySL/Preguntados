@@ -26,6 +26,26 @@ class UserModel
         $this->database->execute($sqlJugador);
     }
 
+    public function actualizarUsuario($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $latitud, $longitud){
+        $sql = "UPDATE usuario 
+                SET nombre_de_usuario = '$nombre_de_usuario',
+                contrasena = '$contrasena',
+                nombre = '$nombre',
+                apellido = '$apellido',
+                ano_de_nacimiento = '$ano_de_nacimiento',
+                sexo = '$sexo',
+                mail = '$mail',
+                foto_de_perfil = '$foto_de_perfil',
+                pais = '$pais',
+                ciudad = '$ciudad',
+                latitud = '$latitud',
+                longitud = '$longitud'
+                WHERE nombre_de_usuario = '$nombre_de_usuario'";
+
+$this->database->execute($sql);
+
+    }
+
     public function LogInconsulta($usuario, $password)
     {
 
