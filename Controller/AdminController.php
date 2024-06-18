@@ -16,8 +16,6 @@ class AdminController
         $this->presenter->render("view/admin.mustache");
     }
 
-
-
     public function totalJugadores(){
         $totalJugadores = $this->model->totalJugadores();
         $data = [

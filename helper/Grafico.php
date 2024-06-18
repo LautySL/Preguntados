@@ -1,7 +1,8 @@
-// generateImage.php
 <?php
-require_once ('jpgraph/jpgraph.php');
-require_once ('jpgraph/jpgraph_bar.php');
+require_once ('vendor/jpgraph/jpgraph.php');
+require_once ('vendor/jpgraph/jpgraph_bar.php');
+class Grafico
+{}
 
 // Obten los datos necesarios del controlador
 // Aquí necesitarías ajustar el código para recibir los datos correctos del usuario
@@ -19,4 +20,3 @@ $grafico_partidas->Stroke('images/partidas.png');
 
 // Redirigir a la vista del dashboard
 header('Location: dashboard.php');
-?>

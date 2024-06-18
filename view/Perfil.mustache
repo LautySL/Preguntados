@@ -1,48 +1,57 @@
 <h1 class="encabezado w3-pink w3-center w3-padding">Tu perfil</h1><br><br>
 
-<form action="/registro/insertar" method="post" enctype="multipart/form-data">
+<div class="infoNoForm w3-center">
+ <img src="/public/img/fotoPerfil/{{foto_de_perfil}}" class="foto-perfil w3-circle w3-border w3-margin"/><br>
+<p>{{nombre_de_usuario}}</p>
+<p>({{nombre}} {{apellido}})</p>
 
-    <label for="nombre">Nombre:</label>
-    <input type="text" id="nombre" name="nombre" class="w3-round-xxlarge" value="{{nombre}}"><br><br>
+</div>
 
-    <label for="apellido">Apellido:</label>
-    <input type="text" id="apellido" name="apellido" class="w3-round-xxlarge" value="{{apellido}}"><br><br>
+<div class="popupForm"style="display: none;">
+    <form action="/registro/insertar" method="post" enctype="multipart/form-data">
 
-    <label for="ano_de_nacimiento">Año de nacimiento:</label>
-    <input type="text" id="ano_de_nacimiento" name="ano_de_nacimiento" class="w3-round-xxlarge" value={{ano_de_nacimiento}}><br><br>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" class="w3-round-xxlarge" value="{{nombre}}"><br><br>
 
-    <label for="sexo">Sexo:</label>
-    <input type="text" id="sexo" name="sexo" class="w3-round-xxlarge" value={{sexo}}><br><br>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" class="w3-round-xxlarge" value="{{apellido}}"><br><br>
 
-    {{! <select id="sexo" name="sexo">
-        <option value="Masculino">Masculino</option>
-        <option value="Femenino">Femenino</option>
-        <option value="Prefiero no cargarlo">Prefiero no cargarlo</option>
-    </select><br><br> }}
+        <label for="ano_de_nacimiento">Año de nacimiento:</label>
+        <input type="text" id="ano_de_nacimiento" name="ano_de_nacimiento" class="w3-round-xxlarge" value={{ano_de_nacimiento}}><br><br>
 
-    <label for="pais">Pais:</label>
-    <input type="text" id="pais" name="pais" class="w3-round-xxlarge" value="{{pais}}"><br><br>
+        <label for="sexo">Sexo:</label>
+        <input type="text" id="sexo" name="sexo" class="w3-round-xxlarge" value={{sexo}}><br><br>
 
-    <label for="ciudad">Ciudad:</label>
-    <input type="text" id="ciudad" name="ciudad" class="w3-round-xxlarge" value="{{ciudad}}"><br><br>
+        {{! <select id="sexo" name="sexo">
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+            <option value="Prefiero no cargarlo">Prefiero no cargarlo</option>
+        </select><br><br> }}
 
-    <label for="mail">Email:</label>
-    <input type="mail" id="mail" name="mail" class="w3-round-xxlarge" value="{{mail}}"><br><br>
+        <label for="pais">Pais:</label>
+        <input type="text" id="pais" name="pais" class="w3-round-xxlarge" value="{{pais}}"><br><br>
 
-    <label for="contrasena">Contraseña:</label>
-    <input type="password" id="contrasena" name="contrasena" class="w3-round-xxlarge" value="{{contrasena}}"><br><br>
-    <label for="confirmar_contrasena">Confirmar contraseña:</label>
-    <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" class="w3-round-xxlarge" value="{{contrasena}}"><br><br>
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad" class="w3-round-xxlarge" value="{{ciudad}}"><br><br>
 
-    <label for="nombre_de_usuario">Nombre de usuario:</label>
-    <input type="text" id="nombre_de_usuario" name="nombre_de_usuario" class="w3-round-xxlarge" value="{{nombre_de_usuario}}"><br><br>
+        <label for="mail">Email:</label>
+        <input type="mail" id="mail" name="mail" class="w3-round-xxlarge" value="{{mail}}"><br><br>
 
-    <label for="foto_de_perfil">Foto de perfil:</label>
-    <input type="file" id="foto_de_perfil" name="foto_de_perfil" class="w3-round-xxlarge"><br><br>
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" class="w3-round-xxlarge" value="{{contrasena}}"><br><br>
+        <label for="confirmar_contrasena">Confirmar contraseña:</label>
+        <input type="password" id="confirmar_contrasena" name="confirmar_contrasena" class="w3-round-xxlarge" value="{{contrasena}}"><br><br>
 
-    <p>Foto de perfil actual: </p>
-    <img src="/public/img/fotoPerfil/{{foto_de_perfil}}" class="foto-perfil w3-circle w3-border w3-margin"/><br><br>
+        <label for="nombre_de_usuario">Nombre de usuario:</label>
+        <input type="text" id="nombre_de_usuario" name="nombre_de_usuario" class="w3-round-xxlarge" value="{{nombre_de_usuario}}"><br><br>
 
-    <input type="submit" value="Guardar cambios" name="submit" class="w3-round-xxlarge w3-pink"><br><br>
-</form>
+        <label for="foto_de_perfil">Foto de perfil:</label>
+        <input type="file" id="foto_de_perfil" name="foto_de_perfil" class="w3-round-xxlarge"><br><br>
+
+        <p>Foto de perfil actual: </p>
+        <img src="/public/img/fotoPerfil/{{foto_de_perfil}}" class="foto-perfil w3-circle w3-border w3-margin"/><br><br>
+
+        <input type="submit" value="Guardar cambios" name="submit" class="w3-round-xxlarge w3-pink"><br><br>
+    </form>
+</div>
 <a href="/home/get" class="w3-button w3-round-xxlarge w3-gray">Volver</a>
