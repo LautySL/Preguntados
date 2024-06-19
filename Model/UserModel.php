@@ -50,7 +50,6 @@ class UserModel
                 WHERE nombre_de_usuario = '$nombre_de_usuario'";
 
         $this->database->execute($sql);
-
     }
 
     public function LogInconsulta($usuario, $password)
