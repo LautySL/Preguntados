@@ -45,7 +45,9 @@ class HomeController
 
             $puntaje=$this->model->getMaxPuntaje($iduser);
             $ultimasPartidas = $this->model->getUltimasPartidas($iduser, 5);
+            $fotoHeader =$this->model->obtenerFotoPerfil($iduser);
             $templateData=[
+                'foto-de-perfil'=>$fotoHeader,
                 'puntuacion'=>$puntaje,
                 'usuario'=> $_SESSION['usuario'] ?? null,
                 'tipoCuenta'=>$_SESSION["tipo_cuenta"]?? null,

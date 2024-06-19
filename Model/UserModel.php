@@ -211,7 +211,28 @@ class UserModel
             return [];
         }
     }
+    public function obtenerFotoPerfil($idUsuario)
+    {
+        try {
+            $idUsuario = intval($idUsuario);
 
+
+            $query = "SELECT foto_de_perfil FROM usuario WHERE id = $idUsuario";
+
+
+            $resultado = $this->database->query($query);
+
+
+            if ($resultado && isset($resultado[0]['foto_de_perfil'])) {
+                return $resultado[0]['foto_de_perfil'];
+            } else {
+                return null;
+            }
+        } catch (Exception $e) {
+            echo "Error al obtener la foto de perfil: " . $e->getMessage();
+            return null;
+        }
+    }
 
     private function obtenerTipoUsuario($idUsuario)
     {
