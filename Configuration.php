@@ -1,6 +1,4 @@
 <?php
-
-
 use PHPMailer\PHPMailer\PHPMailer;
 
 include_once("vendor\PHPMailer\src\Exception.php");
@@ -119,5 +117,6 @@ class Configuration
     {
         return new PHPMailer();
     }
+
 
 }
