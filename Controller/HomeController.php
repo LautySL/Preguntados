@@ -1,6 +1,5 @@
 <?php
 
-
 class HomeController
 {
     private $presenter;
@@ -14,19 +13,16 @@ class HomeController
 
     public function get()
     {
-         $templateData = $this->contextoParaPasarALaVista();
-
-
-        $this->presenter->render("view/Home.mustache",$templateData);
+        $templateData = $this->contextoParaPasarALaVista();
+        $this->presenter->render("view/Home.mustache", $templateData);
     }
-
 
     private function contextoParaPasarALaVista(): array
     {
         $usuario = $_SESSION['usuario'] ?? null;
         $error = $_SESSION["error_login"] ?? null;
-        $tipo= $_SESSION["tipo_cuenta"]?? null;
-        $iduser=$_SESSION['id_usuario']??null;
+        $tipo = $_SESSION["tipo_cuenta"] ?? null;
+        $iduser = $_SESSION['id_usuario'] ?? null;
 
         $templateData = [
             "error" => $error
@@ -36,27 +32,25 @@ class HomeController
             $templateData['mensajeCuentaActivada'] = $_SESSION['mensajeCuentaActivada'];
             $templateData['cuentaActivada'] = $_SESSION['cuentaActivada'];
 
-
             unset($_SESSION['mensajeCuentaActivada']);
             unset($_SESSION['cuentaActivada']);
         }
 
         if ($usuario !== null) {
-
-            $puntaje=$this->model->getMaxPuntaje($iduser);
+            $puntaje = $this->model->getMaxPuntaje($iduser);
             $ultimasPartidas = $this->model->getUltimasPartidas($iduser, 5);
-            $fotoHeader =$this->model->obtenerFotoPerfil($iduser);
-            $templateData=[
-                'foto-de-perfil'=>$fotoHeader,
-                'puntuacion'=>$puntaje,
-                'usuario'=> $_SESSION['usuario'] ?? null,
-                'tipoCuenta'=>$_SESSION["tipo_cuenta"]?? null,
-                'isJugador' =>$tipo['esJugador'],
-                'isEditor' =>$tipo['esEditor'],
-                'isAdministrador'=>$tipo['esAdministrador'],
-                'partidasUsuario'=> $ultimasPartidas
+            $fotoHeader = $this->model->obtenerFotoPerfil($iduser);
 
-            ];
+            $templateData = array_merge($templateData, [
+                'foto-de-perfil' => $fotoHeader,
+                'puntuacion' => $puntaje,
+                'usuario' => $_SESSION['usuario'] ?? null,
+                'tipoCuenta' => $_SESSION["tipo_cuenta"] ?? null,
+                'isJugador' => $tipo['esJugador'],
+                'isEditor' => $tipo['esEditor'],
+                'isAdministrador' => $tipo['esAdministrador'],
+                'partidasUsuario' => $ultimasPartidas
+            ]);
         }
 
         return $templateData;

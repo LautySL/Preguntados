@@ -1,128 +1,135 @@
 <div class="container w3-center">
     {{#usuario}}
-    <h2 class="encabezado w3-pink w3-center w3-padding">Bienvenido, {{usuario}}!</h2><br>
-
+        <h2 class="encabezado w3-pink w3-center w3-padding">Bienvenido, {{usuario}}!</h2><br>
     {{/usuario}}
     {{^usuario}}
-    <form class="login-form" action="/login/get" method="post">
-        <h2 class="encabezado w3-pink w3-center w3-padding">Login</h2><br><br><br><br>
-        Usuario: <input type="text" name="usuario" id="usuario" class="w3-round-xxlarge"><br><br>
-        Password: <input type="password" name="password" id="password" class="w3-round-xxlarge"><br><br>
-        <input type="submit" value="Login" class="w3-button w3-round-xxlarge w3-gray">
-        <a class="register-link w3-button w3-round-xxlarge w3-gray" href="/registro/get">Registrarse</a><br><br><br><br>
-    </form>
+        <form class="login-form" action="/login/get" method="post">
+            <h2 class="encabezado w3-pink w3-center w3-padding">Login</h2><br><br><br><br>
+            Usuario: <input type="text" name="usuario" id="usuario" class="w3-round-xxlarge"><br><br>
+            Password: <input type="password" name="password" id="password" class="w3-round-xxlarge"><br><br>
+            <input type="submit" value="Login" class="w3-button w3-round-xxlarge w3-gray">
+            <a class="register-link w3-button w3-round-xxlarge w3-gray" href="/registro/get">Registrarse</a><br><br><br><br>
+        </form>
     {{/usuario}}
 
     {{#error}}
-    <div class="errors w3-panel w3-light-blue w3-border">
-        <span onclick="this.parentElement.style.display='none'" class="w3-button w3-right">&times;</span>
-
-        <p>  {{error}} </p>
-    </div>
+        <div class="errors w3-panel w3-light-blue w3-border">
+            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-right">&times;</span>
+            <p>{{error}}</p>
+        </div>
     {{/error}}
 </div>
 
-
-<main  class="cuerpo-home w3-center">
-
+<main class="cuerpo-home w3-center">
     {{#isJugador}}
+        <a href="/juego/iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
+        <a href="/ranking/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
+        <button type="button" class="boton-home w3-btn w3-round-xxlarge w3-pink" onclick="abrirPopup('', '', '', '')">Sugerir Pregunta</button><br><br>
 
-    <a href="/juego/iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
-    <a href="/ranking/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
-    <button type="button" class="boton-home w3-btn w3-round-xxlarge w3-pink" onclick="abrirPopup('{{id}}', '{{pregunta}}', '{{respuesta}}', '{{categoria}}')">Sugerir Pregunta</button><br><br>
-
-    <h3 class="w3-center">Tu puntuación más alta es : {{puntuacion}}</h3>
-    <h3 class="w3-center">Tus ultimas partidas</h3>
-    <ul class="w3-ul">
-        {{#partidasUsuario}}
-        <li class="w3-bar w3-card w3-margin-bottom w3-pale-red">
-            <div class="w3-bar-item">
-                <span class="w3-large">{{fecha_creacion_partida}}</span><br>
-                <span>Puntaje: <b>{{puntaje}}</b></span>
-            </div>
-        </li>
+        <h3 class="w3-center">Tu puntuación más alta es: {{puntuacion}}</h3>
+        <h3 class="w3-center">Tus últimas partidas</h3>
+        <ul class="w3-ul">
+            {{#partidasUsuario}}
+                <li class="w3-bar w3-card w3-margin-bottom w3-pale-red">
+                    <div class="w3-bar-item">
+                        <span class="w3-large">{{fecha_creacion_partida}}</span><br>
+                        <span>Puntaje: <b>{{puntaje}}</b></span>
+                    </div>
+                </li>
+            {{/partidasUsuario}}
+        </ul>
+        {{^partidasUsuario}}
+            <p>Aún no ha jugado ninguna partida. <a href="/juego/iniciarPartida">Juega ahora</a>.</p>
         {{/partidasUsuario}}
-    </ul>
 
-    {{^partidasUsuario}} <!-- Verifica si partidasUsuario está vacío -->
-    <p>Aún no ha jugado ninguna partida. <a href="/juego/iniciarPartida" >Jugá ahora</a>.</p>
-    {{/partidasUsuario}}
-
-
+        <!-- Pop-up para sugerir pregunta y respuesta -->
+        <div id="popupSugerir" class="w3-modal" style="display: none;">
+            <div class="w3-modal-content w3-animate-zoom">
+                <div class="w3-container w3-padding">
+                    <span onclick="cerrarPopup()" class="w3-button w3-display-topright">&times;</span>
+                    <h2 class="w3-center">Sugerir Pregunta</h2>
+                    <form id="suggestQuestionForm" action="/SuggestQuestion/post" method="POST" class="w3-container">
+                        <input type="hidden" name="id" id="idPregunta">
+                        <label for="sugerirPregunta">Pregunta:</label>
+                        <input type="text" id="sugerirPregunta" name="question" required><br><br>
+                        <label for="correctAnswer">Respuesta Correcta:</label>
+                        <input type="text" id="correctAnswer" name="correctAnswer" required><br><br>
+                        <label for="wrongAnswer1">Respuesta Incorrecta 1:</label>
+                        <input type="text" id="wrongAnswer1" name="wrongAnswer1" required><br><br>
+                        <label for="wrongAnswer2">Respuesta Incorrecta 2:</label>
+                        <input type="text" id="wrongAnswer2" name="wrongAnswer2" required><br><br>
+                        <label for="wrongAnswer3">Respuesta Incorrecta 3:</label>
+                        <input type="text" id="wrongAnswer3" name="wrongAnswer3" required><br><br>
+                        <label for="sugerirCategoria">Categoría:</label>
+                        <select id="sugerirCategoria" name="sugerirCategoria" class="w3-round-xxlarge" required>
+                            <option value="Geografía">Geografía</option>
+                            <option value="Ciencia">Ciencia</option>
+                            <option value="Historia">Historia</option>
+                            <option value="Deporte">Deporte</option>
+                            <option value="Arte">Arte</option>
+                            <option value="Entretenimiento">Entretenimiento</option>
+                        </select><br><br>
+                        <button type="submit" class="w3-button w3-block w3-pink w3-margin-top">Sugerir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     {{/isJugador}}
 
     {{#isEditor}}
-    <a href="/edicion/verPreguntas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Modificar Preguntas</a><br><br>
-    <a href="/edicion/verPreguntasReportadas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Reportadas</a><br><br>
-    <a href="/edicion/verPreguntasSugeridas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Sugeridas</a><br><br>
+        <a href="/edicion/verPreguntas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Modificar Preguntas</a><br><br>
+        <a href="/edicion/verPreguntasReportadas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Reportadas</a><br><br>
+        <a href="/edicion/verPreguntasSugeridas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Preguntas Sugeridas</a><br><br>
     {{/isEditor}}
 
     {{#isAdministrador}}
-    <a href="/admin/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Graficos</a><br><br>
-    <a href="/admin/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Estadisticas del Juego</a><br><br>
+        <a href="/admin/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Gráficos</a><br><br>
+        <a href="/admin/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Estadísticas del Juego</a><br><br>
     {{/isAdministrador}}
 </main>
 
-<!-- Popup para sugerir pregunta y respuesta -->
-<div id="popupSugerir" class="w3-modal">
-    <div class="w3-modal-content w3-animate-zoom">
-        <div class="w3-container w3-padding">
-            <span onclick="cerrarPopup()" class="w3-button w3-display-topright">&times;</span>
-            <h2 class="w3-center">Sugerir Pregunta</h2>
-            <form action="/edicion/sugerirPregunta" method="POST" class="w3-container">
-                <input type="hidden" name="id" id="idPregunta">
-                <label for="sugerirPregunta">Pregunta:</label>
-                <input type="text" id="sugerirPregunta" name="sugerirPregunta" class="w3-input w3-border" required>
-                <label for="sugerirRespuesta">Respuesta:</label>
-                <input type="text" id="sugerirRespuesta" name="sugerirRespuesta" class="w3-input w3-border" required><br><br>
-                <label for="sugerirCategoria">Categoria:</label>
-                <select id="sugerirCategoria" name="sugerirCategoria" class="w3-round-xxlarge" required>
-                    <option value="Geografía">Geografía</option>
-                    <option value="Ciencia">Ciencia</option>
-                    <option value="Historia">Historia</option>
-                    <option value="Deporte">Deporte</option>
-                    <option value="Arte">Arte</option>
-                    <option value="Entretenimiento">Entretenimiento</option>
-                </select><br><br>
-                <button type="submit" class="w3-button w3-block w3-pink w3-margin-top">Sugerir</button>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- Pop-up para cuenta activada -->
 {{#cuentaActivada}}
-<!-- Contenedor del popup y fondo oscuro -->
-<div id="popupBackground" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 500;"></div>
-<div id="mensajePopup" class="w3-round-xxlarge w3-pink" style="display: block; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
-    <h3 class="w3-center">Cuenta Activada</h3>
-    <p class="w3-center">{{mensajeCuentaActivada}}</p>
-    <button id="cerrarPopupCuenta" class="w3-button w3-round-xxlarge w3-light-gray">Cerrar</button>
-
-</div>
+    <div id="popupBackground" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 500;"></div>
+    <div id="popupMessage" style="display: block; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 10px; z-index: 501;">
+        <h3 class="w3-center">{{mensajeCuentaActivada}}</h3>
+        <button class="w3-button w3-round-xxlarge w3-pink" onclick="cerrarPopup()">Cerrar</button>
+    </div>
 {{/cuentaActivada}}
 
 <script>
-function abrirPopup(id, pregunta, respuesta, categoria) {
-    var popup = document.getElementById("popupSugerir");
-    var idInput = document.getElementById("idPregunta");
-    var preguntaInput = document.getElementById("sugerirPregunta");
-    var respuestaInput = document.getElementById("sugerirRespuesta");
-    var categoriaInput = document.getElementById("sugerirCategoria");
+    function abrirPopup(id, pregunta, respuesta, categoria) {
+        var popup = document.getElementById("popupSugerir");
+        var idInput = document.getElementById("idPregunta");
+        var preguntaInput = document.getElementById("sugerirPregunta");
+        var respuestaInput = document.getElementById("correctAnswer");
+        var categoriaInput = document.getElementById("sugerirCategoria");
 
-    // Asignar valores a los campos del formulario
-    idInput.value = id;
-    preguntaInput.value = pregunta;
-    respuestaInput.value = respuesta;
-    categoriaInput.value = categoria;
+        // Asignar valores a los campos del formulario
+        idInput.value = id || '';
+        preguntaInput.value = pregunta || '';
+        respuestaInput.value = respuesta || '';
+        categoriaInput.value = categoria || '';
 
-    // Mostrar el popup
-    popup.style.display = "block";
-}
+        // Mostrar el popup
+        popup.style.display = "block";
+    }
 
-function cerrarPopup() {
-    var popup = document.getElementById("popupSugerir");
-    popup.style.display = "none";
-}
+    function cerrarPopup() {
+        var popup = document.getElementById("popupSugerir");
+        popup.style.display = "none";
+
+        var popupBackground = document.getElementById("popupBackground");
+        var popupMessage = document.getElementById("popupMessage");
+
+        if (popupBackground) {
+            popupBackground.style.display = "none";
+        }
+        if (popupMessage) {
+            popupMessage.style.display = "none";
+        }
+    }
 </script>
 
 <script>

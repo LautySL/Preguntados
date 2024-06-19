@@ -17,6 +17,7 @@ include_once ("Controller/VerPerfilPropioController.php");
 include_once ("Controller/VerPerfilAjenoController.php");
 include_once ("Controller/ActivacionController.php");
 include_once ("Controller/EdicionController.php");
+include_once ("Controller/SuggestQuestionController.php");
 
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
@@ -29,6 +30,7 @@ include_once ('Model/AdminModel.php');
 include_once ('Model/UserModel.php');
 include_once ('Model/GameModel.php');
 include_once ('Model/EdicionModel.php');
+include_once ('Model/SuggestedQuestionModel.php');
 
 class Configuration
 {
@@ -69,6 +71,11 @@ class Configuration
         return new EdicionController(self::getEdicionModel(), self::getPresenter());
     }
 
+    public static function getSuggestQuestionController()
+    {
+        return new SuggestQuestionController(self::getSuggestedQuestionModel(), self::getPresenter());
+    }
+
     //model
     public static function getUserModel()
     {
@@ -85,6 +92,11 @@ class Configuration
     public static function getEdicionModel()
     {
         return new EdicionModel(self::Database());
+    }
+
+    public static function getSuggestedQuestionModel()
+    {
+        return new SuggestedQuestionModel(self::Database());
     }
 
     //Helper
