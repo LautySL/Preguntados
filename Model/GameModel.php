@@ -68,7 +68,7 @@ class GameModel
 
             $idUsuario = intval($idUsuario);
 
-            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida) VALUES (0, $idUsuario, CURRENT_DATE)";
+            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida) VALUES (0, $idUsuario, CURRENT_TIMESTAMP)";
             $this->database->execute($queryInsertPartida);
 
 
@@ -244,12 +244,12 @@ class GameModel
                 $queryUpdate = "UPDATE pregunta 
                             SET veces_que_salio = veces_que_salio + 1, 
                                 veces_correcta = veces_correcta + 1, 
-                                ultima_vez_que_salio = CURRENT_DATE 
+                                ultima_vez_que_salio = CURRENT_TIMESTAMP
                             WHERE id = '$preguntaId'";
             } else {
                 $queryUpdate = "UPDATE pregunta 
                             SET veces_que_salio = veces_que_salio + 1, 
-                                ultima_vez_que_salio = CURRENT_DATE 
+                                ultima_vez_que_salio = CURRENT_TIMESTAMP
                             WHERE id = '$preguntaId'";
             }
             $this->database->execute($queryUpdate);

@@ -42,14 +42,17 @@ class HomeController
         }
 
         if ($usuario !== null) {
+
             $puntaje=$this->model->getMaxPuntaje($iduser);
+            $ultimasPartidas = $this->model->getUltimasPartidas($iduser, 5);
             $templateData=[
                 'puntuacion'=>$puntaje,
                 'usuario'=> $_SESSION['usuario'] ?? null,
                 'tipoCuenta'=>$_SESSION["tipo_cuenta"]?? null,
                 'isJugador' =>$tipo['esJugador'],
                 'isEditor' =>$tipo['esEditor'],
-                'isAdministrador'=>$tipo['esAdministrador']
+                'isAdministrador'=>$tipo['esAdministrador'],
+                'partidasUsuario'=> $ultimasPartidas
 
             ];
         }

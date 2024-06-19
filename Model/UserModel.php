@@ -196,6 +196,22 @@ class UserModel
 
     }
 
+    public function getUltimasPartidas($usuario, $limite = 5)
+    {
+        // Asegúrate de utilizar la función quote para evitar inyecciones SQL
+
+
+        $query = "SELECT * FROM partida WHERE jugador='$usuario' ORDER BY fecha_creacion_partida DESC LIMIT $limite";
+
+        $resultado = $this->database->execute($query);
+
+        if ($resultado) {
+            return $resultado;
+        } else {
+            return [];
+        }
+    }
+
 
     private function obtenerTipoUsuario($idUsuario)
     {
