@@ -19,10 +19,9 @@
       <a href="/verPerfilPropio/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Ver Perfil</a>
       <a href="/login/logout" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Cerrar Sesión</a>
       {{! falsa foto de perfil que no tendría que aparecer si no estas logueado }}
-      <div class="foto-perfil-header w3-circle w3-border w3-margin ">
-        <img src="/public/img/fotoPerfil/{{foto-de-perfil}}"class="foto-perfil w3-circle "  alt=""/>
 
-      </div>
+        <img src="/public/img/fotoPerfil/{{foto-de-perfil}}"class="foto-perfil-header w3-circle w3-border w3-margin "  alt="/public/img/perfil_placeholder.png"/>
+
         {{/usuario}}
     </div>
 </header>
