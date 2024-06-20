@@ -17,7 +17,6 @@ class SuggestQuestionController {
     }
 
     public function post() {
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pregunta = $_POST['question'];
             $categoria = $_POST['sugerirCategoria'];
@@ -31,10 +30,13 @@ class SuggestQuestionController {
             ];
 
             if ($this->model->addSuggestedQuestion($pregunta, $categoria, $idUsuario, $respuestas)) {
-                echo "Pregunta sugerida con éxito. Será añadida al juego en cuanto la apruebe un editor.";
+                $_SESSION['mensajePregunta'] = "Pregunta sugerida con éxito. Será añadida al juego en cuanto la apruebe un editor.";
             } else {
-                echo "Error al sugerir la pregunta.";
+                $_SESSION['mensajePregunta'] = "Error al sugerir la pregunta.";
             }
+
+            header('Location: /home');
+            exit();
         } else {
             $this->renderSuggestQuestionForm();
         }
