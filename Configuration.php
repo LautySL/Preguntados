@@ -20,6 +20,7 @@ include_once ("Controller/EdicionController.php");
 
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
+include_once ("helper/ApiLocation.php");
 include_once ("helper/MustachePresenter.php");
 include_once ("helper/Grafico.php");
 include_once ("vendor/mustache/src/Mustache/Autoloader.php");
@@ -37,7 +38,7 @@ class Configuration
     //controller
     public static function getRegistroController()
     {
-        return new RegistroController(self::getUserModel(), self::getPresenter());
+        return new RegistroController(self::getUserModel(), self::getPresenter(), self::getApiLocation());
     }
     public static function getHomeController(){
         return new HomeController(self::getUserModel(), self::getPresenter());
@@ -109,6 +110,11 @@ class Configuration
     {
         $config = self::getConfig();
         return new Database($config["servername"], $config["username"], $config["database"], $config["password"]);
+    }
+    public static function getApiLocation()
+    {
+        $config =self::getConfig();
+        return new ApiLocation($config["apikey"]);
     }
 
     private static function getGrafico()
