@@ -1,4 +1,3 @@
-
 CREATE TABLE usuario(
 	id int auto_increment primary key,
     nombre_de_usuario varchar(50),
@@ -31,6 +30,9 @@ CREATE TABLE editor(
     foreign key (id) references usuario(id)
 );
 
+INSERT INTO editor (id) VALUES
+(1);
+
 CREATE TABLE jugador(
 	id int,
     constraint primary key (id),
@@ -53,13 +55,14 @@ CREATE TABLE respuesta(
 	respuesta varchar(150),
 	es_la_correcta boolean,
 	pregunta int references pregunta(id)
-  );
+);
 
 CREATE TABLE preguntas_sugeridas (
                                      id INT AUTO_INCREMENT PRIMARY KEY,
                                      pregunta VARCHAR(255) NOT NULL,
                                      categoría ENUM('Geografía', 'Ciencia', 'Historia', 'Deporte', 'Arte', 'Entretenimiento'),
-                                     usuario_id INT NOT NULL
+                                     usuario_id INT NOT NULL,
+                                     fecha_creacion_pregunta TIMESTAMP DEFAULT CURRENT_TIMESTAMp
 );
 
 CREATE TABLE respuestas_sugeridas (
@@ -69,8 +72,7 @@ CREATE TABLE respuestas_sugeridas (
                                       es_la_correcta BOOLEAN NOT NULL,
                                       FOREIGN KEY (pregunta) REFERENCES preguntas_sugeridas(id)
 );
-
-
+  
 CREATE TABLE partida (
 	id int auto_increment primary key,
 	puntaje int,
@@ -94,6 +96,14 @@ CREATE TABLE reportes_preguntas (
      fecha_reporte TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY (pregunta_id) REFERENCES pregunta(id),
      FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+);
+
+CREATE TABLE preguntas_sugeridas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pregunta VARCHAR(255) NOT NULL,
+    categoria VARCHAR(255) NOT NULL,
+    usuario_id INT NOT NULL,
+    fecha_sugerida TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO pregunta (pregunta, categoría) VALUES

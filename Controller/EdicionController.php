@@ -13,8 +13,6 @@ class EdicionController
         $this->Presenter = $Presenter;
     }
 
-
-
     public function get()
     {
         $this->Presenter->render("view/vistaEditor.mustache");
@@ -83,26 +81,56 @@ class EdicionController
         $this->Presenter->render('view/vistaEditor.mustache', $data);
     }
 
-    public function verPreguntasSugerida()
+    public function verPreguntasSugeridas()
     {
         $preguntas = $this->model->getPreguntasSugeridas();
-    
+
         $data = [];
-    
+
         foreach ($preguntas as $pregunta) {
-            
             $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($pregunta['id']);
-    
-            $data['total_preguntas'][] = [
+
+            $data['preguntas_sugeridas'][] = [
                 'id' => $pregunta['id'],
                 'fecha' => $pregunta['fecha_creacion_pregunta'],
                 'pregunta' => $pregunta['pregunta'],
                 'respuesta' => $respuesta
             ];
         }
-    
-        // Renderizar la vista Mustache con los datos estructurados
+
         $this->Presenter->render('view/vistaEditor.mustache', $data);
+    }
+
+    public function aprobarPreguntaSugerida()
+    {
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $aprobado = $this->model->aprobarPreguntaSugerida($id);
+
+            if ($aprobado) {
+                echo json_encode(['status' => 'success']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Error al aprobar la pregunta.']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'ID de pregunta no proporcionado.']);
+        }
+    }
+
+    public function rechazarPreguntaSugerida()
+    {
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            $rechazado = $this->model->rechazarPreguntaSugerida($id);
+
+            if ($rechazado) {
+                echo json_encode(['status' => 'success']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Error al rechazar la pregunta.']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'ID de pregunta no proporcionado.']);
+        }
     }
 
     public function eliminarPregunta()
@@ -166,27 +194,6 @@ class EdicionController
             }
         } else {
             echo "Método no permitido para modificar la pregunta.";
-        }
-    }
-    public function sugerirPregunta()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
-            $pregunta = $_POST['sugerirPregunta'];
-            $respuesta = $_POST['sugerirRespuesta'];
-            $categoria = $_POST['sugerirCategoria'];
-    
-            $sugerido = $this->model->sugerirPregunta($id, $pregunta, $respuesta, $categoria);
-    
-            if ($sugerido) {
-                echo "Gracias por tua aporte, consideraremos tu sugerencia.";
-                header('Location: /home/get');
-                exit;
-            } else {
-                echo "Error al intentar sugerir la pregunta.";
-            }
-        } else {
-            echo "Método no permitido para sugerir la pregunta.";
         }
     }
     

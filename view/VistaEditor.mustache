@@ -1,34 +1,33 @@
-
 <body>
 <div class="container w3-center">
 
     <h2 class="encabezado w3-pink w3-center w3-padding"><a href="/home/get" class="w3-left"><</a>Preguntas:</h2><br>
-    
+
     <table class="w3-table-all">
         <thead>
         <tr class="w3-pink">
             <th>ID</th>
             <th>Fecha</th>
             <th>Pregunta</th>
-            <th>Respuesta
+            <th>Respuesta</th>
             <th></th>
             <th></th>
         </tr>
         </thead>
         <tbody>
         {{#total_preguntas}}
-        <tr>
-            <td>{{id}}</td>
-            <td>{{fecha}}</td>
-            <td>{{pregunta}}</td>
-            <td>
-                <ul>
-                    <li>{{respuesta}}</li>
-                </ul>
-            </td>
-            <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-pink" onclick="abrirPopup('{{id}}', '{{pregunta}}', '{{respuesta}}')">Modificar</button></td>
-            <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=normal"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
-        </tr>
+            <tr>
+                <td>{{id}}</td>
+                <td>{{fecha}}</td>
+                <td>{{pregunta}}</td>
+                <td>
+                    <ul>
+                        <li>{{respuesta}}</li>
+                    </ul>
+                </td>
+                <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-pink" onclick="abrirPopup('{{id}}', '{{pregunta}}', '{{respuesta}}')">Modificar</button></td>
+                <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=normal"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
+            </tr>
         {{/total_preguntas}}
         {{#preguntas_reportadas}}
             <tr>
@@ -40,16 +39,8 @@
                         <li>{{respuesta}}</li>
                     </ul>
                 </td>
-                <td>
-                    <a href="/edicion/verPreguntas?id={{id}}">
-                    <button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Modificar</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="/edicion/eliminarPregunta?id={{id}}&tipo=reportada">
-                    <button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button>
-                    </a>
-                </td>
+                <td><a href="/edicion/verPreguntas?id={{id}}"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Modificar</button></a></td>
+                <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=reportada"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
             </tr>
         {{/preguntas_reportadas}}
         {{#modificar_pregunta}}
@@ -60,21 +51,22 @@
             </script>
         {{/modificar_pregunta}}
         {{#preguntas_sugeridas}}
-        <tr>
-            <td>{{id}}</td>
-            <td>{{fecha}}</td>
-            <td>{{pregunta}}</td>
-            <td>
-                <ul>
-                    <li>{{respuesta}}</li>
-                </ul>
-            </td>
-            <td><a href="/edicion/agregarPregunta?id={{id}}&tipo=sugeridas"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Agregar</button></a></td>
-            <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=sugeridas"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
-        </tr>
+            <tr id="pregunta-{{id}}">
+                <td>{{id}}</td>
+                <td>{{fecha}}</td>
+                <td>{{pregunta}}</td>
+                <td>
+                    <ul>
+                        <li>{{respuesta}}</li>
+                    </ul>
+                </td>
+                <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green" onclick="aprobarPregunta('{{id}}')">Aprobar</button></td>
+                <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red" onclick="rechazarPregunta('{{id}}')">Rechazar</button></td>
+            </tr>
         {{/preguntas_sugeridas}}
         </tbody>
     </table>
+
 </div><br><br>
 
 <!-- Popup para modificar pregunta y respuesta -->
@@ -114,6 +106,44 @@ function abrirPopup(id, pregunta, respuesta) {
 function cerrarPopup() {
     var popup = document.getElementById("popupModificar");
     popup.style.display = "none";
+}
+
+function aprobarPregunta(id) {
+    fetch('/edicion/aprobarPreguntaSugerida', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `id=${id}`
+    })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById(`pregunta-${id}`).remove();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+}
+
+function rechazarPregunta(id) {
+    fetch('/edicion/rechazarPreguntaSugerida', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `id=${id}`
+    })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById(`pregunta-${id}`).remove();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
 }
 </script>
 
