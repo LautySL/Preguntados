@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <div class="perfil-ajeno">
    <div class="encabezado-perfil-ajeno w3-pink">
       <img src="/public/img/fotoPerfil/{{foto_de_perfil}}" class="foto-perfil-header w3-circle w3-border w3-margin"/>
@@ -8,5 +13,38 @@
       <p>Año de nacimiento: {{ano_de_nacimiento}}</p>
       <p>País: {{pais}}</p>
       <p>Ciudad: {{ciudad}}</p>
+
+      <div class="w3-border w3-border-pink" id="map" style="width: 600px; height: 400px;margin: auto; border-radius: 10px;"></div>
+   </div>
+   <div class="w3-center">
+      <a  href="/home/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Cerrar</a>
    </div>
 </div>
+
+<script>
+   // Coordenadas que llegarán por Mustache
+   var latitud = {{latitud}};
+   var longitud = {{longitud}};
+
+   var map = L.map('map').setView([latitud, longitud], 13); // Utiliza Mustache para las coordenadas
+
+   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+   }).addTo(map);
+
+   var marker = L.marker([latitud, longitud]).addTo(map); // Coloca el marcador en las coordenadas iniciales
+
+   // Evento para cambiar la posición del marcador al hacer clic en el mapa
+   map.on('click', function(e) {
+      if (marker) {
+         map.removeLayer(marker);
+      }
+      marker = L.marker(e.latlng).addTo(map);
+      var lat = e.latlng.lat;
+      var lng = e.latlng.lng;
+
+      // Actualizar los valores en los elementos HTML usando Mustache (ejemplo)
+      document.getElementById('latitud').value = lat;
+      document.getElementById('longitud').value = lng;
+   });
+</script>

@@ -14,6 +14,7 @@ class VerPerfilAjenoController
     {
         $_SESSION['perfil_ajeno_id'] = $_POST['id'];
         $datosPerfil = $this->model->VerPerfilAjeno();
+
         if ($datosPerfil) {
             $this->presenter->render("view/PerfilAjeno.mustache", $datosPerfil);
         } else {
