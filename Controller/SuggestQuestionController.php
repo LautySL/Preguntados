@@ -1,5 +1,4 @@
 <?php
-// Archivo: Controller/SuggestQuestionController.php
 
 require_once __DIR__ . '/../helper/Database.php';
 require_once __DIR__ . '/../Model/SuggestedQuestionModel.php';
@@ -32,7 +31,7 @@ class SuggestQuestionController {
             ];
 
             if ($this->model->addSuggestedQuestion($pregunta, $categoria, $idUsuario, $respuestas)) {
-                echo "Pregunta sugerida con éxito.";
+                echo "Pregunta sugerida con éxito. Será añadida al juego en cuanto la apruebe un editor.";
             } else {
                 echo "Error al sugerir la pregunta.";
             }
