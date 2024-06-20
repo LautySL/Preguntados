@@ -100,15 +100,25 @@ public function getPreguntasReportadas()
             $queryRespuestas = "SELECT * FROM respuestas_sugeridas WHERE pregunta = $id";
             $respuestas = $this->database->execute($queryRespuestas);
 
+            // Obtener el último ID en la tabla pregunta
+            $queryUltimoIdPregunta = "SELECT MAX(id) as ultimo_id FROM pregunta";
+            $resultadoUltimoIdPregunta = $this->database->execute($queryUltimoIdPregunta)->fetch_assoc();
+            $nuevoIdPregunta = $resultadoUltimoIdPregunta['ultimo_id'] + 1;
+
             // Insertar en tabla pregunta
-            $queryInsertPregunta = "INSERT INTO pregunta (pregunta, fecha_creacion_pregunta) VALUES ('{$pregunta['pregunta']}', NOW())";
+            $queryInsertPregunta = "INSERT INTO pregunta (id, pregunta, categoria, fecha_creacion_pregunta) VALUES ($nuevoIdPregunta, '{$pregunta['pregunta']}', '{$pregunta['categoria']}', NOW())";
             $this->database->execute($queryInsertPregunta);
-            $nuevoIdPregunta = $this->database->getLastInsertId();
+
+            // Obtener el último ID en la tabla respuesta
+            $queryUltimoIdRespuesta = "SELECT MAX(id) as ultimo_id FROM respuesta";
+            $resultadoUltimoIdRespuesta = $this->database->execute($queryUltimoIdRespuesta)->fetch_assoc();
+            $nuevoIdRespuesta = $resultadoUltimoIdRespuesta['ultimo_id'] + 1;
 
             // Insertar respuestas
             while ($respuesta = $respuestas->fetch_assoc()) {
-                $queryInsertRespuesta = "INSERT INTO respuesta (pregunta, respuesta, es_la_correcta) VALUES ($nuevoIdPregunta, '{$respuesta['respuesta']}', {$respuesta['es_la_correcta']})";
+                $queryInsertRespuesta = "INSERT INTO respuesta (id, pregunta, respuesta, es_la_correcta) VALUES ($nuevoIdRespuesta, $nuevoIdPregunta, '{$respuesta['respuesta']}', {$respuesta['es_la_correcta']})";
                 $this->database->execute($queryInsertRespuesta);
+                $nuevoIdRespuesta++;
             }
 
             // Eliminar de preguntas y respuestas sugeridas

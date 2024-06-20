@@ -60,7 +60,7 @@
                         <li>{{respuesta}}</li>
                     </ul>
                 </td>
-                <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green" onclick="aprobarPregunta('{{id}}')">Aprobar</button></td>
+                <td><a href="/edicion/aprobarPregunta?id={{id}}" class="w3-button w3-round-xxlarge w3-center w3-green"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green" onclick="aprobarPregunta('{{id}}')">Aprobar</button></td>
                 <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red" onclick="rechazarPregunta('{{id}}')">Rechazar</button></td>
             </tr>
         {{/preguntas_sugeridas}}

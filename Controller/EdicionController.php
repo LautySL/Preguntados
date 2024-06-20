@@ -94,6 +94,7 @@ class EdicionController
                 'id' => $pregunta['id'],
                 'fecha' => $pregunta['fecha_creacion_pregunta'],
                 'pregunta' => $pregunta['pregunta'],
+                'categoría' => $pregunta['categoría'],
                 'respuesta' => $respuesta
             ];
         }
