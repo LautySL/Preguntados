@@ -103,7 +103,7 @@ public function getPreguntasReportadas()
             // Insertar en tabla pregunta
             $queryInsertPregunta = "INSERT INTO pregunta (pregunta, fecha_creacion_pregunta) VALUES ('{$pregunta['pregunta']}', NOW())";
             $this->database->execute($queryInsertPregunta);
-            $nuevoIdPregunta = $this->database->insert_id;
+            $nuevoIdPregunta = $this->database->getLastInsertId();
 
             // Insertar respuestas
             while ($respuesta = $respuestas->fetch_assoc()) {

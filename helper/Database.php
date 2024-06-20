@@ -13,7 +13,8 @@ class Database
         }
     }
 
-    public function query($sql){
+    public function query($sql)
+    {
         $result = mysqli_query($this->conn, $sql);
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
@@ -26,6 +27,21 @@ class Database
     public function getLastInsertId()
     {
         return $this->conn->insert_id;
+    }
+
+    public function begin_transaction()
+    {
+        mysqli_begin_transaction($this->conn);
+    }
+
+    public function commit()
+    {
+        mysqli_commit($this->conn);
+    }
+
+    public function rollback()
+    {
+        mysqli_rollback($this->conn);
     }
 
     public function __destruct()
