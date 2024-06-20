@@ -1,22 +1,23 @@
 <?php
-require_once ('vendor/jpgraph/jpgraph.php');
-require_once ('vendor/jpgraph/jpgraph_bar.php');
 class Grafico
-{}
+{
+    public function __construct()
+    {
+    }
 
-// Obten los datos necesarios del controlador
-// Aquí necesitarías ajustar el código para recibir los datos correctos del usuario
-$usuario_id = $_GET['usuario_id'];
-$datos_graficos = array(); // Obtén los datos de los gráficos del controlador
+    public function generarGraficoDeBarras($titulo, $datos, $etiquetas, $filename)
+    {
+        $grafico = new Graph(600, 400, 'auto');
+        $grafico->SetScale('textlin');
+        $grafico->title->Set($titulo);
+        $grafico->xaxis->SetTickLabels($etiquetas);
 
-// Aquí iría el código para generar los gráficos utilizando JPGraph
-// Por simplicidad, omitiré el código específico de JPGraph
-// Simplemente supongamos que $grafico_jugadores y $grafico_partidas son instancias válidas de gráficos de JPGraph
-// y que ya tienen sus datos configurados y se han creado adecuadamente
+        $barra = new BarPlot($datos);
+        $barra->SetColor('blue');
+        $barra->SetFillColor('lightblue');
 
-// Guardar los gráficos como imágenes
-$grafico_jugadores->Stroke('images/jugadores.png');
-$grafico_partidas->Stroke('images/partidas.png');
+        $grafico->Add($barra);
 
-// Redirigir a la vista del dashboard
-header('Location: dashboard.php');
+        $grafico->Stroke($filename);
+    }
+}

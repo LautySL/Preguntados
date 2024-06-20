@@ -3,11 +3,13 @@ class AdminController
 {
     private $presenter;
     private $model;
+    private $grafico;
 
-    public function __construct($Model, $Presenter)
+    public function __construct($Model, $Presenter, $grafico)
     {
         $this->model = $Model;
         $this->presenter = $Presenter;
+        $this->grafico = $grafico;
     }
 
     public function get()
@@ -16,15 +18,22 @@ class AdminController
         $this->presenter->render("view/admin.mustache");
     }
 
-    public function totalJugadores(){
+    public function totalJugadores() {
         $totalJugadores = $this->model->totalJugadores();
-        $data = [
-            'total_jugadores' => $totalJugadores
-        ];
+        $datos = [$totalJugadores]; // Datos del gráfico
+        $etiquetas = ['Total Jugadores']; // Etiquetas del gráfico
+
+        // Generar gráfico
+        $filename = '/public/img/grafico/total-jugadores.png';
+        $this->grafico->generarGraficoDeBarras("Total de Jugadores", $datos, $etiquetas, $filename);
+
+        // Preparar datos para la vista
+        $data = ['grafico-url' => $filename];
         $this->presenter->render('view/presentarDatos.mustache', $data);
     }
 
-    public function totalPartidas(){
+    public function totalPartidas()
+    {
         $totalPartidas = $this->model->totalPartidas();
         $data = [
             'total_partidas' => $totalPartidas
@@ -106,7 +115,7 @@ class AdminController
     {
         require_once ('vendor/jpgraph/jpgraph.php');
         require_once ('vendor/jpgraph/jpgraph_bar.php');
-        require_once('vendor/jpgraph/jpgraph_line.php');
+        require_once ('vendor/jpgraph/jpgraph_line.php');
 
         $data = array($datos['categoria1'], $datos['categoria2'], $datos['categoria3']);
         $graph = new Graph(400, 300, 'auto');
@@ -131,18 +140,18 @@ class AdminController
         // Renderizar la vista Mustache con los datos del gráfico
         $grafico = base64_encode($img_data);
 
-    // Preparar datos para la plantilla Mustache
-    return [
-        'grafico' => $grafico,
-        'titulo' => 'Ejemplo de Gráfico'
-    ];
+        // Preparar datos para la plantilla Mustache
+        return [
+            'grafico' => $grafico,
+            'titulo' => 'Ejemplo de Gráfico'
+        ];
     }
 
     public function tipoDeVisualizacion()
     {
         // Obtener los datos según el filtro seleccionado
         $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'dia'; // Valor por defecto
-    
+
         $datos = [
             'filtro' => $filtro,
             'total_jugadores' => $this->model->totalJugadores(),
@@ -155,22 +164,22 @@ class AdminController
             'total_usuarios_por_sexo' => $this->model->totalUsuariosPorSexo(),
             'total_usuarios_por_rango' => $this->model->totalUsuariosPorRango()
         ];
-    
+
         // Generar gráfico usando JPGraph
         $graficoData = $this->generarGraficoJPGraph($datos);
         $datos['grafico'] = $graficoData['grafico'];
         $datos['titulo'] = 'Ejemplo de Gráfico'; // Puedes personalizar el título según sea necesario
-    
+
         // Preparar datos para la lista
         $datos['lista'] = [
             ['nombre' => 'Ejemplo1', 'valor' => 'Valor1'],
             ['nombre' => 'Ejemplo2', 'valor' => 'Valor2'],
             // Agregar más datos según sea necesario
         ];
-    
+
         // Renderizar la vista Mustache con los datos
         $this->presenter->render('view/presentarDatos.mustache', $datos);
     }
 
-    
+
 }

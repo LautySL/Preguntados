@@ -4,6 +4,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 include_once("vendor\PHPMailer\src\Exception.php");
 include_once("vendor\PHPMailer\src\PHPMailer.php");
 include_once("vendor\PHPMailer\src\SMTP.php");
+require_once ('vendor/jpgraph/src/jpgraph.php');
+require_once ('vendor/jpgraph/src/jpgraph_bar.php');
 
 include_once ("Controller/RegistroController.php");
 include_once ("Controller/HomeController.php");
@@ -19,6 +21,7 @@ include_once ("Controller/EdicionController.php");
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
 include_once ("helper/MustachePresenter.php");
+include_once ("helper/Grafico.php");
 include_once ("vendor/mustache/src/Mustache/Autoloader.php");
 include_once ('vendor/PHPMailer/src/PHPMailer.php');
 
@@ -46,7 +49,7 @@ class Configuration
         return new JuegoController(self::getGameModel(), self::getPresenter());
     }
     public static function getAdminController(){
-        return new AdminController(self::getAdminModel(), self::getPresenter());
+        return new AdminController(self::getAdminModel(), self::getPresenter(), self::getGrafico());
     }
     public static function getActivacionController(){
         return new ActivacionController(self::getUserModel(), self::getPresenter());
@@ -106,6 +109,11 @@ class Configuration
     {
         $config = self::getConfig();
         return new Database($config["servername"], $config["username"], $config["database"], $config["password"]);
+    }
+
+    private static function getGrafico()
+    {
+        return new Grafico();
     }
 
     public static function getConfigMail()
