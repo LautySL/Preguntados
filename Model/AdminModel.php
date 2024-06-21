@@ -34,14 +34,12 @@ class AdminModel
             $data[] = $row['total_jugadores'];
         }
 
-        $filename = 'total_jugadores.png';
+        $filename = 'total_jugadores';
         try {
-            $this->grafico->generarGraficoDeBarras("Total de Jugadores", $data, $filename);
+            $data = ['total_jugadores' =>   $this->grafico->generarGraficoDeBarras("Total de Jugadores", $data, $filename)];
         } catch (Exception $e) {
             throw new Exception("Error del modelo al generar el gráfico de barras:" . $e->getMessage());
         }
-
-        $data = ['total_jugadores' => $filename];
 
         return $data;
     }

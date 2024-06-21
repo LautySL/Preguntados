@@ -24,9 +24,9 @@ class AdminController
         
             try {
                 $data = $this->model->totalJugadores($dateFrom, $dateTo);
-                
+                var_dump($data);
                 // Renderizar la vista con Mustache
-                $this->presenter->render('view/presentarDatos.mustache', ['data' => $data]);
+                $this->presenter->render('view/presentarDatos.mustache', $data);
             } catch (Exception $e) {
                 // Manejar el error adecuadamente
                 echo "Error: " . $e->getMessage();
