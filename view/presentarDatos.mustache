@@ -21,25 +21,9 @@
     </form>
 
         <h1>Gráfico de Datos</h1>
-        
-        <img src="{{total_jugadores}}" alt="Gráfico de Datos">
-
-        <img src="{{total_partidas}}" alt="Gráfico de Datos">
-
-        <img src="{{total_preguntas}}" alt="Gráfico de Datos">
-
-        <img src="{{total_preguntas_creadas}}" alt="Gráfico de Datos">
-
-        <img src="{{usuarios_nuevos}}" alt="Gráfico de Datos">
-
-        <img src="{{total_correctas}}" alt="Gráfico de Datos">
-
-        <img src="{{total_usuarios_por_pais}}" alt="Gráfico de Datos">
-
-        <img src="{{total_usuarios_por_sexo}}" alt="Gráfico de Datos">
-
-        <img src="{{total_usuarios_por_rango}}" alt="Gráfico de Datos">
-
+        {{#total_jugadores}}
+            <img src="\public\img\grafico\{{total_jugadores}}" alt="Gráfico de Datos">
+        {{/total_jugadores}}
 
         <!-- Mostrar la lista de datos -->
         <div>

@@ -15,7 +15,8 @@ class AdminModel
 
     public function totalJugadores($dateFrom, $dateTo)
     {
-    
+        $whereClause = '';
+
         if (!empty($dateFrom) && !empty($dateTo)) {
             $whereClause = " WHERE u.fecha_creacion >= '" . $dateFrom . "' AND u.fecha_creacion <= '" . $dateTo . "'";
         }
@@ -30,21 +31,16 @@ class AdminModel
         $data = array();
 
         while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+            $data[] = $row['total_jugadores'];
         }
 
-        $etiquetas = ['Total Jugadores']; // Etiquetas del gráfico
-
-        //Generar gráfico
-        //$filename = 'total-jugadores-' . uniqid();
         $filename = 'total_jugadores.png';
         try {
-            // Generar gráfico
-            $this->grafico->generarGraficoDeBarras("Total de Jugadores", $data, $etiquetas, $filename);
+            $this->grafico->generarGraficoDeBarras("Total de Jugadores", $data, $filename);
         } catch (Exception $e) {
-            throw new Exception("Error al generar el gráfico de barras: " . $e->getMessage());
+            throw new Exception("Error del modelo al generar el gráfico de barras:" . $e->getMessage());
         }
-        //Preparar datos para la vista
+
         $data = ['total_jugadores' => $filename];
 
         return $data;
