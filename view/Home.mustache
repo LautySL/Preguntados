@@ -25,26 +25,10 @@
         <a href="/juego/iniciarPartida" class="boton-home w3-btn w3-round-xxlarge w3-pink">Jugar</a><br><br>
         <a href="/ranking/get" class="boton-home w3-btn w3-round-xxlarge w3-pink">Ver Ranking</a><br><br>
         <button type="button" class="boton-home w3-btn w3-round-xxlarge w3-pink" onclick="abrirPopup()">Sugerir Pregunta</button><br><br>
+         
 
-        <h3 class="w3-center">Tu puntuación más alta es : {{puntuacion}}</h3>
-        <h3 class="w3-center">Tus ultimas partidas</h3>
-        <ul class="w3-ul">
-            {{#partidasUsuario}}
-                <li class="w3-bar w3-card w3-margin-bottom w3-pale-red">
-                    <div class="w3-bar-item">
-                        <span class="w3-large">{{fecha_creacion_partida}}</span><br>
-                        <span>Puntaje: <b>{{puntaje}}</b></span>
-                    </div>
-                </li>
-            {{/partidasUsuario}}
-        </ul>
-
-<<<<<<< Updated upstream
-        {{^partidasUsuario}}
-            <p>Aún no ha jugado ninguna partida. <a href="/juego/iniciarPartida">Jugá ahora</a>.</p>
-=======
-    <h3 class="w3-center">Tu puntuación más alta es: {{puntuacion}}</h3>
-    <h3 class="w3-center">Tus ultimas 5 partidas son:</h3>
+    <h3 class="w3-center">Tu puntuación más alta es : {{puntuacion}}</h3>
+    <h3 class="w3-center">Tus ultimas partidas</h3>
     <ul class="w3-ul">
         {{#partidasUsuario}}
         <li class="w3-bar w3-card w3-margin-bottom w3-pale-red">
@@ -53,10 +37,15 @@
                 <span>Puntaje: <b>{{puntaje}}</b></span>
             </div>
         </li>
->>>>>>> Stashed changes
         {{/partidasUsuario}}
+    </ul>
 
-        <div id="popupSugerir" class="w3-modal" style="display:none;">
+    {{^partidasUsuario}} <!-- Verifica si partidasUsuario está vacío -->
+    <p>Aún no ha jugado ninguna partida. <a href="/juego/iniciarPartida" >Jugá ahora</a>.</p>
+    {{/partidasUsuario}}
+
+
+    <div id="popupSugerir" class="w3-modal" style="display:none;">
             <div class="w3-modal-content w3-animate-zoom">
                 <div class="w3-container w3-padding">
                     <span onclick="cerrarPopup()" class="w3-button w3-display-topright">&times;</span>
@@ -94,6 +83,7 @@
             </div>
         </div>
     {{/isJugador}}
+
 
     {{#isEditor}}
         <a href="/edicion/verPreguntas" class="boton-home w3-btn w3-round-xxlarge w3-pink">Modificar Preguntas</a><br><br>

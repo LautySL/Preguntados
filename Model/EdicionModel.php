@@ -154,9 +154,9 @@ class EdicionModel
 
     public function eliminarPregunta($id_a_eliminar)
     {
-<<<<<<< Updated upstream
+
         $query = "DELETE FROM pregunta WHERE id = '$id_a_eliminar'";
-=======
+
         $query = "DELETE FROM respuesta WHERE pregunta = '$id_a_eliminar'"; 
         $this->database->execute($query);
 
@@ -167,7 +167,7 @@ class EdicionModel
         $this->database->execute($query);
 
         $query = "DELETE FROM pregunta WHERE id = '$id_a_eliminar'"; 
->>>>>>> Stashed changes
+
         $this->database->execute($query);
         
         return true;
