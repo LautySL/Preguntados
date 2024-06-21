@@ -63,9 +63,9 @@ class EdicionController
     public function verPreguntasReportadas()
     {
         $preguntasReportadas = $this->model->getPreguntasReportadas();
-    
+
         $data = [];
-    
+
         foreach ($preguntasReportadas as $reporte) {
 
             $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($reporte['id']);
@@ -77,7 +77,7 @@ class EdicionController
                 'respuesta' => $respuesta
             ];
         }
-    
+
         $this->Presenter->render('view/vistaEditor.mustache', $data);
     }
 
@@ -104,8 +104,8 @@ class EdicionController
 
     public function aprobarPreguntaSugerida()
     {
-        if (isset($_POST['id'])) {
-            $id = $_POST['id'];
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
             $aprobado = $this->model->aprobarPreguntaSugerida($id);
 
             if ($aprobado) {
@@ -120,8 +120,8 @@ class EdicionController
 
     public function rechazarPreguntaSugerida()
     {
-        if (isset($_POST['id'])) {
-            $id = $_POST['id'];
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
             $rechazado = $this->model->rechazarPreguntaSugerida($id);
 
             if ($rechazado) {
@@ -139,7 +139,7 @@ class EdicionController
         if (isset($_GET['id']) && isset($_GET['tipo'])) {
             $id = $_GET['id'];
             $tipo = $_GET['tipo'];
-    
+
             switch ($tipo) {
                 case 'normal':
                     $eliminar = $this->model->eliminarPregunta($id);
@@ -172,21 +172,21 @@ class EdicionController
                     echo "Tipo de pregunta no válido.";
                     return;
             }
-    
+
         } else {
             echo "No se ha proporcionado el ID de la pregunta o el tipo.";
         }
     }
-    
+
     public function modificarPregunta()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
             $nuevaPregunta = $_POST['modificarPregunta'];
             $nuevaRespuesta = $_POST['modificarRespuesta'];
-    
+
             $modificado = $this->model->modificarPregunta($id, $nuevaPregunta, $nuevaRespuesta);
-    
+
             if ($modificado) {
                 header('Location: /edicion/verPreguntas');
                 exit;
@@ -197,6 +197,6 @@ class EdicionController
             echo "Método no permitido para modificar la pregunta.";
         }
     }
-    
+
 
 }

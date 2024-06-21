@@ -1,11 +1,11 @@
 <?php
-
-
 use PHPMailer\PHPMailer\PHPMailer;
 
 include_once("vendor\PHPMailer\src\Exception.php");
 include_once("vendor\PHPMailer\src\PHPMailer.php");
 include_once("vendor\PHPMailer\src\SMTP.php");
+require_once ('vendor/jpgraph/src/jpgraph.php');
+require_once ('vendor/jpgraph/src/jpgraph_bar.php');
 
 include_once ("Controller/RegistroController.php");
 include_once ("Controller/HomeController.php");
@@ -21,7 +21,9 @@ include_once ("Controller/SuggestQuestionController.php");
 
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
+include_once ("helper/ApiLocation.php");
 include_once ("helper/MustachePresenter.php");
+include_once ("helper/Grafico.php");
 include_once ("vendor/mustache/src/Mustache/Autoloader.php");
 include_once ('vendor/PHPMailer/src/PHPMailer.php');
 
@@ -38,7 +40,7 @@ class Configuration
     //controller
     public static function getRegistroController()
     {
-        return new RegistroController(self::getUserModel(), self::getPresenter());
+        return new RegistroController(self::getUserModel(), self::getPresenter(), self::getApiLocation());
     }
     public static function getHomeController(){
         return new HomeController(self::getUserModel(), self::getPresenter());
@@ -50,7 +52,7 @@ class Configuration
         return new JuegoController(self::getGameModel(), self::getPresenter());
     }
     public static function getAdminController(){
-        return new AdminController(self::getAdminModel(), self::getPresenter());
+        return new AdminController(self::getAdminModel(), self::getPresenter(), self::getGrafico());
     }
     public static function getActivacionController(){
         return new ActivacionController(self::getUserModel(), self::getPresenter());
@@ -121,6 +123,16 @@ class Configuration
         $config = self::getConfig();
         return new Database($config["servername"], $config["username"], $config["database"], $config["password"]);
     }
+    public static function getApiLocation()
+    {
+        $config =self::getConfig();
+        return new ApiLocation($config["apikey"]);
+    }
+
+    private static function getGrafico()
+    {
+        return new Grafico();
+    }
 
     public static function getConfigMail()
     {
@@ -131,5 +143,6 @@ class Configuration
     {
         return new PHPMailer();
     }
+
 
 }

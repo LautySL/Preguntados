@@ -56,12 +56,10 @@
                 <td>{{fecha}}</td>
                 <td>{{pregunta}}</td>
                 <td>
-                    <ul>
-                        <li>{{respuesta}}</li>
-                    </ul>
+                    <li>{{respuesta}}</li>
                 </td>
-                <td><a href="/edicion/aprobarPregunta?id={{id}}" class="w3-button w3-round-xxlarge w3-center w3-green"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green" onclick="aprobarPregunta('{{id}}')">Aprobar</button></td>
-                <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red" onclick="rechazarPregunta('{{id}}')">Rechazar</button></td>
+                <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green" onclick="aprobarPregunta({{id}})">Aprobar</button></td>
+                <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red" onclick="rechazarPregunta({{id}})">Rechazar</button></td>
             </tr>
         {{/preguntas_sugeridas}}
         </tbody>
@@ -88,63 +86,61 @@
 </div>
 
 <script>
-function abrirPopup(id, pregunta, respuesta) {
-    var popup = document.getElementById("popupModificar");
-    var idInput = document.getElementById("idPregunta");
-    var preguntaInput = document.getElementById("modificarPregunta");
-    var respuestaInput = document.getElementById("modificarRespuesta");
+    function abrirPopup(id, pregunta, respuesta) {
+        var popup = document.getElementById("popupModificar");
+        var idInput = document.getElementById("idPregunta");
+        var preguntaInput = document.getElementById("modificarPregunta");
+        var respuestaInput = document.getElementById("modificarRespuesta");
 
-    // Asignar valores a los campos del formulario
-    idInput.value = id;
-    preguntaInput.value = pregunta;
-    respuestaInput.value = respuesta;
+        // Asignar valores a los campos del formulario
+        idInput.value = id;
+        preguntaInput.value = pregunta;
+        respuestaInput.value = respuesta;
 
-    // Mostrar el popup
-    popup.style.display = "block";
-}
+        // Mostrar el popup
+        popup.style.display = "block";
+    }
 
-function cerrarPopup() {
-    var popup = document.getElementById("popupModificar");
-    popup.style.display = "none";
-}
+    function cerrarPopup() {
+        var popup = document.getElementById("popupModificar");
+        popup.style.display = "none";
+    }
 
-function aprobarPregunta(id) {
-    fetch('/edicion/aprobarPreguntaSugerida', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `id=${id}`
-    })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    document.getElementById(`pregunta-${id}`).remove();
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-}
+    function aprobarPregunta(id) {
+        fetch(`/edicion/aprobarPreguntaSugerida?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById(`pregunta-${id}`).remove();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+    }
 
-function rechazarPregunta(id) {
-    fetch('/edicion/rechazarPreguntaSugerida', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `id=${id}`
-    })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    document.getElementById(`pregunta-${id}`).remove();
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-}
+    function rechazarPregunta(id) {
+        fetch(`/edicion/rechazarPreguntaSugerida?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById(`pregunta-${id}`).remove();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+    }
 </script>
 
 

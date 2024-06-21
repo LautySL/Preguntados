@@ -11,15 +11,15 @@ class EdicionModel
 
     public function getPreguntas()
     {
-    $query = "SELECT * FROM pregunta";
-    $result = $this->database->execute($query);
-    $preguntas = [];
+        $query = "SELECT * FROM pregunta";
+        $result = $this->database->execute($query);
+        $preguntas = [];
 
-    while ($row = $result->fetch_assoc()) {
-        $preguntas[] = $row;
-    }
+        while ($row = $result->fetch_assoc()) {
+            $preguntas[] = $row;
+        }
 
-    return $preguntas;
+        return $preguntas;
     }
 
     public function getPreguntasSugeridas()
@@ -37,36 +37,36 @@ class EdicionModel
 
 
 
-public function getPreguntaById($id)
+    public function getPreguntaById($id)
     {
-    $query = "SELECT * FROM pregunta WHERE id = $id";
-    $result = $this->database->execute($query);
-    return $result;
+        $query = "SELECT * FROM pregunta WHERE id = $id";
+        $result = $this->database->execute($query);
+        return $result;
     }
 
     public function getCategoriaByReporte($pregunta_id)
     {
-    $query = "SELECT * FROM reportes_preguntas WHERE pregunta_id = $pregunta_id";
-    $result = $this->database->execute($query);
-    return $result;
+        $query = "SELECT * FROM reportes_preguntas WHERE pregunta_id = $pregunta_id";
+        $result = $this->database->execute($query);
+        return $result;
     }
 
-public function getPreguntasReportadas()
+    public function getPreguntasReportadas()
     {
-    $query = "SELECT rp.id AS reporte_id, rp.fecha_reporte, p.pregunta, r.respuesta
+        $query = "SELECT rp.id AS reporte_id, rp.fecha_reporte, p.pregunta, r.respuesta
               FROM reportes_preguntas rp
               JOIN pregunta p ON rp.pregunta_id = p.id
               JOIN respuesta r ON p.id = r.pregunta
               ORDER BY rp.fecha_reporte DESC";
 
-    $result = $this->database->execute($query);
-    $preguntas = [];
+        $result = $this->database->execute($query);
+        $preguntas = [];
 
-    while ($row = $result->fetch_assoc()) {
-        $preguntas[] = $row;
-    }
+        while ($row = $result->fetch_assoc()) {
+            $preguntas[] = $row;
+        }
 
-    return $preguntas;
+        return $preguntas;
     }
 
     public function getRespuestaCorrectaByPreguntaId($preguntaId)
@@ -81,10 +81,10 @@ public function getPreguntasReportadas()
     {
         $queryPregunta = "UPDATE pregunta SET pregunta = '$nuevaPregunta' WHERE id = $id";
         $this->database->execute($queryPregunta);
-    
+
         $queryRespuesta = "UPDATE respuesta SET respuesta = '$nuevaRespuesta' WHERE pregunta = $id AND es_la_correcta = TRUE";
         $this->database->execute($queryRespuesta);
-    
+
         return true;
     }
 
@@ -106,7 +106,7 @@ public function getPreguntasReportadas()
             $nuevoIdPregunta = $resultadoUltimoIdPregunta['ultimo_id'] + 1;
 
             // Insertar en tabla pregunta
-            $queryInsertPregunta = "INSERT INTO pregunta (id, pregunta, categoria, fecha_creacion_pregunta) VALUES ($nuevoIdPregunta, '{$pregunta['pregunta']}', '{$pregunta['categoria']}', NOW())";
+            $queryInsertPregunta = "INSERT INTO pregunta (id, pregunta, categoría, fecha_creacion_pregunta) VALUES ($nuevoIdPregunta, '{$pregunta['pregunta']}', '{$pregunta['categoría']}', NOW())";
             $this->database->execute($queryInsertPregunta);
 
             // Obtener el último ID en la tabla respuesta
@@ -154,21 +154,21 @@ public function getPreguntasReportadas()
 
     public function eliminarPregunta($id_a_eliminar)
     {
-        $query = "DELETE FROM pregunta WHERE id = '$id_a_eliminar'"; 
+        $query = "DELETE FROM pregunta WHERE id = '$id_a_eliminar'";
         $this->database->execute($query);
         return true;
     }
 
     public function eliminarPreguntaReportada($id_reporte)
     {
-        $queryReporte = "DELETE FROM reportes_preguntas WHERE id = '$id_reporte'"; 
+        $queryReporte = "DELETE FROM reportes_preguntas WHERE id = '$id_reporte'";
         $this->database->execute($queryReporte);
 
         $queryPregunta = "DELETE FROM pregunta WHERE id = (
             SELECT pregunta_id FROM reportes_preguntas WHERE id = '$id_reporte'
         )";
         $this->database->execute($queryPregunta);
-    
+
         return true;
     }
 

@@ -1,5 +1,6 @@
  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <h1 class="encabezado w3-pink w3-center w3-padding">Registro de usuario</h1><br><br>
 
  <!-- Popup de Mensaje -->
@@ -32,18 +33,6 @@
       <option value="Prefiero no cargarlo">Prefiero no cargarlo</option>
   </select><br><br>
 
-  <label for="pais">País:</label>
-    <select id="pais" name="pais" class="w3-round-xxlarge">
-      <option value="Selecciona un país">Selecciona un país</option>
-      <option value="Argentina">Argentina</option>
-      <option value="Chile">Chile</option>
-      <option value="Uruguay">Uruguay</option>
-      <option value="Paraguay">Paraguay</option>
-    </select>
-        
-  <label for="ciudad">Ciudad:</label>
-  <input type="text" id="ciudad" name="ciudad" class="w3-round-xxlarge"><br><br>
-
   <label for="contrasena">Contraseña:</label>
   <input type="password" id="contrasena" name="contrasena" class="w3-round-xxlarge">
 
@@ -69,45 +58,53 @@
 
 
  <script>
+     var map = L.map('map').setView([-34.6118, -58.4173], 13); // Buenos Aires
+     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         maxZoom: 19,
+     }).addTo(map);
 
-   var map = L.map('map').setView([-34.6118, -58.4173], 13); // Buenos Aires
-   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-     maxZoom: 19,
-   }).addTo(map);
+     var marker;
 
-   var marker;
 
-   // Intentar obtener la ubicación actual del usuario
-   if (navigator.geolocation) {
-     navigator.geolocation.getCurrentPosition(function(position) {
-       var lat = position.coords.latitude;
-       var lng = position.coords.longitude;
+     if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(function(position) {
+             var lat = position.coords.latitude;
+             var lng = position.coords.longitude;
 
-       // Establecer la vista del mapa en la ubicación actual del usuario
-       map.setView([lat, lng], 13);
 
-       // Añadir un marcador en la ubicación actual del usuario
-       marker = L.marker([lat, lng]).addTo(map);
+             map.setView([lat, lng], 13);
 
-       // Actualizar los campos de entrada con la ubicación actual
-       document.getElementById('latitud').value = lat;
-       document.getElementById('longitud').value = lng;
-     }, function(error) {
-       console.error("Error al obtener la ubicación: " + error.message);
-     });
-   } else {
-     console.error("El navegador no soporta la geolocalización.");
-   }
 
-   // Añadir un marcador al hacer clic en el mapa
-   map.on('click', function(e) {
-     if (marker) {
-       map.removeLayer(marker);
+             marker = L.marker([lat, lng]).addTo(map);
+
+
+             document.getElementById('latitud').value = lat;
+             document.getElementById('longitud').value = lng;
+         }, function(error) {
+             console.error("Error al obtener la ubicación: " + error.message);
+         });
+     } else {
+         console.error("El navegador no soporta la geolocalización.");
      }
-     marker = L.marker(e.latlng).addTo(map);
-     document.getElementById('latitud').value = e.latlng.lat;
-     document.getElementById('longitud').value = e.latlng.lng;
-   });
+
+     map.on('click', function(e) {
+         if (marker) {
+             map.removeLayer(marker);
+         }
+         marker = L.marker(e.latlng).addTo(map);
+         var lat = e.latlng.lat;
+         var lng = e.latlng.lng;
+
+         document.getElementById('latitud').value = lat;
+         document.getElementById('longitud').value = lng;
+
+     });
  </script>
+
+
+
+
+
+
 
 <a href="/home/get" class="w3-button w3-round-xxlarge w3-gray">Volver</a>
