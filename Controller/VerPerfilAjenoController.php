@@ -12,8 +12,9 @@ class VerPerfilAjenoController
 
     public function get()
     {
-        $_SESSION['perfil_ajeno_id'] = $_POST['id'];
-        $datosPerfil = $this->model->VerPerfilAjeno();
+
+        $userId =  htmlspecialchars($_GET['user']);
+        $datosPerfil = $this->model->VerPerfilAjeno($userId);
 
         if ($datosPerfil) {
             $this->presenter->render("view/PerfilAjeno.mustache", $datosPerfil);

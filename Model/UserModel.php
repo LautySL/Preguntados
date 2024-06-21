@@ -138,10 +138,8 @@ class UserModel
         return $resultado;
     }
 
-    public function VerPerfilAjeno()
+    public function VerPerfilAjeno($id)
     {
-        if (isset($_SESSION['perfil_ajeno_id'])) {
-            $id = $_SESSION['perfil_ajeno_id'];
             $sql = "SELECT * FROM usuario WHERE id = '$id'";
             $result = $this->database->query($sql);
 
@@ -152,10 +150,7 @@ class UserModel
                 echo "No se encontraron datos para el ID: " . $id;
                 return null;
             }
-        } else {
-            echo "ID de perfil ajeno no está seteado en la sesión.";
-            return null;
-        }
+
     }
     public function getMaxPuntaje($usuario)
     {
