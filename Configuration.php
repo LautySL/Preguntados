@@ -52,7 +52,7 @@ class Configuration
         return new JuegoController(self::getGameModel(), self::getPresenter());
     }
     public static function getAdminController(){
-        return new AdminController(self::getAdminModel(), self::getPresenter(), self::getGrafico());
+        return new AdminController(self::getAdminModel(), self::getPresenter());
     }
     public static function getActivacionController(){
         return new ActivacionController(self::getUserModel(), self::getPresenter());
@@ -89,7 +89,7 @@ class Configuration
     }
     public static function getAdminModel()
     {
-        return new AdminModel(self::Database());
+        return new AdminModel(self::Database(), self::getGrafico());
     }
     public static function getEdicionModel()
     {

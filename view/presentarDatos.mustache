@@ -9,74 +9,37 @@
 <body>
 
 <div class="w3-container">
-   
-    <form class="w3-row-padding" action="/admin/tipoDeVisualizacion" method="get">
-        <div class="w3-quarter">
-            <label for="filtro">Filtrar por:</label>
-            <select id="filtro" name="filtro">
-                <option value="dia">Día</option>
-                <option value="semana">Semana</option>
-                <option value="mes">Mes</option>
-                <option value="ano">Año</option>
-            </select>
-        </div>
-
-        <button type="submit" class="w3-btn w3-round-xxlarge w3-pink">Aplicar Filtro</button>
-    </form>
 
     <div class="w3-container">
-        <h2>Datos Estadísticos</h2>
-
-        <p>Filtrado por: {{filtro}}</p>
+    <h2>Generar Gráfico</h2>
+    <form action="/admin/totalJugadores" method="post">
+        <label>Fecha Inicio: </label>
+        <input type="date" name="dateFrom" required>
+        <label>Fecha Fin: </label>
+        <input type="date" name="dateTo" required>
+        <button type="submit">Generar Gráfico</button>
+    </form>
 
         <h1>Gráfico de Datos</h1>
-    <img src="{{grafico-url}}" alt="Gráfico de Datos">
-
-        {{#total_jugadores}}
-        <p>Cantidad de jugadores totales: {{total_jugadores}}</p>
-        {{/total_jugadores}}
-
-        {{#total_partidas}}
-        <p>Cantidad de partidas totales: {{total_partidas}}</p>
-        {{/total_partidas}}
-
-        {{#total_preguntas}}
-        <p>Cantidad de preguntas totales: {{total_preguntas}}</p>
-        {{/total_preguntas}}
-
-        {{#total_preguntas_creadas}}
-        <p>Cantidad de preguntas creadas: {{total_preguntas_creadas}}</p>
-        {{/total_preguntas_creadas}}
-
-        {{#usuarios_nuevos}}
-        <p>Cantidad de usuarios nuevos: {{usuarios_nuevos}}</p>
-        {{/usuarios_nuevos}}
-
-<!--GRAFICO DE BARRAS -->
-        {{#total_correctas}}
-        <p>Cantidad de preguntas respondidas bien por jugador: {{total_correctas}}</p>
-        {{/total_correctas}}
-
-<!--GRAFICO DE BARRAS -->
-        {{#total_usuarios_por_pais}}
-        <p>Cantidad de jugadores por pais: {{total_usuarios_por_pais}}</p>
-        {{/total_usuarios_por_pais}}
-
-<!--GRAFICO DE BARRAS -->
-        {{#total_usuarios_por_sexo}}
-        <p>Cantidad de jugadores por sexo: {{total_usuarios_por_sexo}}</p>
-        {{/total_usuarios_por_sexo}}
-
-<!--GRAFICO DE BARRAS -->
-        {{#total_usuarios_por_rango}}
-        <p>Cantidad de jugadores por rango etario: {{total_usuarios_por_rango}}</p>
-        {{/total_usuarios_por_rango}}
         
-        <!-- Mostrar el gráfico generado -->
-        <div>
-            <p>Gráfico de Ejemplo</p>
-            <img src="data:image/jpeg;base64,{{grafico}}" alt="Gráfico de {{titulo}}">
-        </div>
+        <img src="{{total_jugadores}}" alt="Gráfico de Datos">
+
+        <img src="{{total_partidas}}" alt="Gráfico de Datos">
+
+        <img src="{{total_preguntas}}" alt="Gráfico de Datos">
+
+        <img src="{{total_preguntas_creadas}}" alt="Gráfico de Datos">
+
+        <img src="{{usuarios_nuevos}}" alt="Gráfico de Datos">
+
+        <img src="{{total_correctas}}" alt="Gráfico de Datos">
+
+        <img src="{{total_usuarios_por_pais}}" alt="Gráfico de Datos">
+
+        <img src="{{total_usuarios_por_sexo}}" alt="Gráfico de Datos">
+
+        <img src="{{total_usuarios_por_rango}}" alt="Gráfico de Datos">
+
 
         <!-- Mostrar la lista de datos -->
         <div>
@@ -88,6 +51,9 @@
             </ul>
         </div>
     </div>
+</div>
+<div class="w3-center">
+    <a  href="/admin/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Atras</a>
 </div>
 
 </body>

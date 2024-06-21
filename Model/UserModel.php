@@ -111,7 +111,7 @@ class UserModel
 
     public function getRankingData()
     {
-        $sql = "SELECT u.id, u.nombre_de_usuario, SUM(puntaje) AS max_puntaje
+        $sql = "SELECT u.id, u.nombre_de_usuario, COUNT(puntaje) AS partidas_por_jugador, MAX(puntaje) AS max_puntaje, SUM(puntaje) AS puntaje_acumulado
         FROM usuario u
         JOIN jugador j ON u.id = j.id
         JOIN partida p ON j.id = p.jugador
@@ -124,6 +124,7 @@ class UserModel
         while ($row = $result->fetch_assoc()) {
             $rankingData[] = $row;
         }
+        
 
         return $rankingData;
     }

@@ -39,8 +39,21 @@
             {{/partidasUsuario}}
         </ul>
 
+<<<<<<< Updated upstream
         {{^partidasUsuario}}
             <p>Aún no ha jugado ninguna partida. <a href="/juego/iniciarPartida">Jugá ahora</a>.</p>
+=======
+    <h3 class="w3-center">Tu puntuación más alta es: {{puntuacion}}</h3>
+    <h3 class="w3-center">Tus ultimas 5 partidas son:</h3>
+    <ul class="w3-ul">
+        {{#partidasUsuario}}
+        <li class="w3-bar w3-card w3-margin-bottom w3-pale-red">
+            <div class="w3-bar-item">
+                <span class="w3-large">{{fecha_creacion_partida}}</span><br>
+                <span>Puntaje: <b>{{puntaje}}</b></span>
+            </div>
+        </li>
+>>>>>>> Stashed changes
         {{/partidasUsuario}}
 
         <div id="popupSugerir" class="w3-modal" style="display:none;">

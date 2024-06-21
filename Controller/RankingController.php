@@ -1,8 +1,5 @@
 <?php
 
-require_once 'helper/MustachePresenter.php';
-require_once 'Model/UserModel.php';
-
 class RankingController {
     private $presenter;
     private $model;

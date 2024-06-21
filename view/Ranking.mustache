@@ -13,7 +13,10 @@
     <tr class="w3-pink">
         <th>ID</th>
         <th>Nombre de Usuario</th>
+        <th>Partidas Jugadas</th>
+        <th>Puntajes Maximo</th>
         <th>Puntajes Acumulados</th>
+        <th>QR</th>
     </tr>
     </thead>
     <tbody>
@@ -26,9 +29,13 @@
                 <button type="submit" style="background:none;border:none;text-decoration:underline;cursor:pointer;padding:0;">
                     {{nombre_de_usuario}}
                 </button>
-        </form>
+                </form>
             </td>
+            <td>{{partidas_por_jugador}}</td>
             <td>{{max_puntaje}}</td>
+            <td>{{puntaje_acumulado}}</td>
+            <td>{{qr}}</td>
+            
         </tr>
     {{/players}}
     </tbody>

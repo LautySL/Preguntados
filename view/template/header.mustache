@@ -12,7 +12,7 @@
 <header class="contenedor-header w3-pale-red" >
     <div class="marca">
       <img src="/public/img/logo.svg" alt="logo" class="logo"/>
-      <h3 class="w3-left-align">Pregunta2</h3>
+      <a href="/home/get"><h3 class="w3-left-align">Pregunta2</h3></a>
     </div>
     {{#usuario}}
     <div class="contenedor-perfil">
@@ -20,7 +20,7 @@
       <a href="/login/logout" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Cerrar Sesión</a>
       {{! falsa foto de perfil que no tendría que aparecer si no estas logueado }}
 
-        <img src="/public/img/fotoPerfil/{{foto-de-perfil}}"class="foto-perfil-header w3-circle w3-border w3-margin "  alt="/public/img/perfil_placeholder.png"/>
+        <img src="/public/img/fotoPerfil/{{foto-de-perfil}}"class="foto-perfil-header w3-circle w3-border w3-margin"  alt="/public/img/perfil_placeholder.png"/>
 
         {{/usuario}}
     </div>

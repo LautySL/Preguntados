@@ -3,13 +3,11 @@ class AdminController
 {
     private $presenter;
     private $model;
-    private $grafico;
 
-    public function __construct($Model, $Presenter, $grafico)
+    public function __construct($Model, $Presenter)
     {
         $this->model = $Model;
         $this->presenter = $Presenter;
-        $this->grafico = $grafico;
     }
 
     public function get()
@@ -19,17 +17,25 @@ class AdminController
     }
 
     public function totalJugadores() {
-        $totalJugadores = $this->model->totalJugadores();
-        $datos = [$totalJugadores]; // Datos del gráfico
-        $etiquetas = ['Total Jugadores']; // Etiquetas del gráfico
 
-        // Generar gráfico
-        $filename = '/public/img/grafico/total-jugadores.png';
-        $this->grafico->generarGraficoDeBarras("Total de Jugadores", $datos, $etiquetas, $filename);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $dateFrom = $_POST['dateFrom'] ?? '';
+            $dateTo = $_POST['dateTo'] ?? '';
+        
+            try {
+                $data = $this->model->totalJugadores($dateFrom, $dateTo);
+                
+                // Renderizar la vista con Mustache
+                $this->presenter->render('view/presentarDatos.mustache', ['data' => $data]);
+            } catch (Exception $e) {
+                // Manejar el error adecuadamente
+                echo "Error: " . $e->getMessage();
+            }
+        } else {
+            // Mostrar la vista inicial
+            $this->presenter->render('view/presentarDatos.mustache');
+        }
 
-        // Preparar datos para la vista
-        $data = ['grafico-url' => $filename];
-        $this->presenter->render('view/presentarDatos.mustache', $data);
     }
 
     public function totalPartidas()
@@ -110,75 +116,36 @@ class AdminController
             exit();
         }
     }
-    // Ejemplo de método para generar gráfico de barras con JPGraph
-    public function generarGraficoJPGraph($datos)
-    {
-        require_once ('vendor/jpgraph/jpgraph.php');
-        require_once ('vendor/jpgraph/jpgraph_bar.php');
-        require_once ('vendor/jpgraph/jpgraph_line.php');
-
-        $data = array($datos['categoria1'], $datos['categoria2'], $datos['categoria3']);
-        $graph = new Graph(400, 300, 'auto');
-        $graph->SetScale('textlin');
-
-        // Crear el gráfico de barras
-        $barplot = new BarPlot($data);
-        $barplot->SetFillColor('blue');
-        $barplot->SetWidth(0.5);
-        $graph->Add($barplot);
-
-        // Configurar título y ejes
-        $graph->title->Set('Gráfico de Ejemplo');
-        $graph->xaxis->title->Set('Categorías');
-        $graph->yaxis->title->Set('Valores');
-
-        // Capturar la salida del gráfico como una imagen
-        ob_start();
-        $graph->Stroke();
-        $img_data = ob_get_clean();
-
-        // Renderizar la vista Mustache con los datos del gráfico
-        $grafico = base64_encode($img_data);
-
-        // Preparar datos para la plantilla Mustache
-        return [
-            'grafico' => $grafico,
-            'titulo' => 'Ejemplo de Gráfico'
-        ];
-    }
 
     public function tipoDeVisualizacion()
     {
-        // Obtener los datos según el filtro seleccionado
-        $filtro = isset($_GET['filtro']) ? $_GET['filtro'] : 'dia'; // Valor por defecto
 
-        $datos = [
-            'filtro' => $filtro,
-            'total_jugadores' => $this->model->totalJugadores(),
-            'total_partidas' => $this->model->totalPartidas(),
-            'total_preguntas' => $this->model->totalPreguntas(),
-            'total_preguntas_creadas' => $this->model->totalPreguntasCreadas(),
-            'usuarios_nuevos' => $this->model->usuariosNuevos(),
-            'total_correctas' => $this->model->totalCorrectas(),
-            'total_usuarios_por_pais' => $this->model->totalUsuariosPorPais(),
-            'total_usuarios_por_sexo' => $this->model->totalUsuariosPorSexo(),
-            'total_usuarios_por_rango' => $this->model->totalUsuariosPorRango()
-        ];
+        // $datos = [
+        //     'total_jugadores' => $this->model->totalJugadores(),
+        //     'total_partidas' => $this->model->totalPartidas(),
+        //     'total_preguntas' => $this->model->totalPreguntas(),
+        //     'total_preguntas_creadas' => $this->model->totalPreguntasCreadas(),
+        //     'usuarios_nuevos' => $this->model->usuariosNuevos(),
+        //     'total_correctas' => $this->model->totalCorrectas(),
+        //     'total_usuarios_por_pais' => $this->model->totalUsuariosPorPais(),
+        //     'total_usuarios_por_sexo' => $this->model->totalUsuariosPorSexo(),
+        //     'total_usuarios_por_rango' => $this->model->totalUsuariosPorRango()
+        // ];
 
-        // Generar gráfico usando JPGraph
-        $graficoData = $this->generarGraficoJPGraph($datos);
-        $datos['grafico'] = $graficoData['grafico'];
-        $datos['titulo'] = 'Ejemplo de Gráfico'; // Puedes personalizar el título según sea necesario
+        // // Generar gráfico usando JPGraph
+        // $graficoData = $this->($datos);
+        // $datos['grafico'] = $graficoData['grafico'];
+        // $datos['titulo'] = 'Ejemplo de Gráfico'; // Puedes personalizar el título según sea necesario
 
-        // Preparar datos para la lista
-        $datos['lista'] = [
-            ['nombre' => 'Ejemplo1', 'valor' => 'Valor1'],
-            ['nombre' => 'Ejemplo2', 'valor' => 'Valor2'],
-            // Agregar más datos según sea necesario
-        ];
+        // // Preparar datos para la lista
+        // $datos['lista'] = [
+        //     ['nombre' => 'Ejemplo1', 'valor' => 'Valor1'],
+        //     ['nombre' => 'Ejemplo2', 'valor' => 'Valor2'],
+        //     // Agregar más datos según sea necesario
+        // ];
 
-        // Renderizar la vista Mustache con los datos
-        $this->presenter->render('view/presentarDatos.mustache', $datos);
+        // // Renderizar la vista Mustache con los datos
+        // $this->presenter->render('view/presentarDatos.mustache', $datos);
     }
 
 

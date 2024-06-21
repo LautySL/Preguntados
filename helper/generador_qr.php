@@ -1,10 +1,13 @@
 <?php
+include("vendor\phpqrcode\qrlib.php");
+class Gererador_qr
+{
+    public function __construct(){
+    }
 
-include("Conectarbd.php");
-include("phpqrcode/qrlib.php");
+    public function qr($url){
+        QRcode::png($url,false,QR_ECLEVEL_L,8);
+    }
+}
 
-$datos = "Nombre:Cacho";
-QRcode::png($datos,false,QR_ECLEVEL_L,8);
 
-
-QRcode::png('url_del_perfil','cacho.png');
