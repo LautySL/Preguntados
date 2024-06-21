@@ -1,4 +1,4 @@
-CREATE TABLE usuario(
+CREATE TABLE usuario (
 	id int auto_increment primary key,
     nombre_de_usuario varchar(50),
     contrasena varchar(50),
@@ -8,7 +8,7 @@ CREATE TABLE usuario(
     sexo ENUM('Femenino', 'Masculino', 'Prefiero no cargarlo'),
     mail varchar(50),
     foto_de_perfil varchar(50),
-    pais ENUM('Argentina', 'Chile', 'Uruguay', 'Paraguay'),
+    pais varchar(50),
     ciudad varchar(50),
     cuenta_verificada boolean,
     hash_activacion varchar(500),
@@ -17,6 +17,8 @@ CREATE TABLE usuario(
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE usuario
+MODIFY COLUMN pais varchar(50);
 
 CREATE TABLE administrador(
 	 id int,
