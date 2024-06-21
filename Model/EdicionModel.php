@@ -121,12 +121,12 @@ class EdicionModel
                 $nuevoIdRespuesta++;
             }
 
+            $queryDeleteRespuestas = "DELETE FROM respuestas_sugeridas WHERE pregunta = $id";
+            $this->database->execute($queryDeleteRespuestas);
+
             // Eliminar de preguntas y respuestas sugeridas
             $queryDeletePregunta = "DELETE FROM preguntas_sugeridas WHERE id = $id";
             $this->database->execute($queryDeletePregunta);
-
-            $queryDeleteRespuestas = "DELETE FROM respuestas_sugeridas WHERE pregunta = $id";
-            $this->database->execute($queryDeleteRespuestas);
 
             $this->database->commit();
             return true;
@@ -139,11 +139,11 @@ class EdicionModel
     public function rechazarPreguntaSugerida($id)
     {
         try {
-            $queryDeletePregunta = "DELETE FROM preguntas_sugeridas WHERE id = $id";
-            $this->database->execute($queryDeletePregunta);
-
             $queryDeleteRespuestas = "DELETE FROM respuestas_sugeridas WHERE pregunta = $id";
             $this->database->execute($queryDeleteRespuestas);
+
+            $queryDeletePregunta = "DELETE FROM preguntas_sugeridas WHERE id = $id";
+            $this->database->execute($queryDeletePregunta);
 
             return true;
         } catch (Exception $e) {
