@@ -1,6 +1,6 @@
 <?php
 
-
+include_once ('vendor/phpqrcode/qrlib.php');
 class UserModel
 {
     private $database;
@@ -27,6 +27,17 @@ class UserModel
         $sqlJugador = "INSERT INTO jugador (id) VALUES ($idJugador)";
 
         $this->database->execute($sqlJugador);
+        $this-> generateQrCode($idJugador);
+
+    }
+
+    private function generateQrCode($userId)
+    {
+        $url = "http://localhost/verPerfilAjeno/get&user=$userId";
+        $qrCodePath = 'public/img/qrs/' . $userId . '.png';
+        QRcode::png($url, $qrCodePath, QR_ECLEVEL_H, 3);
+        return $qrCodePath;
+
     }
 
     public function LogInconsulta($usuario, $password)

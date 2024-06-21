@@ -1,6 +1,5 @@
 <?php
 
-
 class RegistroController
 {
     private $presenter;
