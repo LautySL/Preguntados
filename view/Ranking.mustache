@@ -24,7 +24,7 @@
         <tr>
             <td>{{id}}</td>
             <td>
-                <form action="/verPerfilAjeno/get" method="POST" style="display:inline;">
+                <form action="/verPerfilAjeno/get&user={{id}}" method="POST" style="display:inline;">
                 <input type="hidden" name="id" value="{{id}}">
                 <button type="submit" style="background:none;border:none;text-decoration:underline;cursor:pointer;padding:0;">
                     {{nombre_de_usuario}}
