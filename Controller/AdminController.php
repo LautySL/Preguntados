@@ -19,8 +19,8 @@ class AdminController
     private function request($metodo)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $dateFrom = $_POST['dateFrom'] ?? '';
-            $dateTo = $_POST['dateTo'] ?? '';
+            $dateFrom = $_POST['dateFrom'] ?? NULL;
+            $dateTo = $_POST['dateTo'] ?? NULL;
 
             if (!empty($dateFrom) && !empty($dateTo)) {
                 try {
