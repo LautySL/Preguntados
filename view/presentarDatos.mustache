@@ -13,11 +13,13 @@
     <h2 class= "w3-pink w3-center">Generar Gráfico</h2><br><br>
     <form method="post"  class="w3-container w3-center">
         <label>Fecha Inicio: </label>
-        <input type="date" name="dateFrom" required>
+        <input type="date" name="dateFrom">
         <label>Fecha Fin: </label>
-        <input type="date" name="dateTo" required>
+        <input type="date" name="dateTo">
         <button type="submit" class="boton-perfil w3-button w3-round-xxlarge w3-pink">Generar Estadisticas</button><br>
-        <button type="submit" class="boton-perfil w3-button w3-round-xxlarge w3-pink">Imprimir Estadisticas</button><br>
+        <form action="/admin/descargarPDF" method="POST">
+            <button type="submit" name="imprimir" class="boton-perfil w3-button w3-round-xxlarge w3-pink">Imprimir Estadísticas</button>
+        </form>
     </form>
 
 

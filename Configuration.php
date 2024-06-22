@@ -7,6 +7,7 @@ include_once("vendor\PHPMailer\src\SMTP.php");
 require_once ('vendor/jpgraph/src/jpgraph.php');
 require_once ('vendor/jpgraph/src/jpgraph_bar.php');
 require_once ('vendor/jpgraph/src/jpgraph_line.php');
+include_once ('vendor\dompdf\autoload.inc.php');
 
 include_once ("Controller/RegistroController.php");
 include_once ("Controller/HomeController.php");
@@ -25,8 +26,10 @@ include_once ("helper/DataBase.php");
 include_once ("helper/ApiLocation.php");
 include_once ("helper/MustachePresenter.php");
 include_once ("helper/Grafico.php");
+include_once ("helper/pdfCreator.php");
 include_once ("vendor/mustache/src/Mustache/Autoloader.php");
 include_once ('vendor/PHPMailer/src/PHPMailer.php');
+
 
 
 include_once ('Model/AdminModel.php');
@@ -133,6 +136,11 @@ class Configuration
     private static function getGrafico()
     {
         return new Grafico();
+    }
+
+    private static function getPdfCreator()
+    {
+        return new PdfCreator();
     }
 
     public static function getConfigMail()

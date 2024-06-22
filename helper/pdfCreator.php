@@ -1,5 +1,5 @@
 <?php
-require_once 'dompdf/autoload.inc.php';
+
 use Dompdf\Dompdf;
 
 class PdfCreator
@@ -13,8 +13,8 @@ class PdfCreator
 
         $dompdf->render();
 
-        // Output the generated PDF to Browser
-        $dompdf->stream("Estadisticas_del_juego.pdf" , ['Attachment' => 0]);
+        // Devolver el PDF generado
+        return $dompdf->stream("Graficos.pdf", ['Atachment' => 0]);
     }
 }
 

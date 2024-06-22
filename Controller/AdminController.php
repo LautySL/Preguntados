@@ -95,4 +95,31 @@ class AdminController
             exit();
         }
     }
+
+    public function descargarPDF()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['imprimir'])) {
+
+                $totalJugadores_barra = $_POST['totalJugadores_barra'] ?? '';
+                $totalJugadores_linea = $_POST['totalJugadores_linea'] ?? '';
+
+
+                $html = "
+                    <html>
+                    <head><title>Estadísticas del juego</title></head>
+                    <body>
+                        <h1>Estadísticas del juego</h1>
+                        <p>Total de jugadores en barra: $totalJugadores_barra</p>
+                        <p>Total de jugadores en línea: $totalJugadores_linea</p>
+                    </body>
+                    </html>
+                ";
+
+                $pdfCreator = new PdfCreator();
+                $pdfCreator->create($html);
+                exit;
+            }
+        }
+    }
 }
