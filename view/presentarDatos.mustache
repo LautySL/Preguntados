@@ -12,7 +12,7 @@
 
     <div class="w3-container">
     <h2>Generar Gráfico</h2>
-    <form action="/admin/totalJugadores" method="post">
+    <form method="post">
         <label>Fecha Inicio: </label>
         <input type="date" name="dateFrom" required>
         <label>Fecha Fin: </label>
@@ -21,23 +21,46 @@
     </form>
 
         <h1>Gráfico de Datos</h1>
-        {{#total_jugadores}}
-            <img src="\public\img\grafico\{{total_jugadores}}" alt="Gráfico de Datos">
-        {{/total_jugadores}}
+        {{#totalJugadores}}
+            <img src="\public\img\grafico\{{totalJugadores}}" alt="Gráfico">
+        {{/totalJugadores}}
 
-        <!-- Mostrar la lista de datos -->
-        <div>
-            <p>Lista de Datos</p>
-            <ul>
-                {{#datos}}
-                    <li>{{nombre}}: {{valor}}</li>
-                {{/datos}}
-            </ul>
-        </div>
+        {{#totalPartidas}}
+            <img src="\public\img\grafico\{{totalPartidas}}" alt="Gráfico">
+        {{/totalPartidas}}
+
+        {{#totalPreguntas}}
+            <img src="\public\img\grafico\{{totalPreguntas}}" alt="Gráfico">
+        {{/totalPreguntas}}
+
+        {{#totalPreguntasCreadas}}
+            <img src="\public\img\grafico\{{totalPreguntasCreadas}}" alt="Gráfico">
+        {{/totalPreguntasCreadas}}
+
+        {{#usuariosNuevos}}
+            <img src="\public\img\grafico\{{usuariosNuevos}}" alt="Gráfico">
+        {{/usuariosNuevos}}
+
+        {{#totalCorrectas}}
+            <img src="\public\img\grafico\{{totalCorrectas}}" alt="Gráfico">
+        {{/totalCorrectas}}
+
+        {{#totalUsuariosPorPais}}
+            <img src="\public\img\grafico\{{totalUsuariosPorPais}}" alt="Gráfico">
+        {{/totalUsuariosPorPais}}
+
+        {{#totalUsuariosPorSexo}}
+            <img src="\public\img\grafico\{{totalUsuariosPorSexo}}" alt="Gráfico">
+        {{/totalUsuariosPorSexo}}
+
+        {{#totalUsuariosPorRango}}
+            <img src="\public\img\grafico\{{totalUsuariosPorRango}}" alt="Gráfico">
+        {{/totalUsuariosPorRango}}
+
     </div>
 </div>
 <div class="w3-center">
-    <a  href="/admin/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Atras</a>
+    <a  href="/home/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Atras</a>
 </div>
 
 </body>

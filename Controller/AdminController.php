@@ -13,7 +13,7 @@ class AdminController
     public function get()
     {
         $this->checkLoggedIn();
-        $this->presenter->render("view/admin.mustache");
+        $this->presenter->render("view/home/get");
     }
 
     private function request($metodo)
@@ -29,8 +29,10 @@ class AdminController
 
         try {
             $data = call_user_func([$this->model, $metodo], $dateFrom, $dateTo);
-            
-            $this->presenter->render('view/presentarDatos.mustache', $data);
+            $filename = isset($data['filename']) ? $data['filename'] : '';
+            $this->presenter->render('view/presentarDatos.mustache', [
+                $metodo => $filename,
+            ]);
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }

@@ -77,7 +77,6 @@ class AdminModel
         return $this->ejecutarConsulta($query, "Total de Partidas", 'total_partidas');
     }
 
-
     public function totalPreguntas($dateFrom, $dateTo)
     {
         $whereClause = $this->construirWhereClauseFecha('fecha_creacion_pregunta', $dateFrom, $dateTo);
@@ -108,13 +107,12 @@ class AdminModel
         return $this->ejecutarConsulta($query, "Total de Usuarios Nuevos", 'total_usuarios_nuevos');
     }
 
-
     public function totalCorrectas($dateFrom, $dateTo)
     {
         $whereClause = $this->construirWhereClauseFecha('p.fecha_creacion_pregunta', $dateFrom, $dateTo);
         $query = "SELECT DATE(p.fecha_creacion_pregunta) as fecha, p.categoría,
                     COUNT(*) AS total_preguntas,
-                    SUM(pp.se_respondio_bien) AS total_correctas,
+                    SUM(pp.se_respondio_bien) AS total,
                     ROUND((SUM(pp.se_respondio_bien) / COUNT(*)) * 100, 2) AS porcentaje_correctas
                     FROM pregunta p
                     LEFT JOIN partida_pregunta pp ON p.id = pp.pregunta" . $whereClause . "
@@ -132,7 +130,6 @@ class AdminModel
 
         return $this->ejecutarConsulta($query, "Total de Usuarios por Pais", 'total_usuarios_por_pais');
     }
-
     public function totalUsuariosPorSexo($dateFrom, $dateTo)
     {
         $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
@@ -142,7 +139,6 @@ class AdminModel
 
         return $this->ejecutarConsulta($query, "Total de Usuarios por Sexo", 'total_usuarios_por_sexo');
     }
-
     public function totalUsuariosPorRango($dateFrom, $dateTo)
     {
         $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
