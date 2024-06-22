@@ -18,12 +18,14 @@ class GameModel
             'nombreUsuario' => $_SESSION['usuario'],
             'pregunta' => $preguntaData['pregunta'],
             'pregunta_id' => $preguntaData['pregunta_id'],
+            'dificultad' => $preguntaData['dificultad'],
             'respuestas' => $preguntaData['respuestas'],
             'categoria' => $preguntaData['categoria'],
             'categoria_estilo' => $categoriaEstilo,
             'puntaje' => $puntaje,
             'finalizado' => $finalizado,
-            'time_left'=>$this->getTimeLeft()
+            'time_left'=>$this->getTimeLeft(),
+            'dificultad_user'=>$this->obtenerPorcentajeAciertos($idUsuario)
         ];
         return $data;
     }
@@ -152,6 +154,7 @@ class GameModel
 
         $respuestas = $this->queryRespuestas($preguntaId);
         $resultado = [
+            'dificultad'=>$pregunta['dificultad'],
             'pregunta_id' => $preguntaId,
             'pregunta' => $pregunta['pregunta'],
             'respuestas' => $respuestas,
@@ -198,7 +201,7 @@ class GameModel
 
         $idUsuario = (int) $idUsuario;
         $queryPregunta = "
-        SELECT p.id, p.pregunta, p.categoría,
+        SELECT p.id, p.pregunta, p.categoría,p.dificultad,
                ABS(p.dificultad - $porcentajeAciertos) AS diferencia_aciertos
         FROM pregunta p
         WHERE p.id NOT IN (
