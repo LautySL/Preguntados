@@ -69,7 +69,7 @@ class RegistroController
         try {
             $hash_activacion = md5(uniqid(rand(), true));
             $this->model->enviarCorreoActivacion($mail, $nombre, $hash_activacion);
-            $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud, $fecha_creacion);
+            $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud);
 
             $_SESSION['mensaje'] = "Registro exitoso. Por favor, revisa tu correo para activar tu cuenta.";
             $_SESSION['exito'] = true;
