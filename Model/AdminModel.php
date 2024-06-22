@@ -13,22 +13,8 @@ class AdminModel
         $this->grafico = $grafico;
     }
 
-    public function totalJugadores($dateFrom, $dateTo)
+    private function ejecutarConsulta($query, $titulo, $nombreArchivo)
     {
-        $whereClause = '';
-
-        if (!empty($dateFrom) && !empty($dateTo)) {
-            $dateFrom = mysqli_real_escape_string($this->database->getConnection(), $dateFrom);
-            $dateTo = mysqli_real_escape_string($this->database->getConnection(), $dateTo);
-             
-        $whereClause = " WHERE DATE(u.fecha_creacion) >= '" . $dateFrom . "' AND DATE(u.fecha_creacion) <= '" . $dateTo . "'";
-        }
-        
-        $query = "SELECT DATE(u.fecha_creacion) as fecha, COUNT(*) AS total_jugadores 
-                    FROM jugador j 
-                    INNER JOIN usuario u ON j.id = u.id" . $whereClause . "
-                    GROUP BY DATE(u.fecha_creacion)";
-
         $result = $this->database->execute($query);
 
         if (!$result) {
@@ -40,17 +26,16 @@ class AdminModel
 
         while ($row = $result->fetch_assoc()) {
             $fechas[] = $row['fecha'];
-            $totales[] = intval($row['total_jugadores']);
+            $totales[] = intval($row['total']);
         }
 
-         // Verificar los datos recuperados
         if (empty($fechas) || empty($totales)) {
             throw new Exception('No se encontraron datos para generar el gráfico de barras.');
         }
 
-        $filename = 'total_jugadores';
+        $filename = $nombreArchivo;
         try {
-            $filename = $this->grafico->generarGraficoDeBarras("Total de Jugadores", $fechas, $totales, $filename);
+            $filename = $this->grafico->generarGraficoDeBarras($titulo, $fechas, $totales, $filename);
         } catch (Exception $e) {
             throw new Exception("Error del modelo al generar el gráfico de barras:" . $e->getMessage());
         }
@@ -58,89 +43,119 @@ class AdminModel
         return ['filename' => $filename];
     }
 
-    public function totalPartidas()
+    private function construirWhereClauseFecha($campoFecha, $dateFrom, $dateTo)
     {
-        $query = "SELECT COUNT(*) AS total_partidas FROM partida";
-        $result = $this->database->execute($query);
-        $row = $result->fetch_assoc();
-        return $row['total_partidas'];
+        $whereClause = '';
 
-    }
-
-    public function totalPreguntas()
-    {
-        $query = "SELECT COUNT(*) AS total_preguntas FROM pregunta";
-        $result = $this->database->execute($query);
-        $row = $result->fetch_assoc();
-        return $row['total_preguntas'];
-    }
-
-    //TODO por que hay que agregar al editor y que este pueda dar de alta las preguntas
-    public function totalPreguntasCreadas()
-    {
-        $query = "SELECT COUNT(*) AS total_preguntas_creadas FROM pregunta WHERE DATE(fecha_creacion) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
-        $result = $this->database->execute($query);
-        if ($result) {
-            $row = $result->fetch_assoc();
-            return $row['total_preguntas_creadas'];
-        } else {
-            // Manejar el caso de error o resultado vacío
-            return 0; // O un manejo de error adecuado según tu aplicación
+        if (!empty($dateFrom) && !empty($dateTo)) {
+            $dateFrom = mysqli_real_escape_string($this->database->getConnection(), $dateFrom);
+            $dateTo = mysqli_real_escape_string($this->database->getConnection(), $dateTo);
+            $whereClause = " WHERE DATE($campoFecha) >= '" . $dateFrom . "' AND DATE($campoFecha) <= '" . $dateTo . "'";
         }
+
+        return $whereClause;
     }
 
-    //TODO por que hay que modificar la bd para que ande agregandole una fecha de creacion a cada user
-    public function usuariosNuevos()
+    public function totalJugadores($dateFrom, $dateTo)
     {
-        $query = "SELECT * AS usuarios_nuevos FROM usuario WHERE id > 11";
-        $result = $this->database->execute($query);
-        $row = $result->fetch_assoc();
-        return $row['usuarios_nuevos'];
+        $whereClause = $this->construirWhereClauseFecha('u.fecha_creacion', $dateFrom, $dateTo);
+        $query = "SELECT DATE(u.fecha_creacion) as fecha, COUNT(*) AS total 
+                    FROM jugador j 
+                    INNER JOIN usuario u ON j.id = u.id" . $whereClause . "
+                    GROUP BY DATE(u.fecha_creacion)";
+
+        return $this->ejecutarConsulta($query, "Total de Jugadores", 'total_jugadores');
     }
 
-    public function totalCorrectas()
+    public function totalPartidas($dateFrom, $dateTo)
     {
-        $query = "SELECT p.categoría,
+        $whereClause = $this->construirWhereClauseFecha('fecha_creacion_partida', $dateFrom, $dateTo);
+        $query = "SELECT DATE(fecha_creacion_partida) as fecha, COUNT(*) AS total 
+                    FROM partida" . $whereClause . "
+                    GROUP BY DATE(fecha_creacion_partida)";
+
+        return $this->ejecutarConsulta($query, "Total de Partidas", 'total_partidas');
+    }
+
+
+    public function totalPreguntas($dateFrom, $dateTo)
+    {
+        $whereClause = $this->construirWhereClauseFecha('fecha_creacion_pregunta', $dateFrom, $dateTo);
+        $query = "SELECT DATE(fecha_creacion_pregunta) as fecha, COUNT(*) AS total 
+                    FROM pregunta". $whereClause . "
+                    GROUP BY DATE(fecha_creacion_pregunta)";
+
+        return $this->ejecutarConsulta($query, "Total de Preguntas", 'total_preguntas');
+    }
+
+    public function totalPreguntasCreadas($dateFrom, $dateTo)
+    {
+        $whereClause = $this->construirWhereClauseFecha('fecha_creacion_pregunta', $dateFrom, $dateTo);
+        $query = "SELECT DATE(fecha_creacion_pregunta) as fecha, COUNT(*) AS total 
+                    FROM preguntas_sugeridas". $whereClause . "
+                    GROUP BY DATE(fecha_creacion_pregunta)";
+
+        return $this->ejecutarConsulta($query, "Total de Preguntas Creadas", 'total_preguntas_creadas');
+    }
+
+    public function usuariosNuevos($dateFrom, $dateTo)
+    {
+        $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
+        $query = "SELECT DATE(fecha_creacion) as fecha, COUNT(*) AS total 
+                    FROM usuario ". $whereClause . "
+                    GROUP BY DATE(fecha_creacion)";
+
+        return $this->ejecutarConsulta($query, "Total de Usuarios Nuevos", 'total_usuarios_nuevos');
+    }
+
+
+    public function totalCorrectas($dateFrom, $dateTo)
+    {
+        $whereClause = $this->construirWhereClauseFecha('p.fecha_creacion_pregunta', $dateFrom, $dateTo);
+        $query = "SELECT DATE(p.fecha_creacion_pregunta) as fecha, p.categoría,
                     COUNT(*) AS total_preguntas,
                     SUM(pp.se_respondio_bien) AS total_correctas,
                     ROUND((SUM(pp.se_respondio_bien) / COUNT(*)) * 100, 2) AS porcentaje_correctas
                     FROM pregunta p
-                    LEFT JOIN partida_pregunta pp ON p.id = pp.pregunta
-                    GROUP BY p.categoría;";
-        $result = $this->database->execute($query);
-        return $result->fetch_all(MYSQLI_ASSOC);
+                    LEFT JOIN partida_pregunta pp ON p.id = pp.pregunta" . $whereClause . "
+                    GROUP BY DATE(p.fecha_creacion_pregunta), p.categoría";
+
+        return $this->ejecutarConsulta($query, "Total de Preguntas Correctas", 'total_preguntas_correctas');
     }
 
-    public function totalUsuariosPorPais()
+    public function totalUsuariosPorPais($dateFrom, $dateTo)
     {
-        $query = "SELECT pais, COUNT(*) AS total_usuarios_por_pais
-                    FROM usuario 
-                    GROUP BY pais;";
-        $result = $this->database->execute($query);
-        return $result->fetch_all(MYSQLI_ASSOC);
+        $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
+        $query = "SELECT DATE(fecha_creacion) as fecha,  pais, COUNT(*) AS total
+                    FROM usuario ". $whereClause . "
+                    GROUP BY DATE(fecha_creacion), pais";
+
+        return $this->ejecutarConsulta($query, "Total de Usuarios por Pais", 'total_usuarios_por_pais');
     }
 
-    public function totalUsuariosPorSexo()
+    public function totalUsuariosPorSexo($dateFrom, $dateTo)
     {
-        $query = "SELECT sexo, COUNT(*) AS total_usuarios_por_sexo
-                    FROM usuario 
-                    GROUP BY sexo;";
-        $result = $this->database->execute($query);
-        return $result->fetch_all(MYSQLI_ASSOC);
+        $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
+        $query = "SELECT DATE(fecha_creacion) as fecha, sexo, COUNT(*) AS total
+                    FROM usuario ". $whereClause . "
+                    GROUP BY DATE(fecha_creacion), sexo;";
+
+        return $this->ejecutarConsulta($query, "Total de Usuarios por Sexo", 'total_usuarios_por_sexo');
     }
 
-    public function totalUsuariosPorRango()
+    public function totalUsuariosPorRango($dateFrom, $dateTo)
     {
-        $query = "SELECT CASE
+        $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
+        $query = "SELECT DATE(fecha_creacion) as fecha,  CASE
                     WHEN TIMESTAMPDIFF(YEAR, ano_de_nacimiento, CURDATE()) < 18 THEN 'menor'
                     WHEN TIMESTAMPDIFF(YEAR, ano_de_nacimiento, CURDATE()) >= 65 THEN 'jubilado'
                         ELSE 'medio'
                     END AS rango_etario,
-                        COUNT(*) AS total_usuarios_por_rango
-                                FROM usuario
-                                GROUP BY rango_etario;";
-        $result = $this->database->execute($query);
-        return $result->fetch_all(MYSQLI_ASSOC);
+                        COUNT(*) AS total
+                                FROM usuario ". $whereClause . "
+                                GROUP BY DATE(fecha_creacion), rango_etario;";
+        
+        return $this->ejecutarConsulta($query, "Usuarios por edad", 'usuarios_por_edad');
     }
 
     // public function getPDF($data)
