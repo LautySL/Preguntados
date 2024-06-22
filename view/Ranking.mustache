@@ -1,50 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking de Jugadores</title>
-</head>
-<body>
-
 <h1 class="w3-center">Ranking de Jugadores</h1>
-<table class="w3-table w3-bordered w3-centered">
-    <thead>
-    <tr class="w3-pink">
-        <th>ID</th>
-        <th>Nombre de Usuario</th>
-        <th>Partidas Jugadas</th>
-        <th>Puntajes Maximo</th>
-        <th>Puntajes Acumulados</th>
-        <th>QR</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#players}}
-        <tr>
-            <td>{{id}}</td>
-            <td>
-                <form action="/verPerfilAjeno/get&user={{id}}" method="POST" style="display:inline;">
-                <input type="hidden" name="id" value="{{id}}">
-                <button type="submit" style="background:none;border:none;text-decoration:underline;cursor:pointer;padding:0;">
-                    {{nombre_de_usuario}}
-                </button>
-                </form>
-            </td>
-            <td>{{partidas_por_jugador}}</td>
-            <td>{{max_puntaje}}</td>
-            <td>{{puntaje_acumulado}}</td>
-            <td><img src="/public/img/qrs/{{id}}.png"></td>
-            
-        </tr>
-    {{/players}}
-    </tbody>
-</table>
-
-
+<table class="w3-table w3-bordered center-text">
+        <thead>
+            <tr class="w3-pink">
+                <th>ID</th>
+                <th>Nombre de Usuario</th>
+                <th>Partidas Jugadas</th>
+                <th>Puntaje Máximo</th>
+                <th>Puntajes Acumulados</th>
+                <th>QR</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#players}}
+                <tr>
+                    <td><p>{{id}}</p></td>
+                    <td>
+                        <form action="/verPerfilAjeno/get&user={{id}}" method="POST" style="display:inline;">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <button type="submit" style="background:none;border:none;text-decoration:underline;cursor:pointer;padding:0;">
+                                <p>{{nombre_de_usuario}}</p>
+                            </button>
+                        </form>
+                    </td>
+                    <td><p>{{partidas_por_jugador}}</p></td>
+                    <td><p>{{max_puntaje}}</p></td>
+                    <td><p>{{puntaje_acumulado}}</p></td>
+                    <td><img class="qr" src="/public/img/qrs/{{id}}.png"></td>
+                </tr>
+            {{/players}}
+        </tbody>
+    </table>
 <body>
 
 <div class="w3-center">
     <a  href="/home/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Cerrar</a>
 </div>
-</body>

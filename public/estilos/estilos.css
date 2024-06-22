@@ -71,10 +71,13 @@
     gap: 10px;
 }
 
-.no-se-ve {
-    display: none;
+.center-text th, .center-text td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px; 
 }
 
-.se-ve {
-    display: block;
+.qr{
+    width: 8rem;
+    height: 8rem;
 }
