@@ -33,14 +33,19 @@ class AdminModel
             throw new Exception('No se encontraron datos para generar el gráfico de barras.');
         }
 
-        $filename = $nombreArchivo;
+        $filenameBarra = $nombreArchivo . '_barra'; 
+        $filenameLinea = $nombreArchivo . '_linea';
         try {
-            $filename = $this->grafico->generarGraficoDeBarras($titulo, $fechas, $totales, $filename);
+            $filenameBarra = $this->grafico->generarGraficoDeBarras($titulo, $fechas, $totales, $filenameBarra);
+            $filenameLinea = $this->grafico->generarGraficoDeLineas($titulo, $fechas, $totales, $filenameLinea);
         } catch (Exception $e) {
             throw new Exception("Error del modelo al generar el gráfico de barras:" . $e->getMessage());
         }
 
-        return ['filename' => $filename];
+        return [
+            'filenameBarra' => $filenameBarra,
+            'filenameLinea' => $filenameLinea,
+        ];
     }
 
     private function construirWhereClauseFecha($campoFecha, $dateFrom, $dateTo)

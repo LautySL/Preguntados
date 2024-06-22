@@ -25,10 +25,15 @@ class AdminController
             if (!empty($dateFrom) && !empty($dateTo)) {
                 try {
                     $data = call_user_func([$this->model, $metodo], $dateFrom, $dateTo);
-                    $filename = isset($data['filename']) ? $data['filename'] : '';
-                    $this->presenter->render('view/presentarDatos.mustache', [
-                        $metodo => $filename,
-                    ]);
+                    $filenameBarra = isset($data['filenameBarra']) ? $data['filenameBarra'] : '';
+                    $filenameLinea = isset($data['filenameLinea']) ? $data['filenameLinea'] : '';
+                    
+                    $viewData = [
+                        $metodo . '_barra' => $filenameBarra,
+                        $metodo . '_linea' => $filenameLinea,
+                    ];
+
+                    $this->presenter->render('view/presentarDatos.mustache', $viewData);
                 } catch (Exception $e) {
                     echo "Error: " . $e->getMessage();
                 }

@@ -6,6 +6,7 @@ include_once("vendor\PHPMailer\src\PHPMailer.php");
 include_once("vendor\PHPMailer\src\SMTP.php");
 require_once ('vendor/jpgraph/src/jpgraph.php');
 require_once ('vendor/jpgraph/src/jpgraph_bar.php');
+require_once ('vendor/jpgraph/src/jpgraph_line.php');
 
 include_once ("Controller/RegistroController.php");
 include_once ("Controller/HomeController.php");
