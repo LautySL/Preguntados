@@ -40,6 +40,36 @@ class AdminController
             }else{
                 $this->presenter->render("view/presentarDatos.mustache");
             }
+        }elseif (isset($_POST['imprimir'])) {
+            if (!empty($dateFrom) && !empty($dateTo)) {
+                try {
+                    $data = call_user_func([$this->model, $metodo], $dateFrom, $dateTo);
+                    $filenameBarra = isset($data['filenameBarra']) ? $data['filenameBarra'] : '';
+                    $filenameLinea = isset($data['filenameLinea']) ? $data['filenameLinea'] : '';
+                    
+                    $html = "
+                        <html>
+                        <head><title>Estadísticas del juego</title></head>
+                        <body>
+                            <h1>Estadísticas del juego</h1>
+                            <p>Total de jugadores en barra: $filenameBarra</p>
+                            <p>Total de jugadores en línea: $filenameLinea</p>
+                        </body>
+                        </html>
+                    ";
+
+                    $pdfCreator = new PdfCreator();
+                    $pdfCreator->create($html);
+                    exit;
+
+                    //$this->presenter->render('view/presentarDatos.mustache', $viewData);
+                } catch (Exception $e) {
+                    echo "Error: " . $e->getMessage();
+                }
+            }else{
+                $this->presenter->render("view/presentarDatos.mustache");
+            }
+
         }else{
             $this->presenter->render("view/presentarDatos.mustache");
         }
@@ -96,30 +126,4 @@ class AdminController
         }
     }
 
-    public function descargarPDF()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['imprimir'])) {
-
-                $totalJugadores_barra = $_POST['totalJugadores_barra'] ?? '';
-                $totalJugadores_linea = $_POST['totalJugadores_linea'] ?? '';
-
-
-                $html = "
-                    <html>
-                    <head><title>Estadísticas del juego</title></head>
-                    <body>
-                        <h1>Estadísticas del juego</h1>
-                        <p>Total de jugadores en barra: $totalJugadores_barra</p>
-                        <p>Total de jugadores en línea: $totalJugadores_linea</p>
-                    </body>
-                    </html>
-                ";
-
-                $pdfCreator = new PdfCreator();
-                $pdfCreator->create($html);
-                exit;
-            }
-        }
-    }
 }

@@ -1,20 +1,22 @@
 <?php
 
 use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class PdfCreator
 {
     public function create($html)
     {
-        $dompdf = new Dompdf();
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf = new Dompdf($options);
+
         $dompdf->loadHtml($html);
-
         $dompdf->setPaper('A4', 'portrait');
-
         $dompdf->render();
-
-        // Devolver el PDF generado
-        return $dompdf->stream("Graficos.pdf", ['Atachment' => 0]);
+        
+        return $dompdf->stream("Graficos.pdf", ['Attachment' => 0]);
     }
 }
 
