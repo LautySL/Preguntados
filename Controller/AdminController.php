@@ -22,19 +22,21 @@ class AdminController
             $dateFrom = $_POST['dateFrom'] ?? '';
             $dateTo = $_POST['dateTo'] ?? '';
 
-        } else {
-            $dateFrom = null;
-            $dateTo = null;
-        }
-
-        try {
-            $data = call_user_func([$this->model, $metodo], $dateFrom, $dateTo);
-            $filename = isset($data['filename']) ? $data['filename'] : '';
-            $this->presenter->render('view/presentarDatos.mustache', [
-                $metodo => $filename,
-            ]);
-        } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            if (!empty($dateFrom) && !empty($dateTo)) {
+                try {
+                    $data = call_user_func([$this->model, $metodo], $dateFrom, $dateTo);
+                    $filename = isset($data['filename']) ? $data['filename'] : '';
+                    $this->presenter->render('view/presentarDatos.mustache', [
+                        $metodo => $filename,
+                    ]);
+                } catch (Exception $e) {
+                    echo "Error: " . $e->getMessage();
+                }
+            }else{
+                $this->presenter->render("view/presentarDatos.mustache");
+            }
+        }else{
+            $this->presenter->render("view/presentarDatos.mustache");
         }
     }
 
