@@ -21,10 +21,11 @@ class AdminController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dateFrom = $_POST['dateFrom'] ?? '';
             $dateTo = $_POST['dateTo'] ?? '';
-        
+
             try {
                 $data = $this->model->totalJugadores($dateFrom, $dateTo);
                 var_dump($data);
+                
                 // Renderizar la vista con Mustache
                 $this->presenter->render('view/presentarDatos.mustache', $data);
             } catch (Exception $e) {
@@ -35,7 +36,6 @@ class AdminController
             // Mostrar la vista inicial
             $this->presenter->render('view/presentarDatos.mustache');
         }
-
     }
 
     public function totalPartidas()
@@ -120,7 +120,7 @@ class AdminController
     public function tipoDeVisualizacion()
     {
 
-        // $datos = [
+                // $datos = [
         //     'total_jugadores' => $this->model->totalJugadores(),
         //     'total_partidas' => $this->model->totalPartidas(),
         //     'total_preguntas' => $this->model->totalPreguntas(),

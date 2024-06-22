@@ -29,6 +29,11 @@ class Database
         return $this->conn->insert_id;
     }
 
+    public function getConnection()
+    {
+        return $this->conn;
+    }
+
     public function begin_transaction()
     {
         mysqli_begin_transaction($this->conn);

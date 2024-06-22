@@ -32,9 +32,6 @@ CREATE TABLE editor(
     foreign key (id) references usuario(id)
 );
 
-INSERT INTO editor (id) VALUES
-(1);
-
 CREATE TABLE jugador(
 	id int,
     constraint primary key (id),
@@ -98,14 +95,6 @@ CREATE TABLE reportes_preguntas (
      fecha_reporte TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      FOREIGN KEY (pregunta_id) REFERENCES pregunta(id),
      FOREIGN KEY (usuario_id) REFERENCES usuario(id)
-);
-
-CREATE TABLE preguntas_sugeridas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    pregunta VARCHAR(255) NOT NULL,
-    categoria VARCHAR(255) NOT NULL,
-    usuario_id INT NOT NULL,
-    fecha_sugerida TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO pregunta (pregunta, categoría) VALUES

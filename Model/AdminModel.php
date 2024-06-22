@@ -18,30 +18,47 @@ class AdminModel
         $whereClause = '';
 
         if (!empty($dateFrom) && !empty($dateTo)) {
-            $whereClause = " WHERE u.fecha_creacion >= '" . $dateFrom . "' AND u.fecha_creacion <= '" . $dateTo . "'";
+            $dateFrom = mysqli_real_escape_string($this->database->getConnection(), $dateFrom);
+            $dateTo = mysqli_real_escape_string($this->database->getConnection(), $dateTo);
+             
+        $whereClause = " WHERE DATE(u.fecha_creacion) >= '" . $dateFrom . "' AND DATE(u.fecha_creacion) <= '" . $dateTo . "'";
         }
         
-        $query = "SELECT COUNT(*) AS total_jugadores FROM jugador j INNER JOIN usuario u ON j.id = u.id" . $whereClause;
+        $query = "SELECT DATE(u.fecha_creacion) as fecha, COUNT(*) AS total_jugadores 
+                    FROM jugador j 
+                    INNER JOIN usuario u ON j.id = u.id" . $whereClause . "
+                    GROUP BY DATE(u.fecha_creacion)";
+                    echo "Consulta SQL: " . $query . "<br>";
+
         $result = $this->database->execute($query);
 
         if (!$result) {
             throw new Exception("Error al ejecutar la consulta SQL");
         }
 
-        $data = array();
+        $fechas = [];
+        $totales = [];
 
         while ($row = $result->fetch_assoc()) {
-            $data[] = $row['total_jugadores'];
+            $fechas[] = $row['fecha'];
+            $totales[] = intval($row['total_jugadores']);
+        }
+
+         // Verificar los datos recuperados
+        if (empty($fechas) || empty($totales)) {
+            throw new Exception('No se encontraron datos para generar el gráfico de barras.');
         }
 
         $filename = 'total_jugadores';
         try {
-            $data = ['total_jugadores' =>   $this->grafico->generarGraficoDeBarras("Total de Jugadores", $data, $filename)];
+            $filename = $this->grafico->generarGraficoDeBarras("Total de Jugadores", $fechas, $totales, $filename);
         } catch (Exception $e) {
+            var_dump($fechas);
+            var_dump($totales);
             throw new Exception("Error del modelo al generar el gráfico de barras:" . $e->getMessage());
         }
 
-        return $data;
+        return ['filename' => $filename];
     }
 
     public function totalPartidas()

@@ -7,16 +7,22 @@ class Grafico
         // Constructor vacío por ahora
     }
 
-    public function generarGraficoDeBarras($titulo, $datos)
+    public function generarGraficoDeBarras($titulo, $fechas, $totales, $filename)
     {
 
-        if (empty($datos) || !is_array($datos) || count($datos) === 0) {
+        if (empty($fechas) || empty($totales) || count($fechas) !== count($totales)) {
             throw new Exception('Los datos para el gráfico de barras son inválidos o están vacíos.');
         }
-        $datos = array_map('intval', $datos);
+
+        $fechas = array_map(function ($fecha) {
+            return date('Y-m-d', strtotime($fecha));
+        }, $fechas);
+
+        $totales = array_map('intval', $totales);
 
         $timestamp = date('Y-m-d_H-i-s');
-        $filename = $titulo . $timestamp . '.png';
+        //$filename = $titulo . $timestamp . '.png';
+        $filename = $filename . '_' . $timestamp . '.png';
 
         $rutaBase = $_SERVER['DOCUMENT_ROOT'] . '/public/img/grafico/';
 
@@ -26,11 +32,14 @@ class Grafico
         $grafico->SetScale('textlin');
         $grafico->title->Set($titulo);
 
-        $barra = new BarPlot($datos);
+        $barra = new BarPlot($totales);
         $barra->SetColor('blue');
         $barra->SetFillColor('lightblue');
-        $grafico->xaxis->SetTickLabels([$timestamp]);
+
+        $grafico->xaxis->SetTickLabels($fechas);
+
         $grafico->Add($barra);
+
         $grafico->Stroke($rutaCompleta);
 
         if (!file_exists($rutaCompleta)) {
