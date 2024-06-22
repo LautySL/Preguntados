@@ -28,7 +28,6 @@ class AdminModel
                     FROM jugador j 
                     INNER JOIN usuario u ON j.id = u.id" . $whereClause . "
                     GROUP BY DATE(u.fecha_creacion)";
-                    echo "Consulta SQL: " . $query . "<br>";
 
         $result = $this->database->execute($query);
 
@@ -53,8 +52,6 @@ class AdminModel
         try {
             $filename = $this->grafico->generarGraficoDeBarras("Total de Jugadores", $fechas, $totales, $filename);
         } catch (Exception $e) {
-            var_dump($fechas);
-            var_dump($totales);
             throw new Exception("Error del modelo al generar el gráfico de barras:" . $e->getMessage());
         }
 

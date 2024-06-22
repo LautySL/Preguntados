@@ -4,7 +4,6 @@ class Grafico
 {
     public function __construct()
     {
-        // Constructor vacío por ahora
     }
 
     public function generarGraficoDeBarras($titulo, $fechas, $totales, $filename)
@@ -21,7 +20,6 @@ class Grafico
         $totales = array_map('intval', $totales);
 
         $timestamp = date('Y-m-d_H-i-s');
-        //$filename = $titulo . $timestamp . '.png';
         $filename = $filename . '_' . $timestamp . '.png';
 
         $rutaBase = $_SERVER['DOCUMENT_ROOT'] . '/public/img/grafico/';
