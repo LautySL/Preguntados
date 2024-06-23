@@ -96,7 +96,7 @@ class Configuration
     }
     public static function getAdminModel()
     {
-        return new AdminModel(self::Database(), self::getGrafico());
+        return new AdminModel(self::Database(), self::getGrafico(), self::getPdfCreator());
     }
     public static function getEdicionModel()
     {

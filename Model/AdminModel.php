@@ -5,12 +5,13 @@ class AdminModel
 
     private $database;
     private $grafico;
+    private $pdf;
 
-    public function __construct($database, $grafico)
+    public function __construct($database, $grafico, $pdf)
     {
         $this->database = $database;
-
         $this->grafico = $grafico;
+        $this->pdf = $pdf;
     }
 
     private function ejecutarConsulta($query, $titulo, $nombreArchivo)
@@ -33,7 +34,7 @@ class AdminModel
             throw new Exception('No se encontraron datos para generar el gráfico de barras.');
         }
 
-        $filenameBarra = $nombreArchivo . '_barra'; 
+        $filenameBarra = $nombreArchivo . '_barra';
         $filenameLinea = $nombreArchivo . '_linea';
         try {
             $filenameBarra = $this->grafico->generarGraficoDeBarras($titulo, $fechas, $totales, $filenameBarra);
@@ -86,7 +87,7 @@ class AdminModel
     {
         $whereClause = $this->construirWhereClauseFecha('fecha_creacion_pregunta', $dateFrom, $dateTo);
         $query = "SELECT DATE(fecha_creacion_pregunta) as fecha, COUNT(*) AS total 
-                    FROM pregunta". $whereClause . "
+                    FROM pregunta" . $whereClause . "
                     GROUP BY DATE(fecha_creacion_pregunta)";
 
         return $this->ejecutarConsulta($query, "Total de Preguntas", 'total_preguntas');
@@ -96,7 +97,7 @@ class AdminModel
     {
         $whereClause = $this->construirWhereClauseFecha('fecha_creacion_pregunta', $dateFrom, $dateTo);
         $query = "SELECT DATE(fecha_creacion_pregunta) as fecha, COUNT(*) AS total 
-                    FROM preguntas_sugeridas". $whereClause . "
+                    FROM preguntas_sugeridas" . $whereClause . "
                     GROUP BY DATE(fecha_creacion_pregunta)";
 
         return $this->ejecutarConsulta($query, "Total de Preguntas Creadas", 'total_preguntas_creadas');
@@ -106,7 +107,7 @@ class AdminModel
     {
         $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
         $query = "SELECT DATE(fecha_creacion) as fecha, COUNT(*) AS total 
-                    FROM usuario ". $whereClause . "
+                    FROM usuario " . $whereClause . "
                     GROUP BY DATE(fecha_creacion)";
 
         return $this->ejecutarConsulta($query, "Total de Usuarios Nuevos", 'total_usuarios_nuevos');
@@ -130,7 +131,7 @@ class AdminModel
     {
         $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
         $query = "SELECT DATE(fecha_creacion) as fecha,  pais, COUNT(*) AS total
-                    FROM usuario ". $whereClause . "
+                    FROM usuario " . $whereClause . "
                     GROUP BY DATE(fecha_creacion), pais";
 
         return $this->ejecutarConsulta($query, "Total de Usuarios por Pais", 'total_usuarios_por_pais');
@@ -139,7 +140,7 @@ class AdminModel
     {
         $whereClause = $this->construirWhereClauseFecha('fecha_creacion', $dateFrom, $dateTo);
         $query = "SELECT DATE(fecha_creacion) as fecha, sexo, COUNT(*) AS total
-                    FROM usuario ". $whereClause . "
+                    FROM usuario " . $whereClause . "
                     GROUP BY DATE(fecha_creacion), sexo;";
 
         return $this->ejecutarConsulta($query, "Total de Usuarios por Sexo", 'total_usuarios_por_sexo');
@@ -153,10 +154,14 @@ class AdminModel
                         ELSE 'medio'
                     END AS rango_etario,
                         COUNT(*) AS total
-                                FROM usuario ". $whereClause . "
+                                FROM usuario " . $whereClause . "
                                 GROUP BY DATE(fecha_creacion), rango_etario;";
-        
+
         return $this->ejecutarConsulta($query, "Usuarios por edad", 'usuarios_por_edad');
     }
 
+    public function descargarPDF($html)
+    {
+        return $this->pdf->create($html);
+    }
 }

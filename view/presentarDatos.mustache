@@ -7,101 +7,86 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
+   <h2 class="encabezado w3-pink w3-center">Generar Gráfico</h2><br><br>
+<form method="post" class="w3-container w3-center">
+    <label>Fecha Inicio: </label>
+    <input type="date" name="dateFrom">
+    <label>Fecha Fin: </label>
+    <input type="date" name="dateTo">
+    <button type="submit" class="boton-perfil w3-button w3-round-xxlarge w3-pink">
+        Generar Estadisticas
+    </button><br>
+</form>
+
+<form action="/admin/descargarPDF" method="POST" target="_blank" class="w3-center">
+    <input type="hidden" name="grafico_barra" value="{{totalJugadores_barra}},{{totalPartidas_barra}},{{totalPreguntas_barra}},{{totalPreguntasCreadas_barra}},{{usuariosNuevos_barra}},{{totalCorrectas_barra}},{{totalUsuariosPorPais_barra}},{{totalUsuariosPorSexo_barra}},{{totalUsuariosPorRango_barra}}">
+    <input type="hidden" name="grafico_linea" value="{{totalJugadores_linea}},{{totalPartidas_linea}},{{totalPreguntas_linea}},{{totalPreguntasCreadas_linea}},{{usuariosNuevos_linea}},{{totalCorrectas_linea}},{{totalUsuariosPorPais_linea}},{{totalUsuariosPorSexo_linea}},{{totalUsuariosPorRango_linea}}">
+    <button type="submit" class="boton-perfil w3-button w3-round-xxlarge w3-pink">
+        Imprimir Estadísticas
+    </button>
+</form>
+<div class="w3-container w3-half w3-border">
+    <h3 class= "w3-white w3-center">Gráfico de Barras</h3>
+    {{#totalJugadores_barra}}
+        <img src="/public/img/grafico/{{totalJugadores_barra}}" alt="Gráfico de Barras">
+    {{/totalJugadores_barra}}
+    {{#totalPartidas_barra}}
+        <img src="/public/img/grafico/{{totalPartidas_barra}}" alt="Gráfico de Barras">
+    {{/totalPartidas_barra}}
+    {{#totalPreguntas_barra}}
+        <img src="/public/img/grafico/{{totalPreguntas_barra}}" alt="Gráfico de Barras">
+    {{/totalPreguntas_barra}}
+    {{#totalPreguntasCreadas_barra}}
+        <img src="/public/img/grafico/{{totalPreguntasCreadas_barra}}" alt="Gráfico de Barras">
+    {{/totalPreguntasCreadas_barra}}
+    {{#usuariosNuevos_barra}}
+        <img src="/public/img/grafico/{{usuariosNuevos_barra}}" alt="Gráfico de Barras">
+    {{/usuariosNuevos_barra}}
+    {{#totalCorrectas_barra}}
+        <img src="/public/img/grafico/{{totalCorrectas_barra}}" alt="Gráfico de Barras">
+    {{/totalCorrectas_barra}}
+    {{#totalUsuariosPorPais_barra}}
+        <img src="/public/img/grafico/{{totalUsuariosPorPais_barra}}" alt="Gráfico de Barras">
+    {{/totalUsuariosPorPais_barra}}
+    {{#totalUsuariosPorSexo_barra}}
+        <img src="/public/img/grafico/{{totalUsuariosPorSexo_barra}}" alt="Gráfico de Barras">
+    {{/totalUsuariosPorSexo_barra}}
+    {{#totalUsuariosPorRango_barra}}
+        <img src="/public/img/grafico/{{totalUsuariosPorRango_barra}}" alt="Gráfico de Barras">
+    {{/totalUsuariosPorRango_barra}}
+</div>
+<div class="w3-container w3-half w3-border">
+    <h3 class= "w3-white w3-center">Gráfico de Lineas</h3>
+    {{#totalJugadores_linea}}
+        <img src="/public/img/grafico/{{totalJugadores_linea}}" alt="Gráfico de Líneas">
+    {{/totalJugadores_linea}}
+    {{#totalPartidas_linea}}
+        <img src="/public/img/grafico/{{totalPartidas_linea}}" alt="Gráfico de Líneas">
+    {{/totalPartidas_linea}}
+    {{#totalPreguntas_linea}}
+        <img src="/public/img/grafico/{{totalPreguntas_linea}}" alt="Gráfico de Líneas">
+    {{/totalPreguntas_linea}}
+    {{#totalPreguntasCreadas_linea}}
+        <img src="/public/img/grafico/{{totalPreguntasCreadas_linea}}" alt="Gráfico de Líneas">
+    {{/totalPreguntasCreadas_linea}}
+    {{#usuariosNuevos_linea}}
+        <img src="/public/img/grafico/{{usuariosNuevos_linea}}" alt="Gráfico de Líneas">
+    {{/usuariosNuevos_linea}}
+    {{#totalCorrectas_linea}}
+        <img src="/public/img/grafico/{{totalCorrectas_linea}}" alt="Gráfico de Líneas">
+    {{/totalCorrectas_linea}}
+    {{#totalUsuariosPorPais_linea}}
+        <img src="/public/img/grafico/{{totalUsuariosPorPais_linea}}" alt="Gráfico de Líneas">
+    {{/totalUsuariosPorPais_linea}}
+    {{#totalUsuariosPorSexo_linea}}
+        <img src="/public/img/grafico/{{totalUsuariosPorSexo_linea}}" alt="Gráfico de Líneas">
+    {{/totalUsuariosPorSexo_linea}}
+    {{#totalUsuariosPorRango_linea}}
+        <img src="/public/img/grafico/{{totalUsuariosPorRango_linea}}" alt="Gráfico de Líneas">
+    {{/totalUsuariosPorRango_linea}}
+</div>
 
 
-
-    <h2 class= "w3-pink w3-center">Generar Gráfico</h2><br><br>
-    <form method="post"  class="w3-container w3-center">
-        <label>Fecha Inicio: </label>
-        <input type="date" name="dateFrom">
-        <label>Fecha Fin: </label>
-        <input type="date" name="dateTo">
-        <button type="submit" class="boton-perfil w3-button w3-round-xxlarge w3-pink">Generar Estadisticas</button><br>
-        <form action="\admin\descargarPDF" method="POST">
-            <button type="submit" name="imprimir" class="boton-perfil w3-button w3-round-xxlarge w3-pink">Imprimir Estadísticas</button>
-        </form>
-    </form>
-
-
-    <div class="w3-container w3-half w3-border">
-        <h3 class= "w3-white w3-center">Gráfico de Barras</h3>
-        {{#totalJugadores_barra}}
-            <img src="\public\img\grafico\{{totalJugadores_barra}}" alt="Gráfico de Barras">
-        {{/totalJugadores_barra}}
-
-        {{#totalPartidas_barra}}
-            <img src="\public\img\grafico\{{totalPartidas_barra}}" alt="Gráfico de Barras">
-        {{/totalPartidas_barra}}
-
-        {{#totalPreguntas_barra}}
-            <img src="\public\img\grafico\{{totalPreguntas_barra}}" alt="Gráfico de Barras">
-        {{/totalPreguntas_barra}}
-
-        {{#totalPreguntasCreadas_barra}}
-            <img src="\public\img\grafico\{{totalPreguntasCreadas_barra}}" alt="Gráfico de Barras">
-        {{/totalPreguntasCreadas_barra}}
-
-        {{#usuariosNuevos_barra}}
-            <img src="\public\img\grafico\{{usuariosNuevos_barra}}" alt="Gráfico de Barras">
-        {{/usuariosNuevos_barra}}
-
-        {{#totalCorrectas_barra}}
-            <img src="\public\img\grafico\{{totalCorrectas_barra}}" alt="Gráfico de Barras">
-        {{/totalCorrectas_barra}}
-
-        {{#totalUsuariosPorPais_barra}}
-            <img src="\public\img\grafico\{{totalUsuariosPorPais_barra}}" alt="Gráfico de Barras">
-        {{/totalUsuariosPorPais_barra}}
-
-        {{#totalUsuariosPorSexo_barra}}
-            <img src="\public\img\grafico\{{totalUsuariosPorSexo_barra}}" alt="Gráfico de Barras">
-        {{/totalUsuariosPorSexo_barra}}
-
-        {{#totalUsuariosPorRango_barra}}
-            <img src="\public\img\grafico\{{totalUsuariosPorRango_barra}}" alt="Gráfico de Barras">
-        {{/totalUsuariosPorRango_barra}}
-
-    </div>
-
-    <div class="w3-container w3-half w3-border">
-        <h3 class= "w3-white w3-center">Gráfico de Lineas</h3>
-        {{#totalJugadores_linea}}
-            <img src="\public\img\grafico\{{totalJugadores_linea}}" alt="Gráfico de Líneas">
-        {{/totalJugadores_linea}}
-
-        {{#totalPartidas_linea}}
-            <img src="\public\img\grafico\{{totalPartidas_linea}}" alt="Gráfico de Líneas">
-        {{/totalPartidas_linea}}
-
-        {{#totalPreguntas_linea}}
-            <img src="\public\img\grafico\{{totalPreguntas_linea}}" alt="Gráfico de Líneas">
-        {{/totalPreguntas_linea}}
-
-        {{#totalPreguntasCreadas_linea}}
-            <img src="\public\img\grafico\{{totalPreguntasCreadas_linea}}" alt="Gráfico de Líneas">
-        {{/totalPreguntasCreadas_linea}}
-
-        {{#usuariosNuevos_linea}}
-            <img src="\public\img\grafico\{{usuariosNuevos_linea}}" alt="Gráfico de Líneas">
-        {{/usuariosNuevos_linea}}
-
-        {{#totalCorrectas_linea}}
-            <img src="\public\img\grafico\{{totalCorrectas_linea}}" alt="Gráfico de Líneas">
-        {{/totalCorrectas_linea}}
-
-        {{#totalUsuariosPorPais_linea}}
-            <img src="\public\img\grafico\{{totalUsuariosPorPais_linea}}" alt="Gráfico de Líneas">
-        {{/totalUsuariosPorPais_linea}}
-
-        {{#totalUsuariosPorSexo_linea}}
-            <img src="\public\img\grafico\{{totalUsuariosPorSexo_linea}}" alt="Gráfico de Líneas">
-        {{/totalUsuariosPorSexo_linea}}
-
-        {{#totalUsuariosPorRango_linea}}
-            <img src="\public\img\grafico\{{totalUsuariosPorRango_linea}}" alt="Gráfico de Líneas">
-        {{/totalUsuariosPorRango_linea}}
-
-    </div>
     <br><a  href="/home/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Atras</a>
 
 </body>

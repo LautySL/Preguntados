@@ -1,22 +1,33 @@
 <?php
-
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
 class PdfCreator
 {
-    public function create($html)
+    private $dompdf;
+    public function __construct()
     {
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isPhpEnabled', true);
-        $dompdf = new Dompdf($options);
 
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        
-        return $dompdf->stream("Graficos.pdf", ['Attachment' => 0]);
+        $this->dompdf = new Dompdf($options);
+    }
+
+    public function create($html)
+    {
+        try {
+            $this->dompdf->loadHtml($html);
+
+            $this->dompdf->setPaper('A4', 'portrait');
+
+            $this->dompdf->render();
+
+            return $this->dompdf->stream("Graficos.pdf", ['Attachment' => 0]);
+        } catch (\Exception $e) {
+            error_log("PDF generation error: " . $e->getMessage());
+            return false;
+        }
     }
 }
 
