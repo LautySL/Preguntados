@@ -59,6 +59,7 @@ class JuegoController
     public function reportarPregunta(){
         $preguntaId=$_POST['pregunta_id'];
         $idUsuario=$_SESSION['id_usuario'];
+        $_SESSION['reportada']=true;
         $this->model->reportarPregunta($preguntaId, $idUsuario);
         header("Location: /juego/get");
     }
@@ -105,12 +106,16 @@ class JuegoController
 
              if (isset($_SESSION['flag-partida'])) {
                  $_SESSION['data']['time_left'] = $this->model->getTimeLeft();
+                 $_SESSION['data']['reportada']= $_SESSION['reportada'];
                    return $_SESSION['data'];
 
         }
             else{
                 $data = $this->obtenerDataParaPartida();
+
                 $_SESSION['start_time']=time();
+
+                $_SESSION['reportada'] = false;
                 $_SESSION['data']= $data;
                 return $data;
             }

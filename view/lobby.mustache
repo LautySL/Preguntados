@@ -33,19 +33,24 @@
             </form>
             {{/respuestas}}
         </div>
+
+        {{#reportada}}
+        <p style="background-color: lightgray; text-align: center; border-radius: 20px; padding: 10px;">Pregunta reportada con éxito</p>
+        {{/reportada}}
+        {{^reportada}}
         <form method="post" action="/juego/reportarPregunta" class="w3-center">
             <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
             <button type="submit" class="w3-margin w3-button w3-round-xxlarge w3-red w3-padding">Reportar pregunta</button>
         </form>
+        {{/reportada}}
 
         <div class="encabezado w3-center w3-pink w3-padding">
             <p class="encabezado">Puntaje: <span>{{puntaje}}</span></p>
             <p class="encabezado w3-center w3-pink w3-padding">Tiempo restante: <span id="timer">{{time_left}}</span> segundos</p>
         </div>
+
     </div>
 
-    <h5> dificultad pregunta {{dificultad}}</h5>
-    <h5> dificultad usuario {{dificultad_user}}</h5>
 
 
     {{/finalizado}}
