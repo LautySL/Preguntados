@@ -17,6 +17,15 @@
     align-items: center;
 }
 
+.contenedor-form{
+    width: 50%;
+    height: auto;
+    margin: 0 auto;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 2%;
+}
+
 .foto-perfil-header {
     height: 3rem;
     width: 3rem;
@@ -28,6 +37,12 @@
 
 .logo {
     height: 3rem;
+}
+
+.flecha-atras{
+    height: 2rem;
+    color: #fff;
+    margin-top: .8rem;
 }
 
 .boton-home {
@@ -45,7 +60,7 @@
 }
 
 .cuerpo-home {
-    margin: 5rem;
+    margin: 2rem;
 }
 
 .categoria {
@@ -66,14 +81,6 @@
     align-items: center;
 }
 
-.encabezado-perfil-ajeno {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
 .center-text th, .center-text td {
     text-align: center;
     vertical-align: middle;
@@ -81,8 +88,10 @@
 }
 
 .qr{
-    width: 8rem;
-    height: 8rem;
+    width: 9rem;
+    height: 9rem;
+    background-color: #fff;
+    padding: .2rem;
 }
 
 .fila-correcta {

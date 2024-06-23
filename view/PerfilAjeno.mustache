@@ -4,20 +4,21 @@
 
 
 <div class="perfil-ajeno">
-   <div class="encabezado-perfil-ajeno w3-pink">
-      <img src="/public/img/fotoPerfil/{{foto_de_perfil}}" class="foto-perfil-header w3-circle w3-border w3-margin"/>
-      <h1>{{nombre_de_usuario}}</h1>
+   <div class="encabezado w3-pink w3-center w3-padding">
+   <a href="/ranking/get" class="w3-left"><img src="/public/img/flecha-atras.svg" class="flecha-atras"/></a>
+     <h2>Perfil de {{nombre}}</h2>
    </div>
    <div class="w3-center">
+      <img src="/public/img/fotoPerfil/{{foto_de_perfil}}" class="foto-perfil w3-circle w3-border w3-margin"/><br>
+      <h3>{{nombre_de_usuario}}</h3>
       <p>({{nombre}} {{apellido}} | {{sexo}})</p>
       <p>Año de nacimiento: {{ano_de_nacimiento}}</p>
       <p>País: {{pais}}</p>
       <p>Ciudad: {{ciudad}}</p><br>
-      <div class="w3-border w3-border-pink" style="width: 10rem; height: 9rem;margin: auto; border-radius: 10px;background-color: white;"><img class="qr" src="/public/img/qrs/{{id}}.png"></div><br>
+      <div><img class="qr w3-round-xxlarge w3-border w3-border-pink" src="/public/img/qrs/{{id}}.png"></div><br>
 
-      <div class="w3-border w3-border-pink" id="map" style="width: 12rem; height: 10rem;margin: auto; border-radius: 10px;"></div>
+      <div class="w3-border w3-border-pink" id="map" style="width: 12rem; height: 10rem;margin: 0 auto; border-radius: 10px;"></div>
    </div>
-   <a href="/ranking/get" class="w3-button w3-round-xxlarge w3-gray">Volver</a>
 </div>
 
 <script>

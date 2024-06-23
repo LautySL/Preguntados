@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
-   <h2 class="encabezado w3-pink w3-center">Generar Gráfico</h2><br><br>
+ <div class="encabezado w3-pink w3-center w3-padding">
+    <a href="/home/get" class="w3-left"><img src="/public/img/flecha-atras.svg" class="flecha-atras"/></a>
+    <h2>Generar Gráfico</h2>
+    </div><br><br>
 <form method="post" class="w3-container w3-center">
     <label>Fecha Inicio: </label>
     <input type="date" name="dateFrom">
@@ -89,8 +92,5 @@
    <form action="/Admin/limpiarCarpeta" method="POST">
        <button class="boton-perfil w3-button w3-round-xxlarge w3-gray"  type="submit">eliminar grafico y Atras</button>
    </form>
-
-    <br><a  href="/home/get" class="boton-perfil w3-button w3-round-xxlarge w3-gray">Atras</a>
-
 </body>
 </html>
