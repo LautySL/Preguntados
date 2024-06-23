@@ -155,5 +155,27 @@ class AdminController
             exit();
         }
     }
+    public function limpiarCarpeta() {
+        // Función para limpiar la carpeta public/img/grafico/
+        $carpeta = 'public/img/grafico/';
+
+        // Asegurarse de que el camino tenga una barra diagonal al final
+        $carpeta = rtrim($carpeta, '/') . '/';
+
+        if (is_dir($carpeta) && strpos(realpath($carpeta), realpath('public/img/grafico')) === 0) {
+            $archivos = glob($carpeta . '*');
+
+            foreach ($archivos as $archivo) {
+                if (is_dir($archivo)) {
+                    $this->limpiarCarpeta($archivo);
+                    rmdir($archivo);
+                } else {
+                    unlink($archivo);
+                }
+            }
+            echo "Contenido de la carpeta '$carpeta' ha sido eliminado.";
+            header('Location: /');
+        }
+    }
 
 }
