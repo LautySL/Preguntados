@@ -1,10 +1,10 @@
 <h1 class="encabezado w3-pink w3-center w3-padding">Tus Partidas</h1><br><br>
 
 {{#partidas}}
-    <h2>Partida {{id}}</h2>
-    <table class="w3-table-all w3-centered">
+    <h2 class="w3-center">Partida {{id}}</h2>
+    <table class="w3-table-all w3-centered w3-card-4 w3-margin-bottom">
         <thead>
-        <tr>
+        <tr class="w3-pink">
             <th>ID</th>
             <th>Pregunta</th>
             <th>Categoría</th>
@@ -13,7 +13,7 @@
         </thead>
         <tbody>
         {{#preguntas}}
-            <tr class="{{clase}}">
+            <tr class="{{#se_respondio_bien}}correcta{{/se_respondio_bien}}{{^se_respondio_bien}}incorrecta{{/se_respondio_bien}}">
                 <td>{{id}}</td>
                 <td>{{pregunta}}</td>
                 <td>{{categoria}}</td>
@@ -23,7 +23,7 @@
         </tbody>
     </table>
     {{#ultima_pregunta_fallida}}
-        <p class="ultimo-error">Última pregunta fallida: {{pregunta}}</p>
+        <p class="w3-center ultimo-error">Última pregunta fallida: {{pregunta}}</p>
     {{/ultima_pregunta_fallida}}
     <br>
 {{/partidas}}
@@ -32,13 +32,13 @@
     {{#totalPaginas}}
         <div class="w3-bar">
             {{#paginaAnterior}}
-                <a href="/verPartidas/get?page={{paginaAnterior}}" class="w3-button">&laquo;</a>
+                <a href="/verPartidas/get?page={{paginaAnterior}}" class="w3-button">&laquo; Anterior</a>
             {{/paginaAnterior}}
             {{#paginas}}
                 <a href="/verPartidas/get?page={{.}}" class="w3-button {{#esPaginaActual}}w3-pink{{/esPaginaActual}}">{{.}}</a>
             {{/paginas}}
             {{#paginaSiguiente}}
-                <a href="/verPartidas/get?page={{paginaSiguiente}}" class="w3-button">&raquo;</a>
+                <a href="/verPartidas/get?page={{paginaSiguiente}}" class="w3-button">Siguiente &raquo;</a>
             {{/paginaSiguiente}}
         </div>
     {{/totalPaginas}}
