@@ -177,9 +177,18 @@ class UserModel
                 ];
             }
 
+            // Determinar la clase de la fila basada en se_respondio_bien
+            $claseFila = $row['se_respondio_bien'] ? 'fila-correcta' : 'fila-incorrecta';
+
             // Agregar pregunta a la partida correspondiente
-            $row['se_respondio_bien'] = (bool) $row['se_respondio_bien']; // Convertir a booleano para manejar en la vista Mustache
-            $partidas[$row['partida_id']]['preguntas'][] = $row;
+            $partidas[$row['partida_id']]['preguntas'][] = [
+                'id' => $row['pregunta_id'],
+                'pregunta' => $row['pregunta'],
+                'categoria' => $row['categoria'],
+                'se_respondio_bien' => $row['se_respondio_bien'],
+                'respuesta_correcta' => $row['respuesta_correcta'],
+                'claseFila' => $claseFila // Nuevo campo para la clase de la fila
+            ];
         }
 
         return array_values($partidas); // Devolver solo los valores (partidas) del array asociativo
