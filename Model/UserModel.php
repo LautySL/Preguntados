@@ -149,6 +149,7 @@ class UserModel
     public function getPartidasConPreguntas($usuarioId, $pagina = 1)
     {
         $offset = ($pagina - 1) * 10;
+
         $query = "SELECT p.id AS partida_id, p.fecha_creacion_partida, p.puntaje, q.id AS pregunta_id, q.pregunta, q.categoría AS categoria, pp.se_respondio_bien
               FROM partida p
               JOIN partida_pregunta pp ON p.id = pp.partida
@@ -167,36 +168,25 @@ class UserModel
 
         $partidas = [];
         foreach ($result as $row) {
-            $preguntas = $this->getPreguntasPartida($row['partida_id']);
-            $ultimaPreguntaFallida = $this->getUltimaPreguntaFallida($preguntas, $row['pregunta_id']);
-
-            // Determinar la clase CSS para cada pregunta
-            foreach ($preguntas as &$pregunta) {
-                $pregunta['clase'] = ($pregunta['id'] == $row['pregunta_id'] && $pregunta['se_respondio_bien'] == 0) ? 'rojo' : 'verde';
+            if (!isset($partidas[$row['partida_id']])) {
+                $partidas[$row['partida_id']] = [
+                    'id' => $row['partida_id'],
+                    'fecha' => $row['fecha_creacion_partida'],
+                    'puntaje' => $row['puntaje'],
+                    'preguntas' => []
+                ];
             }
 
-            $partidas[] = [
-                'id' => $row['partida_id'],
-                'fecha' => $row['fecha_creacion_partida'],
-                'puntaje' => $row['puntaje'],
-                'preguntas' => $preguntas,
-                'ultima_pregunta_fallida' => $ultimaPreguntaFallida
+            // Agregar pregunta a la partida correspondiente
+            $partidas[$row['partida_id']]['preguntas'][] = [
+                'id' => $row['pregunta_id'],
+                'pregunta' => $row['pregunta'],
+                'categoria' => $row['categoria'],
+                'se_respondio_bien' => $row['se_respondio_bien']
             ];
         }
 
-        return $partidas;
-    }
-
-    private function getRespuestaCorrecta($preguntaId)
-    {
-        $query = "SELECT respuesta FROM respuesta WHERE pregunta = $preguntaId AND es_correcta = 1 LIMIT 1";
-        $result = $this->database->query($query);
-
-        if ($result && count($result) > 0) {
-            return $result[0]['respuesta'];
-        } else {
-            return 'Respuesta no disponible';
-        }
+        return array_values($partidas); // Devolver solo los valores (partidas) del array asociativo
     }
 
     private function getPreguntasPartida($partidaId)
