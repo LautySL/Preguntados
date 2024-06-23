@@ -151,19 +151,19 @@ class UserModel
         $offset = ($pagina - 1) * 10;
 
         $query = "SELECT p.id AS partida_id, p.fecha_creacion_partida, p.puntaje, q.id AS pregunta_id, q.pregunta, q.categoría AS categoria, pp.se_respondio_bien, r.respuesta AS respuesta_correcta
-          FROM partida p
-          JOIN partida_pregunta pp ON p.id = pp.partida
-          JOIN pregunta q ON pp.pregunta = q.id
-          LEFT JOIN respuesta r ON q.id = r.pregunta AND r.es_la_correcta = 1
-          WHERE p.jugador = $usuarioId
-          ORDER BY p.fecha_creacion_partida DESC";
+        FROM partida p
+        JOIN partida_pregunta pp ON p.id = pp.partida
+        JOIN pregunta q ON pp.pregunta = q.id
+        LEFT JOIN respuesta r ON q.id = r.pregunta AND r.es_la_correcta = 1
+        WHERE p.jugador = $usuarioId
+        ORDER BY p.fecha_creacion_partida DESC";
 
         error_log("SQL Query: " . $query); // Para depuración
 
         $result = $this->database->query($query);
 
         if ($result === false) {
-            throw new Exception("Database query failed. Check error log for details.");
+            throw new Exception("Falló la puta query.");
         }
 
         $partidas = [];

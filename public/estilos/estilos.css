@@ -84,3 +84,40 @@
     width: 8rem;
     height: 8rem;
 }
+
+.fila-correcta {
+    background-color: lightgreen;
+}
+
+.fila-incorrecta {
+    background-color: lightcoral;
+}
+
+.tabla-partidas {
+    width: 50%;
+    margin: 0 auto;
+}
+
+@media only screen
+and (max-device-width: 600px)
+{
+
+    .tabla-partidas {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+}
+
+/* mobile only styles when the device is 0-600px in maximum width */
+
+@media only screen
+and (max-device-width: 1000px)
+{
+
+    .tabla-partidas {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+}
