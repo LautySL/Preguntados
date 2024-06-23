@@ -146,6 +146,61 @@ class UserModel
         return $result[0]['total_puntaje'] ?? 0;
     }
 
+    public function getPartidasConPreguntas($usuarioId, $pagina)
+    {
+        $partidasPorPagina = 5;
+        $offset = ($pagina - 1) * $partidasPorPagina;
+
+        $sql = "SELECT p.id AS partida_id, p.puntaje, pr.id AS pregunta_id, pr.pregunta, pr.categoría, r.respuesta
+            FROM partida p
+            JOIN partida_pregunta pp ON p.id = pp.partida
+            JOIN pregunta pr ON pp.pregunta = pr.id
+            JOIN respuesta r ON pr.id = r.pregunta
+            WHERE p.jugador = $usuarioId AND r.es_la_correcta = 1
+            ORDER BY p.fecha_creacion_partida DESC, pr.id
+            LIMIT $partidasPorPagina OFFSET $offset";
+
+        $result = $this->database->query($sql);
+
+        $partidas = [];
+        $partidaActual = null;
+        $preguntas = [];
+        foreach ($result as $row) {
+            if ($partidaActual !== $row['partida_id']) {
+                if ($partidaActual !== null) {
+                    $partidas[] = [
+                        'numero' => $partidaActual,
+                        'preguntas' => $preguntas
+                    ];
+                }
+                $partidaActual = $row['partida_id'];
+                $preguntas = [];
+            }
+            $clase = $row['se_respondio_bien'] ? 'w3-green' : 'w3-red';
+            $preguntas[] = [
+                'id' => $row['pregunta_id'],
+                'pregunta' => $row['pregunta'],
+                'categoria' => $row['categoría'],
+                'respuesta_correcta' => $row['respuesta'],
+                'clase' => $clase
+            ];
+        }
+        if ($partidaActual !== null) {
+            $partidas[] = [
+                'numero' => $partidaActual,
+                'preguntas' => $preguntas
+            ];
+        }
+        return $partidas;
+    }
+
+    public function getTotalPartidas($usuarioId)
+    {
+        $sql = "SELECT COUNT(*) AS total FROM partida WHERE jugador = $usuarioId";
+        $result = $this->database->query($sql);
+        return $result[0]['total'];
+    }
+
     public function verPerfilPropio()
     {
         $usuario = $_SESSION["usuario"];

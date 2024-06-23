@@ -20,6 +20,7 @@ include_once ("Controller/VerPerfilAjenoController.php");
 include_once ("Controller/ActivacionController.php");
 include_once ("Controller/EdicionController.php");
 include_once ("Controller/SuggestQuestionController.php");
+include_once ("Controller/VerPartidasController.php");
 
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
@@ -29,8 +30,6 @@ include_once ("helper/Grafico.php");
 include_once ("helper/pdfCreator.php");
 include_once ("vendor/mustache/src/Mustache/Autoloader.php");
 include_once ('vendor/PHPMailer/src/PHPMailer.php');
-
-
 
 include_once ('Model/AdminModel.php');
 include_once ('Model/UserModel.php');
@@ -62,6 +61,10 @@ class Configuration
         return new ActivacionController(self::getUserModel(), self::getPresenter());
     }
     public static function getRankingController(){
+        return new RankingController(self::getUserModel(), self::getPresenter());
+    }
+
+    public static function getVerPartidasController(){
         return new RankingController(self::getUserModel(), self::getPresenter());
     }
 

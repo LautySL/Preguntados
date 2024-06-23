@@ -1,0 +1,39 @@
+<h1 class="encabezado w3-pink w3-center w3-padding">Tus Partidas</h1><br><br>
+
+{{#partidas}}
+    <h2>Partida {{numero}}</h2>
+    <table class="w3-table-all w3-centered">
+        <tr>
+            <th>ID</th>
+            <th>Pregunta</th>
+            <th>Categoría</th>
+            <th>Respuesta Correcta</th>
+        </tr>
+        {{#preguntas}}
+            <tr class="{{clase}}">
+                <td>{{id}}</td>
+                <td>{{pregunta}}</td>
+                <td>{{categoria}}</td>
+                <td>{{respuesta_correcta}}</td>
+            </tr>
+        {{/preguntas}}
+    </table>
+    <br>
+{{/partidas}}
+
+<div class="w3-center">
+    {{#totalPaginas}}
+        <div class="w3-bar">
+            {{#paginaAnterior}}
+                <a href="/verPartidas/get?page={{paginaAnterior}}" class="w3-button">&laquo;</a>
+            {{/paginaAnterior}}
+            {{#paginas}}
+                <a href="/verPartidas/get?page={{.}}" class="w3-button {{#esPaginaActual}}w3-pink{{/esPaginaActual}}">{{.}}</a>
+            {{/paginas}}
+            {{#paginaSiguiente}}
+                <a href="/verPartidas/get?page={{paginaSiguiente}}" class="w3-button">&raquo;</a>
+            {{/paginaSiguiente}}
+        </div>
+    {{/totalPaginas}}
+</div>
+<a href="/verPerfilPropio/get" class="w3-button w3-round-xxlarge w3-gray">Volver al Perfil</a>
