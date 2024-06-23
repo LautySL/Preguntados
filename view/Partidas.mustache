@@ -1,24 +1,56 @@
-<h1 class="encabezado w3-pink w3-center w3-padding">Tus Partidas</h1><br><br>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus Partidas</title>
+    <style>
+        .tabla-partida {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .tabla-partida th, .tabla-partida td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .tabla-partida th {
+            background-color: #f2f2f2;
+        }
+        .ultima-pregunta-fallida {
+            background-color: #ffcccc; /* Color de fondo rojo para la fila */
+        }
+    </style>
+</head>
+<body>
+<h1 class="encabezado w3-pink w3-center w3-padding">Tus Partidas</h1>
+<br><br>
 
 {{#partidas}}
-    <h2>Partida {{numero}}</h2>
-    <table class="w3-table-all w3-centered">
-        <tr>
-            <th>ID</th>
-            <th>Pregunta</th>
-            <th>Categoría</th>
-            <th>Respuesta Correcta</th>
-        </tr>
-        {{#preguntas}}
-            <tr class="{{clase}}">
-                <td>{{id}}</td>
-                <td>{{pregunta}}</td>
-                <td>{{categoria}}</td>
-                <td>{{respuesta_correcta}}</td>
+    <div class="partida">
+        <h2>Partida {{id}}</h2>
+        <table class="tabla-partida">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Pregunta</th>
+                <th>Categoría</th>
+                <th>Respuesta Correcta</th>
             </tr>
-        {{/preguntas}}
-    </table>
-    <br>
+            </thead>
+            <tbody>
+            {{#preguntas}}
+                <tr class="{{#es_ultima_pregunta_fallida}}ultima-pregunta-fallida{{/es_ultima_pregunta_fallida}}">
+                    <td>{{id}}</td>
+                    <td>{{pregunta}}</td>
+                    <td>{{categoria}}</td>
+                    <td>{{respuesta_correcta}}</td>
+                </tr>
+            {{/preguntas}}
+            </tbody>
+        </table>
+    </div>
 {{/partidas}}
 
 <div class="w3-center">
@@ -36,4 +68,7 @@
         </div>
     {{/totalPaginas}}
 </div>
+
 <a href="/verPerfilPropio/get" class="w3-button w3-round-xxlarge w3-gray">Volver al Perfil</a>
+</body>
+</html>

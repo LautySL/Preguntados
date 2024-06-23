@@ -149,11 +149,12 @@ class UserModel
     public function getPartidasConPreguntas($usuarioId, $pagina = 1)
     {
         $offset = ($pagina - 1) * 10;
-        $query = "SELECT p.id AS partida_id, p.fecha_creacion_partida, p.puntaje, q.pregunta, pp.se_respondio_bien
+        $query = "SELECT p.id AS partida_id, p.fecha_creacion_partida, p.puntaje, q.id AS pregunta_id, q.pregunta, q.categoría, pp.se_respondio_bien
               FROM partida p
               JOIN partida_pregunta pp ON p.id = pp.partida
               JOIN pregunta q ON pp.pregunta = q.id
               WHERE p.jugador = $usuarioId
+              ORDER BY p.fecha_creacion_partida DESC
               LIMIT 10 OFFSET $offset";
 
         error_log("SQL Query: " . $query); // Para depuración
@@ -166,16 +167,49 @@ class UserModel
 
         $partidas = [];
         foreach ($result as $row) {
+            $preguntas = $this->getPreguntasPartida($row['partida_id'], $row['pregunta_id']);
+            $ultimaPreguntaFallida = $this->getUltimaPreguntaFallida($preguntas);
+
             $partidas[] = [
                 'id' => $row['partida_id'],
                 'fecha' => $row['fecha_creacion_partida'],
                 'puntaje' => $row['puntaje'],
-                'pregunta' => $row['pregunta'],
-                'se_respondio_bien' => $row['se_respondio_bien'] ? 'Sí' : 'No'
+                'preguntas' => $preguntas,
+                'ultima_pregunta_fallida' => $ultimaPreguntaFallida
             ];
         }
 
         return $partidas;
+    }
+
+    private function getPreguntasPartida($partidaId, $preguntaId)
+    {
+        $query = "SELECT q.id AS id, q.pregunta AS pregunta, q.categoría AS categoria, r.respuesta AS respuesta_correcta
+              FROM partida_pregunta pp
+              JOIN pregunta q ON pp.pregunta = q.id
+              LEFT JOIN respuesta r ON q.id = r.pregunta
+              WHERE pp.partida = $partidaId AND q.id = $preguntaId";
+
+        $result = $this->database->query($query);
+
+        if ($result === false) {
+            throw new Exception("Database query failed while fetching questions for partida $partidaId. Check error log for details.");
+        }
+
+        return $result;
+    }
+
+    private function getUltimaPreguntaFallida($preguntas)
+    {
+        // Determinar la última pregunta que se respondió incorrectamente en la partida
+        $ultimaPreguntaFallida = null;
+        foreach ($preguntas as $pregunta) {
+            if (isset($pregunta['se_respondio_bien']) && $pregunta['se_respondio_bien'] == 0) {
+                $ultimaPreguntaFallida = $pregunta;
+            }
+        }
+
+        return $ultimaPreguntaFallida;
     }
 
     public function getTotalPartidas($usuarioId)
