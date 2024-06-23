@@ -139,6 +139,13 @@ class UserModel
         return $rankingData;
     }
 
+    public function obtenerPuntajeTotal($userId)
+    {
+        $query = "SELECT SUM(puntaje) as total_puntaje FROM partida WHERE jugador = $userId";
+        $result = $this->database->query($query);
+        return $result[0]['total_puntaje'] ?? 0;
+    }
+
     public function verPerfilPropio()
     {
         $usuario = $_SESSION["usuario"];

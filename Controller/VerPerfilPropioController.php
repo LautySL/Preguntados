@@ -14,8 +14,10 @@ class VerPerfilPropioController
     {
         $perfil = $this->model->verPerfilPropio();
         if (!empty($perfil)) {
+            $userId = $_SESSION['id_usuario'];  // Obtener el ID del usuario desde la sesión
+            $puntajeTotal = $this->model->obtenerPuntajeTotal($userId);
+            $perfil[0]['puntaje_total'] = $puntajeTotal;
             $this->presenter->render('view/Perfil.mustache', $perfil[0]);
-
         } else {
             echo "upsi, algo falla";
         }
