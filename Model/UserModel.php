@@ -156,8 +156,7 @@ class UserModel
               JOIN pregunta q ON pp.pregunta = q.id
               LEFT JOIN respuesta r ON q.id = r.pregunta AND r.es_la_correcta = 1
               WHERE p.jugador = $usuarioId
-              ORDER BY p.fecha_creacion_partida DESC
-              LIMIT 10 OFFSET $offset";
+              ORDER BY p.fecha_creacion_partida DESC";
 
         error_log("SQL Query: " . $query); // Para depuración
 
