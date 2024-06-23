@@ -178,13 +178,8 @@ class UserModel
             }
 
             // Agregar pregunta a la partida correspondiente
-            $partidas[$row['partida_id']]['preguntas'][] = [
-                'id' => $row['pregunta_id'],
-                'pregunta' => $row['pregunta'],
-                'categoria' => $row['categoria'],
-                'se_respondio_bien' => $row['se_respondio_bien'],
-                'respuesta_correcta' => $row['respuesta_correcta']
-            ];
+            $row['se_respondio_bien'] = (bool) $row['se_respondio_bien']; // Convertir a booleano para manejar en la vista Mustache
+            $partidas[$row['partida_id']]['preguntas'][] = $row;
         }
 
         return array_values($partidas); // Devolver solo los valores (partidas) del array asociativo
