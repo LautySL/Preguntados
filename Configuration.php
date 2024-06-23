@@ -65,7 +65,7 @@ class Configuration
     }
 
     public static function getVerPartidasController(){
-        return new RankingController(self::getUserModel(), self::getPresenter());
+        return new VerPartidasController(self::getUserModel(), self::getPresenter());
     }
 
     public static function getVerPerfilPropioController(){
