@@ -146,51 +146,35 @@ class UserModel
         return $result[0]['total_puntaje'] ?? 0;
     }
 
-    public function getPartidasConPreguntas($usuarioId, $pagina)
+    public function getPartidasConPreguntas($usuarioId, $pagina = 1)
     {
-        $partidasPorPagina = 5;
-        $offset = ($pagina - 1) * $partidasPorPagina;
+        $offset = ($pagina - 1) * 10;
+        $query = "SELECT p.id AS partida_id, p.fecha_creacion_partida, p.puntaje, q.pregunta, pp.se_respondio_bien
+              FROM partida p
+              JOIN partida_pregunta pp ON p.id = pp.partida
+              JOIN pregunta q ON pp.pregunta = q.id
+              WHERE p.jugador = $usuarioId
+              LIMIT 10 OFFSET $offset";
 
-        $sql = "SELECT p.id AS partida_id, p.puntaje, pr.id AS pregunta_id, pr.pregunta, pr.categoría, r.respuesta
-            FROM partida p
-            JOIN partida_pregunta pp ON p.id = pp.partida
-            JOIN pregunta pr ON pp.pregunta = pr.id
-            JOIN respuesta r ON pr.id = r.pregunta
-            WHERE p.jugador = $usuarioId AND r.es_la_correcta = 1
-            ORDER BY p.fecha_creacion_partida DESC, pr.id
-            LIMIT $partidasPorPagina OFFSET $offset";
+        error_log("SQL Query: " . $query); // Para depuración
 
-        $result = $this->database->query($sql);
+        $result = $this->database->query($query);
+
+        if ($result === false) {
+            throw new Exception("Database query failed. Check error log for details.");
+        }
 
         $partidas = [];
-        $partidaActual = null;
-        $preguntas = [];
         foreach ($result as $row) {
-            if ($partidaActual !== $row['partida_id']) {
-                if ($partidaActual !== null) {
-                    $partidas[] = [
-                        'numero' => $partidaActual,
-                        'preguntas' => $preguntas
-                    ];
-                }
-                $partidaActual = $row['partida_id'];
-                $preguntas = [];
-            }
-            $clase = $row['se_respondio_bien'] ? 'w3-green' : 'w3-red';
-            $preguntas[] = [
-                'id' => $row['pregunta_id'],
-                'pregunta' => $row['pregunta'],
-                'categoria' => $row['categoría'],
-                'respuesta_correcta' => $row['respuesta'],
-                'clase' => $clase
-            ];
-        }
-        if ($partidaActual !== null) {
             $partidas[] = [
-                'numero' => $partidaActual,
-                'preguntas' => $preguntas
+                'id' => $row['partida_id'],
+                'fecha' => $row['fecha_creacion_partida'],
+                'puntaje' => $row['puntaje'],
+                'pregunta' => $row['pregunta'],
+                'se_respondio_bien' => $row['se_respondio_bien'] ? 'Sí' : 'No'
             ];
         }
+
         return $partidas;
     }
 

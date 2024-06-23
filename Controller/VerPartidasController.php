@@ -11,21 +11,10 @@ class VerPartidasController
         $this->presenter = $presenter;
     }
 
-    public function get()
+    public function get($pagina = 1)
     {
-        $usuarioId = $_SESSION['id_usuario'];
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
-        $partidas = $this->model->getPartidasConPreguntas($usuarioId, $page);
-        $totalPartidas = $this->model->getTotalPartidas($usuarioId);
-        $partidasPorPagina = 5;
-        $totalPaginas = ceil($totalPartidas / $partidasPorPagina);
-
-        $data = [
-            'partidas' => $partidas,
-            'totalPaginas' => $totalPaginas,
-            'paginaActual' => $page
-        ];
-
-        $this->presenter->render('view/Partidas.mustache', $data);
+        $usuarioId = $_SESSION['id_usuario']; // Asume que el ID del usuario está en la sesión
+        $partidas = $this->model->getPartidasConPreguntas($usuarioId, $pagina);
+        echo $this->presenter->render("view/Partidas.mustache", ['partidas' => $partidas]);
     }
 }

@@ -57,19 +57,19 @@ CREATE TABLE respuesta(
 );
 
 CREATE TABLE preguntas_sugeridas (
-                                     id INT AUTO_INCREMENT PRIMARY KEY,
-                                     pregunta VARCHAR(255) NOT NULL,
-                                     categoría ENUM('Geografía', 'Ciencia', 'Historia', 'Deporte', 'Arte', 'Entretenimiento'),
-                                     usuario_id INT NOT NULL,
-                                     fecha_creacion_pregunta TIMESTAMP DEFAULT CURRENT_TIMESTAMp
+id INT AUTO_INCREMENT PRIMARY KEY,
+pregunta VARCHAR(255) NOT NULL,
+categoría ENUM('Geografía', 'Ciencia', 'Historia', 'Deporte', 'Arte', 'Entretenimiento'),
+usuario_id INT NOT NULL,
+fecha_creacion_pregunta TIMESTAMP DEFAULT CURRENT_TIMESTAMp
 );
 
 CREATE TABLE respuestas_sugeridas (
-                                      id INT AUTO_INCREMENT PRIMARY KEY,
-                                      pregunta INT NOT NULL,
-                                      respuesta VARCHAR(255) NOT NULL,
-                                      es_la_correcta BOOLEAN NOT NULL,
-                                      FOREIGN KEY (pregunta) REFERENCES preguntas_sugeridas(id)
+id INT AUTO_INCREMENT PRIMARY KEY,
+pregunta INT NOT NULL,
+respuesta VARCHAR(255) NOT NULL,
+es_la_correcta BOOLEAN NOT NULL,
+FOREIGN KEY (pregunta) REFERENCES preguntas_sugeridas(id)
 );
   
 CREATE TABLE partida (

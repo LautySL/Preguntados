@@ -16,6 +16,10 @@ class Database
     public function query($sql)
     {
         $result = mysqli_query($this->conn, $sql);
+        if (!$result) {
+            error_log("MySQL Error: " . mysqli_error($this->conn));
+            return false;
+        }
         return mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
 
