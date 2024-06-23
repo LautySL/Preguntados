@@ -149,7 +149,7 @@ class UserModel
     public function getPartidasConPreguntas($usuarioId, $pagina = 1)
     {
         $offset = ($pagina - 1) * 10;
-        $query = "SELECT p.id AS partida_id, p.fecha_creacion_partida, p.puntaje, q.id AS pregunta_id, q.pregunta, q.categoría, pp.se_respondio_bien
+        $query = "SELECT p.id AS partida_id, p.fecha_creacion_partida, p.puntaje, q.id AS pregunta_id, q.pregunta, q.categoría AS categoria, pp.se_respondio_bien
               FROM partida p
               JOIN partida_pregunta pp ON p.id = pp.partida
               JOIN pregunta q ON pp.pregunta = q.id
@@ -167,8 +167,13 @@ class UserModel
 
         $partidas = [];
         foreach ($result as $row) {
-            $preguntas = $this->getPreguntasPartida($row['partida_id'], $row['pregunta_id']);
-            $ultimaPreguntaFallida = $this->getUltimaPreguntaFallida($preguntas);
+            $preguntas = $this->getPreguntasPartida($row['partida_id']);
+            $ultimaPreguntaFallida = $this->getUltimaPreguntaFallida($preguntas, $row['pregunta_id']);
+
+            // Determinar la clase CSS para cada pregunta
+            foreach ($preguntas as &$pregunta) {
+                $pregunta['clase'] = ($pregunta['id'] == $row['pregunta_id'] && $pregunta['se_respondio_bien'] == 0) ? 'rojo' : 'verde';
+            }
 
             $partidas[] = [
                 'id' => $row['partida_id'],
@@ -182,13 +187,25 @@ class UserModel
         return $partidas;
     }
 
-    private function getPreguntasPartida($partidaId, $preguntaId)
+    private function getRespuestaCorrecta($preguntaId)
     {
-        $query = "SELECT q.id AS id, q.pregunta AS pregunta, q.categoría AS categoria, r.respuesta AS respuesta_correcta
+        $query = "SELECT respuesta FROM respuesta WHERE pregunta = $preguntaId AND es_correcta = 1 LIMIT 1";
+        $result = $this->database->query($query);
+
+        if ($result && count($result) > 0) {
+            return $result[0]['respuesta'];
+        } else {
+            return 'Respuesta no disponible';
+        }
+    }
+
+    private function getPreguntasPartida($partidaId)
+    {
+        $query = "SELECT q.id AS id, q.pregunta AS pregunta, q.categoría AS categoria, r.respuesta AS respuesta_correcta, pp.se_respondio_bien
               FROM partida_pregunta pp
               JOIN pregunta q ON pp.pregunta = q.id
               LEFT JOIN respuesta r ON q.id = r.pregunta
-              WHERE pp.partida = $partidaId AND q.id = $preguntaId";
+              WHERE pp.partida = $partidaId";
 
         $result = $this->database->query($query);
 
@@ -199,12 +216,12 @@ class UserModel
         return $result;
     }
 
-    private function getUltimaPreguntaFallida($preguntas)
+    private function getUltimaPreguntaFallida($preguntas, $preguntaId)
     {
         // Determinar la última pregunta que se respondió incorrectamente en la partida
         $ultimaPreguntaFallida = null;
         foreach ($preguntas as $pregunta) {
-            if (isset($pregunta['se_respondio_bien']) && $pregunta['se_respondio_bien'] == 0) {
+            if ($pregunta['id'] == $preguntaId && $pregunta['se_respondio_bien'] == 0) {
                 $ultimaPreguntaFallida = $pregunta;
             }
         }
