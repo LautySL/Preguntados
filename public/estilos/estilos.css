@@ -77,6 +77,13 @@
     height: 3rem;
 }
 
+.perfil {
+    width: 40%;
+    height: auto;
+    margin: 0 auto;
+    padding: .8rem;
+}
+
 .perfil-ajeno {
     justify-content: center;
     align-items: center;
