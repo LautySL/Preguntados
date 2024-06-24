@@ -175,8 +175,7 @@ class AdminController
                     unlink($archivo);
                 }
             }
-            echo "Contenido de la carpeta '$carpeta' ha sido eliminado.";
-            header('Location: /');
+
         }
     }
 
