@@ -11,8 +11,12 @@
             <th>Fecha</th>
             <th>Pregunta</th>
             <th>Respuesta</th>
+            {{#preguntas_reportadas}}
+            <th>ID de Reporte</th>
+            {{/preguntas_reportadas}}
             <th></th>
             <th></th>
+
         </tr>
         </thead>
         <tbody>
@@ -33,13 +37,11 @@
                 <td>{{id}}</td>
                 <td>{{fecha}}</td>
                 <td>{{pregunta}}</td>
-                <td>
-                    <ul>
-                        <li>{{respuesta}}</li>
-                    </ul>
-                </td>
+                <td>{{respuesta}}</td>
+                <td>{{idreporte}}</td>
                 <td><a href="/edicion/verPreguntas?id={{id}}"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Modificar</button></td>
                 <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=reportada"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></td>
+
             </tr>
         {{/preguntas_reportadas}}
         {{#modificar_pregunta}}

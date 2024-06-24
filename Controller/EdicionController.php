@@ -73,7 +73,8 @@ class EdicionController
             $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($idPregunta);
 
             $data['preguntas_reportadas'][] = [
-                'id' => $reporte['id'],
+                'id' => $idPregunta,
+                'idreporte' => $reporte['id'],
                 'fecha' => $reporte['fecha_reporte'],
                 'pregunta' => $reporte['pregunta'],
                 'respuesta' => $respuesta
