@@ -22,12 +22,10 @@
                 <td>{{fecha}}</td>
                 <td>{{pregunta}}</td>
                 <td>
-                    <ul>
-                        <li>{{respuesta}}</li>
-                    </ul>
+                    {{respuesta}}
                 </td>
                 <td><button type="button" class="w3-button w3-round-xxlarge w3-center w3-pink" onclick="abrirPopup('{{id}}', '{{pregunta}}', '{{respuesta}}')">Modificar</button></td>
-                <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=normal"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></td>
+                <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=normal"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></a></td>
             </tr>
         {{/total_preguntas}}
         {{#preguntas_reportadas}}

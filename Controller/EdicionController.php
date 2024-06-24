@@ -67,18 +67,33 @@ class EdicionController
         $data = [];
 
         foreach ($preguntasReportadas as $reporte) {
-
-            $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($reporte['id']);
-
             $data['preguntas_reportadas'][] = [
-                'id' => $reporte['id'],
+                'reporte_id' => $reporte['reporte_id'],
+                'id' => $reporte['pregunta_id'],
                 'fecha' => $reporte['fecha_reporte'],
                 'pregunta' => $reporte['pregunta'],
-                'respuesta' => $respuesta
+                'respuesta' => $reporte['respuesta']
             ];
         }
 
         $this->Presenter->render('view/vistaEditor.mustache', $data);
+    }
+
+    public function eliminarPreguntaReportada()
+    {
+        if (isset($_GET['reporte_id'])) {
+            $reporte_id = $_GET['reporte_id'];
+            $eliminar = $this->model->eliminarPreguntaReportada($reporte_id);
+
+            if ($eliminar) {
+                header('Location: /edicion/verPreguntasReportadas');
+                exit;
+            } else {
+                echo "Error al intentar eliminar la pregunta reportada.";
+            }
+        } else {
+            echo "ID de reporte no proporcionado.";
+        }
     }
 
     public function verPreguntasSugeridas()

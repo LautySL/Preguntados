@@ -71,7 +71,7 @@ class EdicionModel
 
     public function getRespuestaCorrectaByPreguntaId($preguntaId)
     {
-        $query = "SELECT respuesta FROM respuestas_sugeridas WHERE pregunta = $preguntaId AND es_la_correcta = TRUE LIMIT 1";
+        $query = "SELECT respuesta FROM respuesta WHERE pregunta = '$preguntaId' AND es_la_correcta = TRUE LIMIT 1";
         $result = $this->database->execute($query);
         $row = $result->fetch_assoc();
         return $row['respuesta'] ?? null;
