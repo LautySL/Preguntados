@@ -6,7 +6,7 @@ class RegistroController
     private $model;
     private $location;
 
-    public function __construct($Model, $Presenter ,$location)
+    public function __construct($Model, $Presenter, $location)
     {
         $this->model = $Model;
         $this->presenter = $Presenter;
@@ -31,45 +31,32 @@ class RegistroController
 
     public function insertar()
     {
+        $nombre = $_POST['nombre'] ?? '';
+        $apellido = $_POST['apellido'] ?? '';
+        $ano_de_nacimiento = $_POST['ano_de_nacimiento'] ?? 0;
+        $sexo = $_POST['sexo'] ?? '';
+        $mail = $_POST['mail'] ?? '';
+        $contrasena = $_POST['contrasena'] ?? '';
+        $nombre_de_usuario = $_POST['nombre_de_usuario'] ?? '';
+        $latitud = $_POST['latitud'] ?? '';
+        $longitud = $_POST['longitud'] ?? '';
 
-            $nombre = $_POST['nombre'] ?? '';
-            $apellido = $_POST['apellido'] ?? '';
-            $ano_de_nacimiento = $_POST['ano_de_nacimiento'] ?? 0;
-            $sexo = $_POST['sexo'] ?? '';
-          //  $pais = $_POST['pais'] ?? '';
-           // $ciudad = $_POST['ciudad'] ?? '';
-            $mail = $_POST['mail'] ?? '';
-            $contrasena = $_POST['contrasena'] ?? '';
-            $nombre_de_usuario = $_POST['nombre_de_usuario'] ?? '';
-            $latitud = $_POST['latitud'] ?? '';
-            $longitud = $_POST['longitud'] ?? '';
-            $fecha_creacion = ' CURRENT_TIMESTAMP';
+        $datosConCoordenadas = $this->location->obtenerCiudadYPais($latitud, $longitud);
+        $pais = $datosConCoordenadas['pais'];
+        $ciudad = $datosConCoordenadas['ciudad'];
 
-            $datosConCoordenadas=$this->location->obtenerCiudadYPais($latitud, $longitud);
-            $pais =$datosConCoordenadas['pais'];
-            $ciudad =$datosConCoordenadas['ciudad'];
+        $archivo_nombre = $this->model->verificarQueHayaFoto();
+        if ($archivo_nombre != "fotoGenerica.png") {
+            $archivo_temporal = $_FILES['foto_de_perfil']['tmp_name'];
+            $directorio_destino = '/public/img/fotoPerfil';
 
-            if (isset($_FILES['foto_de_perfil'])) {
-                $archivo_nombre = $_FILES['foto_de_perfil']['name'];
-                $archivo_temporal = $_FILES['foto_de_perfil']['tmp_name'];
-                $archivo_tamaño = $_FILES['foto_de_perfil']['size'];
-                $archivo_error = $_FILES['foto_de_perfil']['error'];
-                $directorio_destino = 'public/img/fotoPerfil/';
-
-                $ruta_destino = $directorio_destino . $archivo_nombre;
-                move_uploaded_file($archivo_temporal, $ruta_destino);
-            }
-
-
-            if (!empty($foto_de_perfil)) {
-                move_uploaded_file($_FILES['foto_de_perfil']['tmp_name'], 'public/img/fotoPerfil/' . $archivo_nombre);
-            }
-
-
+            $ruta_destino = $directorio_destino . '/' . $archivo_nombre;
+            move_uploaded_file($archivo_temporal, $ruta_destino);
+        }
         try {
             $hash_activacion = md5(uniqid(rand(), true));
             $this->model->enviarCorreoActivacion($mail, $nombre, $hash_activacion);
-            $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud);
+            $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $archivo_nombre, $pais, $ciudad, $hash_activacion, $latitud, $longitud);
 
             $_SESSION['mensaje'] = "Registro exitoso. Por favor, revisa tu correo para activar tu cuenta.";
             $_SESSION['exito'] = true;
@@ -78,19 +65,7 @@ class RegistroController
             $_SESSION['exito'] = false;
         }
 
-
         header('Location: /registro');
         exit();
     }
-
-
-
-
-
 }
-
-
-
-
-
-

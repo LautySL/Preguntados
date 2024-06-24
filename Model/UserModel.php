@@ -13,10 +13,6 @@ class UserModel
 
     public function registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud)
     {
-        if($foto_de_perfil == ""){
-            $foto_de_perfil = "fotoGenerica.png";
-        }
-
         $sql = "INSERT INTO usuario (nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion, latitud, longitud)
                    VALUES ('$nombre_de_usuario', '$contrasena', '$nombre', '$apellido', '$ano_de_nacimiento', '$sexo', '$mail', '$foto_de_perfil', '$pais', '$ciudad',FALSE, '$hash_activacion', '$latitud', '$longitud')";
 
@@ -27,8 +23,18 @@ class UserModel
         $sqlJugador = "INSERT INTO jugador (id) VALUES ($idJugador)";
 
         $this->database->execute($sqlJugador);
-        $this-> generateQrCode($idJugador);
+        $this->generateQrCode($idJugador);
     }
+
+    public function verificarQueHayaFoto()
+    {
+        if (isset($_FILES['foto_de_perfil']) && $_FILES['foto_de_perfil']['error'] === UPLOAD_ERR_OK) {
+            return $_FILES['foto_de_perfil']['name'];
+        } else {
+            return "fotoGenerica.png";
+        }
+    }
+
 
     private function generateQrCode($userId)
     {
@@ -114,6 +120,7 @@ class UserModel
 
             $this->mail->send();
             echo 'El correo electrónico de activación se ha enviado correctamente.';
+            exit();
         } catch (Exception $e) {
             echo "Error al enviar el correo electrónico: {$this->mail->ErrorInfo}";
         }
@@ -134,7 +141,7 @@ class UserModel
         while ($row = $result->fetch_assoc()) {
             $rankingData[] = $row;
         }
-        
+
 
         return $rankingData;
     }
@@ -242,16 +249,16 @@ class UserModel
 
     public function VerPerfilAjeno($id)
     {
-            $sql = "SELECT * FROM usuario WHERE id = '$id'";
-            $result = $this->database->query($sql);
+        $sql = "SELECT * FROM usuario WHERE id = '$id'";
+        $result = $this->database->query($sql);
 
-            if ($result && count($result) > 0) {
-                $datosPerfil = $result[0]; // Obtenemos el primer (y único) resultado
-                return $datosPerfil;
-            } else {
-                echo "No se encontraron datos para el ID: " . $id;
-                return null;
-            }
+        if ($result && count($result) > 0) {
+            $datosPerfil = $result[0]; // Obtenemos el primer (y único) resultado
+            return $datosPerfil;
+        } else {
+            echo "No se encontraron datos para el ID: " . $id;
+            return null;
+        }
 
     }
     public function getMaxPuntaje($usuario)
