@@ -16,7 +16,6 @@
             {{/preguntas_reportadas}}
             <th></th>
             <th></th>
-
         </tr>
         </thead>
         <tbody>
@@ -40,8 +39,7 @@
                 <td>{{respuesta}}</td>
                 <td>{{idreporte}}</td>
                 <td><a href="/edicion/verPreguntas?id={{id}}"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-green">Modificar</button></td>
-                <td><a href="/edicion/eliminarPregunta?id={{id}}&tipo=reportada"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></td>
-
+                <td><a href="/edicion/eliminarPreguntaReportada?id={{id}}"><button type="button" class="w3-button w3-round-xxlarge w3-center w3-red">Eliminar</button></td>
             </tr>
         {{/preguntas_reportadas}}
         {{#modificar_pregunta}}

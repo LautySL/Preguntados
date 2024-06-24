@@ -35,8 +35,6 @@ class EdicionModel
         return $preguntas;
     }
 
-
-
     public function getPreguntaById($id)
     {
         $query = "SELECT * FROM pregunta WHERE id = $id";
@@ -74,12 +72,12 @@ class EdicionModel
         return $preguntas;
     }
 
-    public function eliminarPreguntaReportada($idReporte)
+    public function eliminarPreguntaReportada($id)
     {
-        $query = "DELETE FROM reportes_preguntas WHERE id = '$idReporte'";
-        $this->database->execute($query);
+        $queryReporte = "DELETE FROM reportes_preguntas WHERE pregunta_id = '$id'";
+        $this->database->execute($queryReporte);
 
-        return true; // Suponemos que el borrado fue exitoso
+        return true;
     }
 
     public function getRespuestaCorrectaByPreguntaId($preguntaId)
@@ -170,19 +168,19 @@ class EdicionModel
 
         $query = "DELETE FROM pregunta WHERE id = '$id_a_eliminar'";
 
-        $query = "DELETE FROM respuesta WHERE pregunta = '$id_a_eliminar'"; 
+        $query = "DELETE FROM respuesta WHERE pregunta = '$id_a_eliminar'";
         $this->database->execute($query);
 
-        $query = "DELETE FROM reportes_preguntas WHERE pregunta_id = '$id_a_eliminar'"; 
+        $query = "DELETE FROM reportes_preguntas WHERE pregunta_id = '$id_a_eliminar'";
         $this->database->execute($query);
 
-        $query = "DELETE FROM partida_pregunta WHERE pregunta = '$id_a_eliminar'"; 
+        $query = "DELETE FROM partida_pregunta WHERE pregunta = '$id_a_eliminar'";
         $this->database->execute($query);
 
-        $query = "DELETE FROM pregunta WHERE id = '$id_a_eliminar'"; 
+        $query = "DELETE FROM pregunta WHERE id = '$id_a_eliminar'";
 
         $this->database->execute($query);
-        
+
         return true;
     }
 
