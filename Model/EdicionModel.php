@@ -41,7 +41,13 @@ class EdicionModel
     {
         $query = "SELECT * FROM pregunta WHERE id = $id";
         $result = $this->database->execute($query);
-        return $result;
+
+        // Verificar si se obtuvo un resultado
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc(); // Devolver el resultado como array asociativo
+        } else {
+            return null; // Manejar el caso donde no se encuentra la pregunta
+        }
     }
 
     public function getCategoriaByReporte($pregunta_id)
