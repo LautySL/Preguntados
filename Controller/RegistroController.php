@@ -45,24 +45,38 @@ class RegistroController
         $pais = $datosConCoordenadas['pais'];
         $ciudad = $datosConCoordenadas['ciudad'];
 
+        // Manejo de la foto de perfil
         $archivo_nombre = $this->model->verificarQueHayaFoto();
-        if ($archivo_nombre != "fotoGenerica.png") {
+        if ($archivo_nombre != "fotoGenerica.png" && isset($_FILES['foto_de_perfil']) && $_FILES['foto_de_perfil']['error'] == UPLOAD_ERR_OK) {
             $archivo_temporal = $_FILES['foto_de_perfil']['tmp_name'];
-            $directorio_destino = '/public/img/fotoPerfil';
+            $directorio_destino = 'public/img/fotoPerfil'; // Asegúrate de que esta ruta es correcta
+
 
             $ruta_destino = $directorio_destino . '/' . $archivo_nombre;
-            move_uploaded_file($archivo_temporal, $ruta_destino);
+
+            if (move_uploaded_file($archivo_temporal, $ruta_destino)) {
+                // Archivo subido con éxito
+            } else {
+                $_SESSION['mensaje'] = "Error al subir la foto de perfil.";
+                $_SESSION['exito'] = false;
+                header('Location: /registro');
+                exit();
+            }
+        } else {
+            $archivo_nombre = "fotoGenerica.png"; // Asegurarse de que haya una foto por defecto
         }
         try {
             $hash_activacion = md5(uniqid(rand(), true));
-            $this->model->enviarCorreoActivacion($mail, $nombre, $hash_activacion);
             $this->model->registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $archivo_nombre, $pais, $ciudad, $hash_activacion, $latitud, $longitud);
+            $this->model->enviarCorreoActivacion($mail, $nombre, $hash_activacion);
+
 
             $_SESSION['mensaje'] = "Registro exitoso. Por favor, revisa tu correo para activar tu cuenta.";
             $_SESSION['exito'] = true;
         } catch (Exception $e) {
             $_SESSION['mensaje'] = "Hubo un error en el registro. Por favor, intenta nuevamente.";
             $_SESSION['exito'] = false;
+
         }
 
         header('Location: /registro');

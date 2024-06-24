@@ -13,17 +13,20 @@ class UserModel
 
     public function registrarJugador($nombre_de_usuario, $contrasena, $nombre, $apellido, $ano_de_nacimiento, $sexo, $mail, $foto_de_perfil, $pais, $ciudad, $hash_activacion, $latitud, $longitud)
     {
-        $sql = "INSERT INTO usuario (nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion, latitud, longitud)
-                   VALUES ('$nombre_de_usuario', '$contrasena', '$nombre', '$apellido', '$ano_de_nacimiento', '$sexo', '$mail', '$foto_de_perfil', '$pais', '$ciudad',FALSE, '$hash_activacion', '$latitud', '$longitud')";
+        try {
+            $sql = "INSERT INTO usuario (nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion, latitud, longitud)
+            VALUES ('$nombre_de_usuario', '$contrasena', '$nombre', '$apellido', '$ano_de_nacimiento', '$sexo', '$mail', '$foto_de_perfil', '$pais', '$ciudad', FALSE, '$hash_activacion', '$latitud', '$longitud')";
 
-        $this->database->execute($sql);
+            $this->database->execute($sql);
 
+            $idJugador = $this->database->getLastInsertId();
+            $sqlJugador = "INSERT INTO jugador (id) VALUES ($idJugador)";
 
-        $idJugador = $this->database->getLastInsertId();
-        $sqlJugador = "INSERT INTO jugador (id) VALUES ($idJugador)";
-
-        $this->database->execute($sqlJugador);
-        $this->generateQrCode($idJugador);
+            $this->database->execute($sqlJugador);
+            $this->generateQrCode($idJugador);
+        } catch (Exception $e) {
+          echo "error en el registrar jugador";
+    }
     }
 
     public function verificarQueHayaFoto()
@@ -120,7 +123,7 @@ class UserModel
 
             $this->mail->send();
             echo 'El correo electrónico de activación se ha enviado correctamente.';
-            exit();
+           
         } catch (Exception $e) {
             echo "Error al enviar el correo electrónico: {$this->mail->ErrorInfo}";
         }
