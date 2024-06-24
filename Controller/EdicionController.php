@@ -67,32 +67,56 @@ class EdicionController
         $data = [];
 
         foreach ($preguntasReportadas as $reporte) {
+            $idPregunta = $reporte['pregunta_id']; // Asegurar que se obtiene correctamente el id
+
+            // Obtener la respuesta de la pregunta
+            $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($idPregunta);
+
             $data['preguntas_reportadas'][] = [
-                'reporte_id' => $reporte['reporte_id'],
-                'id' => $reporte['pregunta_id'],
+                'id' => $reporte['id'],
                 'fecha' => $reporte['fecha_reporte'],
                 'pregunta' => $reporte['pregunta'],
-                'respuesta' => $reporte['respuesta']
+                'respuesta' => $respuesta
             ];
         }
 
-        $this->Presenter->render('view/vistaEditor.mustache', $data);
+        $this->Presenter->render('view/VistaEditor.mustache', $data);
+    }
+
+    public function modificarPregunta()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            $nuevaPregunta = $_POST['modificarPregunta'];
+            $nuevaRespuesta = $_POST['modificarRespuesta'];
+
+            $modificado = $this->model->modificarPregunta($id, $nuevaPregunta, $nuevaRespuesta);
+
+            if ($modificado) {
+                header('Location: /edicion/verPreguntasReportadas');
+                exit;
+            } else {
+                echo "Error al intentar modificar la pregunta.";
+            }
+        } else {
+            echo "Método no permitido para modificar la pregunta.";
+        }
     }
 
     public function eliminarPreguntaReportada()
     {
-        if (isset($_GET['reporte_id'])) {
-            $reporte_id = $_GET['reporte_id'];
-            $eliminar = $this->model->eliminarPreguntaReportada($reporte_id);
+        if (isset($_GET['id'])) {
+            $idReporte = $_GET['id'];
+            $eliminado = $this->model->eliminarPreguntaReportada($idReporte);
 
-            if ($eliminar) {
+            if ($eliminado) {
                 header('Location: /edicion/verPreguntasReportadas');
                 exit;
             } else {
                 echo "Error al intentar eliminar la pregunta reportada.";
             }
         } else {
-            echo "ID de reporte no proporcionado.";
+            echo "ID de pregunta reportada no proporcionado.";
         }
     }
 
@@ -193,25 +217,6 @@ class EdicionController
         }
     }
 
-    public function modificarPregunta()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
-            $nuevaPregunta = $_POST['modificarPregunta'];
-            $nuevaRespuesta = $_POST['modificarRespuesta'];
-
-            $modificado = $this->model->modificarPregunta($id, $nuevaPregunta, $nuevaRespuesta);
-
-            if ($modificado) {
-                header('Location: /edicion/verPreguntas');
-                exit;
-            } else {
-                echo "Error al intentar modificar la pregunta.";
-            }
-        } else {
-            echo "Método no permitido para modificar la pregunta.";
-        }
-    }
 
 
 }
