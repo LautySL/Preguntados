@@ -53,11 +53,10 @@ class EdicionModel
 
     public function getPreguntasReportadas()
     {
-        $query = "SELECT rp.id AS reporte_id, rp.fecha_reporte, p.pregunta, r.respuesta
-              FROM reportes_preguntas rp
-              JOIN pregunta p ON rp.pregunta_id = p.id
-              JOIN respuesta r ON p.id = r.pregunta
-              ORDER BY rp.fecha_reporte DESC";
+        $query = "SELECT rp.id AS id, rp.fecha_reporte, p.id AS pregunta_id, p.pregunta
+                  FROM reportes_preguntas rp
+                  JOIN pregunta p ON rp.pregunta_id = p.id
+                  ORDER BY rp.fecha_reporte DESC";
 
         $result = $this->database->execute($query);
         $preguntas = [];
@@ -67,6 +66,14 @@ class EdicionModel
         }
 
         return $preguntas;
+    }
+
+    public function eliminarPreguntaReportada($idReporte)
+    {
+        $query = "DELETE FROM reportes_preguntas WHERE id = '$idReporte'";
+        $this->database->execute($query);
+
+        return true; // Suponemos que el borrado fue exitoso
     }
 
     public function getRespuestaCorrectaByPreguntaId($preguntaId)
@@ -172,19 +179,5 @@ class EdicionModel
         
         return true;
     }
-
-    public function eliminarPreguntaReportada($id_reporte)
-    {
-        $queryReporte = "DELETE FROM reportes_preguntas WHERE id = '$id_reporte'";
-        $this->database->execute($queryReporte);
-
-        $queryPregunta = "DELETE FROM pregunta WHERE id = (
-            SELECT pregunta_id FROM reportes_preguntas WHERE id = '$id_reporte'
-        )";
-        $this->database->execute($queryPregunta);
-
-        return true;
-    }
-
 
 }
