@@ -1,0 +1,117 @@
+.semicircle {
+    position: absolute;
+    width: 5rem; /* Ajusta el tamaño de la imagen */
+    height: 5rem; /* Ajusta el tamaño de la imagen */
+    background-image: url('/public/img/pregunta.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: -5;
+}
+
+.semicircle-1 {
+    top: 10%;
+    left: 10%;
+    animation: semicircle-move-1 5s linear infinite;
+}
+
+.semicircle-2 {
+    top: 20%;
+    left: 70%;
+    animation: semicircle-move-2 5s linear infinite;
+}
+
+.semicircle-3 {
+    top: 50%;
+    left: 30%;
+    animation: semicircle-move-3 5s linear infinite;
+}
+
+.semicircle-4 {
+    top: 80%;
+    left: 50%;
+    animation: semicircle-move-4 5s linear infinite;
+}
+
+.semicircle-5 {
+    top: 30%;
+    left: 80%;
+    animation: semicircle-move-5 5s linear infinite;
+}
+
+.semicircle-6 {
+    top: 70%;
+    left: 80%;
+    animation: semicircle-move-5 5s linear infinite;
+}
+
+.semicircle-7 {
+    top: 50%;
+    left: 20%;
+    animation: semicircle-move-4 5s linear infinite;
+}
+
+.semicircle-8 {
+    top: 80%;
+    left: 10%;
+    animation: semicircle-move-2 5s linear infinite;
+}
+
+@keyframes semicircle-move-1 {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(100px, 100px); /* Ajusta el radio del movimiento semicircular */
+    }
+    100% {
+        transform: translate(200px, 0); /* Ajusta el radio del movimiento semicircular */
+    }
+}
+
+@keyframes semicircle-move-2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(-100px, 100px); /* Ajusta el radio del movimiento semicircular */
+    }
+    100% {
+        transform: translate(-200px, 0); /* Ajusta el radio del movimiento semicircular */
+    }
+}
+
+@keyframes semicircle-move-3 {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(100px, -100px); /* Ajusta el radio del movimiento semicircular */
+    }
+    100% {
+        transform: translate(200px, 0); /* Ajusta el radio del movimiento semicircular */
+    }
+}
+
+@keyframes semicircle-move-4 {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(-100px, -100px); /* Ajusta el radio del movimiento semicircular */
+    }
+    100% {
+        transform: translate(-200px, 0); /* Ajusta el radio del movimiento semicircular */
+    }
+}
+
+@keyframes semicircle-move-5 {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(100px, 100px); /* Ajusta el radio del movimiento semicircular */
+    }
+    100% {
+        transform: translate(200px, 0); /* Ajusta el radio del movimiento semicircular */
+    }
+}
