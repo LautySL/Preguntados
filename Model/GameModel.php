@@ -23,6 +23,7 @@ class GameModel
             'puntaje' => $puntaje,
             'finalizado' => $finalizado,
             'time_left'=>$this->getTimeLeft(),
+            'token'=>$this->getCantidadToken( $idUsuario),
             'dificultad_user'=>$this->obtenerPorcentajeAciertos($idUsuario),
             'dificultad' => $preguntaData['dificultad']
         ];
@@ -116,8 +117,17 @@ class GameModel
     }
     public function verificarSiTieneTokenYusarlo($id)
     {
+        $cantidadTokens = $this->getCantidadToken($id);
 
-    }
+        if($cantidadTokens>0){
+            $query = "UPDATE usuario SET token = token - 1 WHERE id = $id";
+            $this->database->execute($query);
+            return true;
+        }
+        return false;
+        }
+
+
 
 
     private function esRespuestaCorrecta($preguntaId, $respuestaId)
@@ -281,6 +291,19 @@ class GameModel
 
         } catch (Exception $e) {
             echo "Error al actualizar las estadísticas: " . $e->getMessage();
+        }
+    }
+
+    private function getCantidadToken($usuario)
+    {
+        $query = "SELECT token FROM usuario WHERE id= '$usuario'";
+        $result = $this->database->execute($query);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return (int) $row['token'];
+        } else {
+            return 0;
         }
     }
 

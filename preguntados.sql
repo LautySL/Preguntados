@@ -14,7 +14,8 @@ CREATE TABLE usuario (
     hash_activacion varchar(500),
     latitud decimal(10, 8),
     longitud decimal(11, 8),
-    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    token int default 0
 );
 
 ALTER TABLE usuario

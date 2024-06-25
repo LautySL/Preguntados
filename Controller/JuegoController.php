@@ -70,9 +70,9 @@ class JuegoController
 
     public function usarToken(){
 
-        //TODO borar el true harcodeado y hacer el metodo
-      //  $usertienetokens =$this->model->verificarSiTieneTokenYusarlo( $_SESSION['id_usuario']);
-        $usertienetokens= true;
+
+       $usertienetokens =$this->model->verificarSiTieneTokenYusarlo( $_SESSION['id_usuario']);
+
         if($usertienetokens) {
             $_SESSION['token_usado'] = $usertienetokens;
             $this->verificarRespuesta();
