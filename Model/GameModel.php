@@ -12,20 +12,19 @@ class GameModel
     public function obtenerDataParaPartida($idUsuario, $puntaje, $finalizado, $puntajeFinal): array
     {
         $preguntaData = $this->obtenerPreguntaYRespuestas($idUsuario);
-        $categoriaEstilo = $this->obtenerEstiloCategoria($preguntaData['categoria']);
 
         $data = [
             'nombreUsuario' => $_SESSION['usuario'],
             'pregunta' => $preguntaData['pregunta'],
             'pregunta_id' => $preguntaData['pregunta_id'],
-            'dificultad' => $preguntaData['dificultad'],
             'respuestas' => $preguntaData['respuestas'],
             'categoria' => $preguntaData['categoria'],
-            'categoria_estilo' => $categoriaEstilo,
+            'categoria_estilo' =>$this->obtenerEstiloCategoria($preguntaData['categoria']),
             'puntaje' => $puntaje,
             'finalizado' => $finalizado,
             'time_left'=>$this->getTimeLeft(),
-            'dificultad_user'=>$this->obtenerPorcentajeAciertos($idUsuario)
+            'dificultad_user'=>$this->obtenerPorcentajeAciertos($idUsuario),
+            'dificultad' => $preguntaData['dificultad']
         ];
         return $data;
     }
@@ -98,10 +97,28 @@ class GameModel
             $queryreport ="INSERT INTO reportes_preguntas (pregunta_id, usuario_id) VALUES ($preguntaId,$idUsuario)";;
             $this->database->execute( $queryreport);
         } catch (Exception $e) {
-            echo "Error al actualizar el puntaje final: " . $e->getMessage();
+            echo "Error al reportar: " . $e->getMessage();
 
         }
     }
+
+    public function obtenerRespuestaCorrectaId($preguntaId){
+        $query = "SELECT id FROM respuesta WHERE pregunta = '$preguntaId' AND es_la_correcta = 1";
+        $result = $this->database->execute($query);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['id'];
+        } else {
+            return null;
+        }
+
+    }
+    public function verificarSiTieneTokenYusarlo($id)
+    {
+
+    }
+
 
     private function esRespuestaCorrecta($preguntaId, $respuestaId)
     {
@@ -266,5 +283,6 @@ class GameModel
             echo "Error al actualizar las estadísticas: " . $e->getMessage();
         }
     }
+
 
 }

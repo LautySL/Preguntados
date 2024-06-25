@@ -20,24 +20,28 @@ class JuegoController
 
     public function verificarRespuesta()
     {
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $respuestaId = $_POST['respuesta_id'];
             $preguntaId=$_POST['pregunta_id'];
             $idPartida = $_SESSION['id_partida'];
             $puntaje = $_SESSION['puntaje'] ?? 0;
+            $esCorrecta=false;
 
-
-            $esCorrecta = $this->model->procesarRespuesta($idPartida, $preguntaId, $respuestaId, $puntaje);
-
-
-            if ($esCorrecta) {
-                $this->continuaJugando();
-            } else {
-                $this->gameOver();
-                exit;
-            }
+        if($_SESSION['token_usado']){
+            $respuestaId = $this->model->obtenerRespuestaCorrectaId($preguntaId);
+            unset($_SESSION['token_usado']);
         }
+        if($preguntaId == $_SESSION['data']['pregunta_id']){
+            $esCorrecta = $this->model->procesarRespuesta($idPartida, $preguntaId, $respuestaId, $puntaje);
+        }
+        if (!$esCorrecta) {
+            $_SESSION['finalizado']= true;
+            }
+
+        unset ($_SESSION['start_time']);
+        unset($_SESSION['flag-partida']);
+        header('Location: /juego/get');
+
+
     }
 
     public function iniciarPartida()
@@ -64,34 +68,29 @@ class JuegoController
         header("Location: /juego/get");
     }
 
+    public function usarToken(){
 
-
-
-    private function gameOver()
-    {
-        $_SESSION['finalizado']= true;
-        unset($_SESSION['flag-partida']);
-        header("Location: /juego/get");
-        exit;
+        //TODO borar el true harcodeado y hacer el metodo
+      //  $usertienetokens =$this->model->verificarSiTieneTokenYusarlo( $_SESSION['id_usuario']);
+        $usertienetokens= true;
+        if($usertienetokens) {
+            $_SESSION['token_usado'] = $usertienetokens;
+            $this->verificarRespuesta();
+        }
+        else{
+            $this->get();
+        }
     }
 
-    private function continuaJugando()
-    {
-        unset ($_SESSION['start_time']);
-        unset($_SESSION['flag-partida']);
-        header('Location: /juego/get');
-        exit;
-    }
 
     private function obtenerDataParaPartida(): array
     {
         $_SESSION['flag-partida'] = true;
-        $nombreUsuario = $_SESSION['usuario'];
         $puntaje = $_SESSION['puntaje'] ?? 0;
         $finalizado = $_SESSION['finalizado'] ?? null;
-
         return $this->model->obtenerDataParaPartida($_SESSION['id_usuario'], $puntaje, $finalizado, $puntaje);
     }
+
 
     private function checkLoggedIn()
     {
@@ -103,21 +102,18 @@ class JuegoController
 
     private function filtroAntiF5()
     {
+        if (isset($_SESSION['flag-partida'])) {
 
-             if (isset($_SESSION['flag-partida'])) {
-                 $_SESSION['data']['time_left'] = $this->model->getTimeLeft();
-                 $_SESSION['data']['reportada']= $_SESSION['reportada'];
-                   return $_SESSION['data'];
-
+            $_SESSION['data']['time_left'] = $this->model->getTimeLeft();
+            $_SESSION['data']['reportada']= $_SESSION['reportada'];
+            return $_SESSION['data'];
         }
-            else{
-                $data = $this->obtenerDataParaPartida();
-
-                $_SESSION['start_time']=time();
-
-                $_SESSION['reportada'] = false;
-                $_SESSION['data']= $data;
-                return $data;
+        else{
+            $data = $this->obtenerDataParaPartida();
+            $_SESSION['start_time']=time();
+            $_SESSION['reportada'] = false;
+            $_SESSION['data']= $data;
+            return $data;
             }
 
         }
