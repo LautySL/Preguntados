@@ -364,7 +364,7 @@ class UserModel
             overflow: hidden;
         }
         .header {
-            background: #4CAF50;
+            background: #e14cff;
             color: #ffffff;
             padding: 10px 0;
             text-align: center;
@@ -378,7 +378,7 @@ class UserModel
             margin: 20px 0;
             font-size: 16px;
             color: #ffffff;
-            background: #4CAF50;
+            background: #e14cff;
             text-decoration: none;
             border-radius: 5px;
         }

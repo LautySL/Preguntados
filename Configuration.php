@@ -21,6 +21,7 @@ include_once ("Controller/ActivacionController.php");
 include_once ("Controller/EdicionController.php");
 include_once ("Controller/SuggestQuestionController.php");
 include_once ("Controller/VerPartidasController.php");
+include_once ("Controller/TiendaController.php");
 
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
@@ -83,6 +84,10 @@ class Configuration
     public static function getSuggestQuestionController()
     {
         return new SuggestQuestionController(self::getSuggestedQuestionModel(), self::getPresenter());
+    }
+    public static function getTiendaController()
+    {
+        return new TiendaController(self::getUserModel(), self::getPresenter());
     }
 
     //model

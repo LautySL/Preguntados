@@ -126,6 +126,7 @@ and (max-device-width: 600px)
 
 }
 
+
 /* mobile only styles when the device is 0-600px in maximum width */
 
 @media only screen
