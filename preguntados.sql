@@ -98,6 +98,11 @@ CREATE TABLE reportes_preguntas (
      FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
+INSERT INTO usuario (ID, nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion, latitud, longitud) VALUES 
+(1000, 'bot_desafío', 123, 'Bot', 'Desafío', '2024', 'Prefiero no cargarlo', 'bot@desafio.com', 'fotoGenerica.png', 'Argentina', 'San Justo', true, '1223', 1, 1);
+
+INSERT INTO jugador (id) VALUES (1000);
+
 INSERT INTO pregunta (pregunta, categoría, veces_que_salio, veces_correcta, dificultad, ultima_vez_que_salio) VALUES
 
 ('¿Cuál es la capital de Francia?', 'Geografía', 10, 9, 10.00, '2024-06-01'),
