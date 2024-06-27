@@ -80,6 +80,10 @@ CREATE TABLE partida (
     fecha_creacion_partida TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE partida
+ADD COLUMN modo_versus BOOLEAN DEFAULT FALSE,
+ADD COLUMN resultado_versus ENUM('Ganada', 'Perdida', 'Empatada') DEFAULT 'Empatado';
+
 CREATE TABLE partida_pregunta (
 	partida int,
     pregunta int,

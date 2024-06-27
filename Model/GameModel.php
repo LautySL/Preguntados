@@ -19,13 +19,16 @@ class GameModel
             'pregunta_id' => $preguntaData['pregunta_id'],
             'respuestas' => $preguntaData['respuestas'],
             'categoria' => $preguntaData['categoria'],
-            'categoria_estilo' =>$this->obtenerEstiloCategoria($preguntaData['categoria']),
+            'categoria_estilo' => $this->obtenerEstiloCategoria($preguntaData['categoria']),
             'puntaje' => $puntaje,
             'finalizado' => $finalizado,
-            'time_left'=>$this->getTimeLeft(),
-            'token'=>$this->getCantidadToken( $idUsuario),
-            'dificultad_user'=>$this->obtenerPorcentajeAciertos($idUsuario),
-            'dificultad' => $preguntaData['dificultad']
+            'time_left' => $this->getTimeLeft(),
+            'token' => $this->getCantidadToken($idUsuario),
+            'dificultad_user' => $this->obtenerPorcentajeAciertos($idUsuario),
+            'dificultad' => $preguntaData['dificultad'],
+            'puntaje-bot' => $_SESSION["puntaje-bot"],
+            'resultado-versus' =>  $_SESSION["resultado-versus"],
+            'modo_versus' => $_SESSION["modo_versus"]
         ];
         return $data;
     }
@@ -46,7 +49,7 @@ class GameModel
 
     public function verificarYGuardarRespuesta($idPartida, $preguntaId, $respuestaId)
     {
-        $esCorrecta =$this->esRespuestaCorrecta($preguntaId, $respuestaId);
+        $esCorrecta = $this->esRespuestaCorrecta($preguntaId, $respuestaId);
 
         $this->guardarRespuestaEnPartida($idPartida, $preguntaId, $esCorrecta);
         return $esCorrecta;
@@ -67,22 +70,58 @@ class GameModel
     public function crearPartida($idUsuario)
     {
         try {
-
             $idUsuario = intval($idUsuario);
-
+    
             $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida) VALUES (0, $idUsuario, CURRENT_TIMESTAMP)";
             $this->database->execute($queryInsertPartida);
-
-
+    
             $partidaId = $this->database->getLastInsertId();
-
+    
             return $partidaId;
         } catch (Exception $e) {
             echo "Error al crear la partida: " . $e->getMessage();
             return null;
         }
     }
-
+    
+    public function crearPartidaVersusBot($idUsuario)
+    {
+        $idUsuario = intval($idUsuario);
+    
+        $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida, modo_versus) VALUES (0, $idUsuario, CURRENT_TIMESTAMP, true)";
+        $this->database->execute($queryInsertPartida);
+    
+        $partidaId = $this->database->getLastInsertId();
+        return $partidaId;
+    }
+    
+    public function partidaBot()
+    {
+        $resultado = rand(0, 20);
+        return $resultado;
+    }
+    
+    public function compararResultados($idPartida)
+    {
+        if (!isset($_SESSION['puntaje'])) {
+            $_SESSION['puntaje'] = 0;
+        }
+        $partidaNoBot = $_SESSION['puntaje'];
+        $partidaBot = $this->partidaBot();
+        $_SESSION["puntaje-bot"] = $partidaBot;
+        $_SESSION["resultado-versus"] = "Empataste";
+    
+        if ($partidaNoBot > $partidaBot) {
+            $sql = "UPDATE partida SET resultado_versus = 'Ganada' WHERE id = '$idPartida'";
+            $this->database->execute($sql);
+            $_SESSION["resultado-versus"] = "Ganaste";
+        } else if ($partidaNoBot < $partidaBot) {
+            $sql = "UPDATE partida SET resultado_versus = 'Perdida' WHERE id = '$idPartida'";
+            $this->database->execute($sql);
+            $_SESSION["resultado-versus"] = "Perdiste";
+        }
+    }
+    
     public function actualizarPuntajeFinal($idPartida, $puntaje)
     {
         try {
@@ -92,18 +131,21 @@ class GameModel
             echo "Error al actualizar el puntaje final: " . $e->getMessage();
         }
     }
+
     public function reportarPregunta($preguntaId, $idUsuario)
     {
         try {
-            $queryreport ="INSERT INTO reportes_preguntas (pregunta_id, usuario_id) VALUES ($preguntaId,$idUsuario)";;
-            $this->database->execute( $queryreport);
+            $queryreport = "INSERT INTO reportes_preguntas (pregunta_id, usuario_id) VALUES ($preguntaId,$idUsuario)";
+            ;
+            $this->database->execute($queryreport);
         } catch (Exception $e) {
             echo "Error al reportar: " . $e->getMessage();
 
         }
     }
 
-    public function obtenerRespuestaCorrectaId($preguntaId){
+    public function obtenerRespuestaCorrectaId($preguntaId)
+    {
         $query = "SELECT id FROM respuesta WHERE pregunta = '$preguntaId' AND es_la_correcta = 1";
         $result = $this->database->execute($query);
 
@@ -113,22 +155,19 @@ class GameModel
         } else {
             return null;
         }
-
     }
+
     public function verificarSiTieneTokenYusarlo($id)
     {
         $cantidadTokens = $this->getCantidadToken($id);
 
-        if($cantidadTokens>0){
+        if ($cantidadTokens > 0) {
             $query = "UPDATE usuario SET token = token - 1 WHERE id = $id";
             $this->database->execute($query);
             return true;
         }
         return false;
-        }
-
-
-
+    }
 
     private function esRespuestaCorrecta($preguntaId, $respuestaId)
     {
@@ -181,7 +220,7 @@ class GameModel
 
         $respuestas = $this->queryRespuestas($preguntaId);
         $resultado = [
-            'dificultad'=>$pregunta['dificultad'],
+            'dificultad' => $pregunta['dificultad'],
             'pregunta_id' => $preguntaId,
             'pregunta' => $pregunta['pregunta'],
             'respuestas' => $respuestas,

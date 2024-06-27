@@ -4,13 +4,20 @@
 
         {{#finalizado}}
         <!-- Popup de Fin de Partida -->
-        <div id="finPopup" class="w3-round-xxlarge w3-pink"
-        style="display: block; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
-            <h3  class="w3-center">Partida finalizada</h3>
-            <p  class="w3-center">Su puntuación es de: <span id="finalPuntaje">{{puntaje}}</span></p>
+       <div id="finPopup" class="w3-round-xxlarge w3-pink"
+            style="display: block; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
+            <h3 class="w3-center">Partida finalizada</h3>
+            <p class="w3-center">Su puntuación es de: <span id="finalPuntaje">{{puntaje}}</span></p>
+
+            {{#modo_versus}}
+            <p class="w3-center">La puntuación del bot: <span id="finalPuntaje">{{puntaje-bot}}</span></p>
+            <h3 class="w3-center">¡{{resultado-versus}}!</h3>
+            {{/modo_versus}}
+
             <button id="homeButton" class="w3-button w3-round-xxlarge w3-light-gray">Volver al Home</button>
             <button id="Volver_a_jugar" class="w3-button w3-round-xxlarge w3-light-gray">Volver a jugar</button>
         </div>
+
 
         <!-- Fondo Oscuro para el Popup -->
         <div id="popupBackground" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 500;"></div>
@@ -45,7 +52,7 @@
 
             <form method="post" action="/juego/usarToken" class="w3-center">
                 <input type="hidden" name="pregunta_id" value="{{pregunta_id}}">
-                <button name="respuesta_id" id="respuesta_id_token" value="token" class="w3-margin w3-button w3-round-xxlarge w3-red w3-padding">🍇</button>x {{token}}<br><br>
+                <button name="respuesta_id" id="respuesta_id_token" value="token" class="w3-button w3-round-xxlarge w3-red w3-padding">🍇</button>x {{token}}<br><br>
             </form>
 
         </div>
