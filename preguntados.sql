@@ -82,7 +82,7 @@ CREATE TABLE partida (
 
 ALTER TABLE partida
 ADD COLUMN modo_versus BOOLEAN DEFAULT FALSE,
-ADD COLUMN resultado_versus ENUM('Ganada', 'Perdida', 'Empatada') DEFAULT 'Empatado';
+ADD COLUMN resultado_versus ENUM('Ganada', 'Perdida', 'Empatada') DEFAULT 'Empatada';
 
 CREATE TABLE partida_pregunta (
 	partida int,
