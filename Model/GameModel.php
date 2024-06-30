@@ -27,7 +27,7 @@ class GameModel
             'dificultad_user' => $this->obtenerPorcentajeAciertos($idUsuario),
             'dificultad' => $preguntaData['dificultad'],
             'puntaje-bot' => $_SESSION["puntaje-bot"],
-            'resultado-versus' =>  $_SESSION["resultado-versus"],
+            'resultado-versus' => $_SESSION["resultado-versus"],
             'modo_versus' => $_SESSION["modo_versus"]
         ];
         return $data;
@@ -71,46 +71,53 @@ class GameModel
     {
         try {
             $idUsuario = intval($idUsuario);
-    
+
             $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida) VALUES (0, $idUsuario, CURRENT_TIMESTAMP)";
             $this->database->execute($queryInsertPartida);
-    
+
             $partidaId = $this->database->getLastInsertId();
-    
+
             return $partidaId;
         } catch (Exception $e) {
             echo "Error al crear la partida: " . $e->getMessage();
             return null;
         }
     }
-    
+
     public function crearPartidaVersusBot($idUsuario)
     {
         $idUsuario = intval($idUsuario);
-    
+
         $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida, modo_versus) VALUES (0, $idUsuario, CURRENT_TIMESTAMP, true)";
         $this->database->execute($queryInsertPartida);
-    
+
         $partidaId = $this->database->getLastInsertId();
         return $partidaId;
     }
-    
+
     public function partidaBot()
     {
         $resultado = rand(0, 20);
         return $resultado;
     }
-    
+
     public function compararResultados($idPartida)
     {
         if (!isset($_SESSION['puntaje'])) {
             $_SESSION['puntaje'] = 0;
         }
+        if (!isset($_SESSION['puntaje-bot'])) {
+            $_SESSION['puntaje-bot'] = 0;
+        }
+        if (!isset($_SESSION['resultado-versus'])) {
+            $_SESSION['resultado-versus'] = 0;
+        }
+        
         $partidaNoBot = $_SESSION['puntaje'];
         $partidaBot = $this->partidaBot();
         $_SESSION["puntaje-bot"] = $partidaBot;
         $_SESSION["resultado-versus"] = "Empataste";
-    
+
         if ($partidaNoBot > $partidaBot) {
             $sql = "UPDATE partida SET resultado_versus = 'Ganada' WHERE id = '$idPartida'";
             $this->database->execute($sql);
@@ -121,7 +128,7 @@ class GameModel
             $_SESSION["resultado-versus"] = "Perdiste";
         }
     }
-    
+
     public function actualizarPuntajeFinal($idPartida, $puntaje)
     {
         try {
