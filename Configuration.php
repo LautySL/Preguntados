@@ -19,7 +19,7 @@ include_once ("Controller/VerPerfilPropioController.php");
 include_once ("Controller/VerPerfilAjenoController.php");
 include_once ("Controller/ActivacionController.php");
 include_once ("Controller/EdicionController.php");
-include_once ("Controller/SuggestQuestionController.php");
+include_once("Controller/SugerirPreguntaController.php");
 include_once ("Controller/VerPartidasController.php");
 include_once ("Controller/TiendaController.php");
 
@@ -36,7 +36,7 @@ include_once ('Model/AdminModel.php');
 include_once ('Model/UserModel.php');
 include_once ('Model/GameModel.php');
 include_once ('Model/EdicionModel.php');
-include_once ('Model/SuggestedQuestionModel.php');
+include_once('Model/SugerirPreguntaModel.php');
 
 class Configuration
 {
@@ -83,7 +83,7 @@ class Configuration
 
     public static function getSuggestQuestionController()
     {
-        return new SuggestQuestionController(self::getSuggestedQuestionModel(), self::getPresenter());
+        return new SugerirPreguntaController(self::getSuggestedQuestionModel(), self::getPresenter());
     }
     public static function getTiendaController()
     {
@@ -110,7 +110,7 @@ class Configuration
 
     public static function getSuggestedQuestionModel()
     {
-        return new SuggestedQuestionModel(self::Database());
+        return new SugerirPreguntaModel(self::Database());
     }
 
     //Helper

@@ -1,6 +1,6 @@
 <?php
 
-class SuggestedQuestionModel {
+class SugerirPreguntaModel {
     private $db;
 
     public function __construct($db) {

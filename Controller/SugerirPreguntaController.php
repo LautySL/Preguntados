@@ -1,9 +1,9 @@
 <?php
 
 require_once __DIR__ . '/../helper/Database.php';
-require_once __DIR__ . '/../Model/SuggestedQuestionModel.php';
+require_once __DIR__ . '/../Model/SugerirPreguntaModel.php';
 
-class SuggestQuestionController {
+class SugerirPreguntaController {
     private $model;
     private $presenter;
 
