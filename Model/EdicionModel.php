@@ -88,6 +88,14 @@ class EdicionModel
         return $row['respuesta'] ?? null;
     }
 
+    public function getRespuestaCorrectaByPreguntaSugeridaId($preguntaId)
+    {
+        $query = "SELECT respuesta FROM respuestas_sugeridas WHERE pregunta = '$preguntaId' AND es_la_correcta = TRUE LIMIT 1";
+        $result = $this->database->execute($query);
+        $row = $result->fetch_assoc();
+        return $row['respuesta'] ?? null;
+    }
+
     public function modificarPregunta($id, $nuevaPregunta, $nuevaRespuesta)
     {
         $queryPregunta = "UPDATE pregunta SET pregunta = '$nuevaPregunta' WHERE id = $id";

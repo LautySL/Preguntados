@@ -128,7 +128,7 @@ class EdicionController
         $data = [];
 
         foreach ($preguntas as $pregunta) {
-            $respuesta = $this->model->getRespuestaCorrectaByPreguntaId($pregunta['id']);
+            $respuesta = $this->model->getRespuestaCorrectaByPreguntaSugeridaId($pregunta['id']);
 
             $data['preguntas_sugeridas'][] = [
                 'id' => $pregunta['id'],
