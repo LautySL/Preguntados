@@ -11,11 +11,6 @@ class Grafico
             throw new Exception('Los datos para el gráfico de barras son inválidos o están vacíos.');
         }
 
-        // Aquí eliminamos el formateo de fechas ya que no siempre usaremos fechas
-        // $etiquetas = array_map(function ($fecha) {
-        //     return date('Y-m-d', strtotime($fecha));
-        // }, $etiquetas);
-
         $totales = array_map('intval', $totales);
 
         $timestamp = date('Y-m-d_H-i-s');
@@ -50,11 +45,6 @@ class Grafico
         if (empty($etiquetas) || empty($totales) || count($etiquetas) !== count($totales)) {
             throw new Exception('Los datos para el gráfico de líneas son inválidos o están vacíos.');
         }
-
-        // Aquí eliminamos el formateo de fechas ya que no siempre usaremos fechas
-        // $etiquetas = array_map(function ($fecha) {
-        //     return date('Y-m-d', strtotime($fecha));
-        // }, $etiquetas);
 
         $totales = array_map('intval', $totales);
 
