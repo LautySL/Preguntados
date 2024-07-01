@@ -26,9 +26,9 @@ class GameModel
             'token' => $this->getCantidadToken($idUsuario),
             'dificultad_user' => $this->obtenerPorcentajeAciertos($idUsuario),
             'dificultad' => $preguntaData['dificultad'],
-            'puntaje-bot' => $_SESSION["puntaje-bot"],
-            'resultado-versus' => $_SESSION["resultado-versus"],
-            'modo_versus' => $_SESSION["modo_versus"]
+            'puntaje-bot' => $_SESSION["puntaje-bot"] ?? null,
+            'resultado-versus' => $_SESSION["resultado-versus"] ?? null,
+            'modo_versus' => $_SESSION["modo_versus"] ?? null
         ];
         return $data;
     }

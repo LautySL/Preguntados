@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Controller;
 
-class PagoExitosoControllerController {
+class PagoExitosoController {
 
     private $presenter;
 
@@ -10,7 +9,7 @@ class PagoExitosoControllerController {
         $this->presenter = $Presenter;
     }
 
-    public function mostrarPagoPendiente() {
+    public function get() {
         $this->presenter->render("view/pago_exitoso.mustache");
     }
 }

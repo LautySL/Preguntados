@@ -1,9 +1,5 @@
 <?php
 
-namespace App\Controller;
-
-use Exception;
-
 class TiendaController {
 
     private $presenter;
@@ -22,7 +18,7 @@ class TiendaController {
     public function comprar() {
         try {
             // Configurar las credenciales de Mercado Pago
-            $accessToken = "APP_USR";
+            $accessToken = "APP_USR-64163630677292-070100-e29db7ee63b0d5401787449b8b63b4d4-1874683882";
 
             // Crear una preferencia de pago
             $preference = $this->crearPreferencia($accessToken);
@@ -60,7 +56,7 @@ class TiendaController {
         $preferencia = array(
             "items" => array($item),
             "back_urls" => array(
-                "success" => "http://localhost/pago_exitoso",
+                "success" => "http://localhost/PagoExitoso",
                 "failure" => "http://localhost/pago_rechazado",
                 "pending" => "http://localhost/pago_pendiente"
             ),
@@ -109,7 +105,7 @@ class TiendaController {
             $this->model->actualizarTokens($userId, $cantidadMoras);
 
             // Redirigir al usuario a la página de éxito
-            header('Location: http://localhost/pago_exitoso'); // Ajusta la URL según corresponda
+            header('Location: /home'); // Ajusta la URL según corresponda
             exit();
         } catch (Exception $e) {
             // Manejar cualquier excepción que pueda ocurrir durante el proceso
