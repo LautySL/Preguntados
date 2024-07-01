@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PHPUnit">
+    <option name="directories">
+      <list>
+        <option value="$PROJECT_DIR$/vendortt/mustache/tests" />
+        <option value="$PROJECT_DIR$/vendortt/dompdf/tests" />
+        <option value="$PROJECT_DIR$/tests" />
+        <option value="$PROJECT_DIR$/vendortt/dompdf/lib/php-css-parser/tests" />
+        <option value="$PROJECT_DIR$/vendortt/dompdf/lib/php-svg-lib/tests/Svg" />
+        <option value="$PROJECT_DIR$/vendortt/dompdf/lib/php-font-lib/tests/FontLib" />
+        <option value="$PROJECT_DIR$/vendortt/mercadopago/dx-php/tests/MercadoPago/Client/Integration" />
+        <option value="$PROJECT_DIR$/vendortt/mercadopago/dx-php/tests/MercadoPago/Client/Unit" />
+      </list>
+    </option>
+  </component>
+</project>

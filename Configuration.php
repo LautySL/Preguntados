@@ -1,4 +1,7 @@
 <?php
+
+use App\Controller\PagoPendienteController;
+use App\Controller\TiendaController;
 use PHPMailer\PHPMailer\PHPMailer;
 
 include_once("vendor\PHPMailer\src\Exception.php");
@@ -88,6 +91,21 @@ class Configuration
     public static function getTiendaController()
     {
         return new TiendaController(self::getUserModel(), self::getPresenter());
+    }
+
+    public static function getPagoPendienteController()
+    {
+        return new PagoPendienteController(self::getUserModel(), self::getPresenter());
+    }
+
+    public static function getPagoExitosoController()
+    {
+        return new PagoExitosoController(self::getUserModel(), self::getPresenter());
+    }
+
+    public static function getPagoRechazadoController()
+    {
+        return new PagoRechazadoController(self::getUserModel(), self::getPresenter());
     }
 
     //model

@@ -19,7 +19,7 @@ CREATE TABLE usuario (
 );
 
 ALTER TABLE usuario
-MODIFY COLUMN pais varchar(50);
+ADD COLUMN token int;
 
 CREATE TABLE administrador(
 	 id int,
@@ -101,6 +101,9 @@ CREATE TABLE reportes_preguntas (
      FOREIGN KEY (pregunta_id) REFERENCES pregunta(id),
      FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
+
+
+UPDATE usuario SET token = token + 1 WHERE id = 1;
 
 INSERT INTO usuario (ID, nombre_de_usuario, contrasena, nombre, apellido, ano_de_nacimiento, sexo, mail, foto_de_perfil, pais, ciudad, cuenta_verificada, hash_activacion, latitud, longitud) VALUES 
 (1000, 'bot_desafío', 123, 'Bot', 'Desafío', '2024', 'Prefiero no cargarlo', 'bot@desafio.com', 'fotoGenerica.png', 'Argentina', 'San Justo', true, '1223', 1, 1);
