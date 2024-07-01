@@ -72,7 +72,7 @@ class GameModel
         try {
             $idUsuario = intval($idUsuario);
 
-            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida) VALUES (0, $idUsuario, CURRENT_TIMESTAMP)";
+            $queryInsertPartida = "INSERT INTO partida (puntaje, jugador, fecha_creacion_partida, resultado_versus) VALUES (0, $idUsuario, CURRENT_TIMESTAMP, 'Empatada')";
             $this->database->execute($queryInsertPartida);
 
             $partidaId = $this->database->getLastInsertId();

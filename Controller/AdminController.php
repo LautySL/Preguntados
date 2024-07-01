@@ -18,7 +18,7 @@ class AdminController
 
     private function request($metodo)
     {
-       $this ->limpiarCarpeta();
+        $this->limpiarCarpeta();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dateFrom = $_POST['dateFrom'] ?? NULL;
@@ -64,7 +64,6 @@ class AdminController
                     $pdfCreator->create($html);
                     exit;
 
-                    //$this->presenter->render('view/presentarDatos.mustache', $viewData);
                 } catch (Exception $e) {
                     echo "Error: " . $e->getMessage();
                 }
@@ -157,7 +156,8 @@ class AdminController
             exit();
         }
     }
-    public function limpiarCarpeta() {
+    public function limpiarCarpeta()
+    {
         // Función para limpiar la carpeta public/img/grafico/
         $carpeta = 'public/img/grafico/';
 

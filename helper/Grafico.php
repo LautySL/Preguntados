@@ -1,21 +1,20 @@
 <?php
-
 class Grafico
 {
     public function __construct()
     {
     }
 
-    public function generarGraficoDeBarras($titulo, $fechas, $totales, $filename)
+    public function generarGraficoDeBarras($titulo, $etiquetas, $totales, $filename)
     {
-
-        if (empty($fechas) || empty($totales) || count($fechas) !== count($totales)) {
+        if (empty($etiquetas) || empty($totales) || count($etiquetas) !== count($totales)) {
             throw new Exception('Los datos para el gráfico de barras son inválidos o están vacíos.');
         }
 
-        $fechas = array_map(function ($fecha) {
-            return date('Y-m-d', strtotime($fecha));
-        }, $fechas);
+        // Aquí eliminamos el formateo de fechas ya que no siempre usaremos fechas
+        // $etiquetas = array_map(function ($fecha) {
+        //     return date('Y-m-d', strtotime($fecha));
+        // }, $etiquetas);
 
         $totales = array_map('intval', $totales);
 
@@ -23,7 +22,6 @@ class Grafico
         $filename = $filename . '_' . $timestamp . '.png';
 
         $rutaBase = $_SERVER['DOCUMENT_ROOT'] . '/public/img/grafico/';
-
         $rutaCompleta = $rutaBase . $filename;
 
         $grafico = new Graph(600, 400, 'auto');
@@ -34,7 +32,7 @@ class Grafico
         $barra->SetColor('blue');
         $barra->SetFillColor('lightblue');
 
-        $grafico->xaxis->SetTickLabels($fechas);
+        $grafico->xaxis->SetTickLabels($etiquetas);
 
         $grafico->Add($barra);
 
@@ -44,19 +42,19 @@ class Grafico
             throw new Exception('Error al guardar la imagen del gráfico en el archivo.');
         }
 
-        return  $filename;
+        return $filename;
     }
 
-    public function generarGraficoDeLineas($titulo, $fechas, $totales, $filename)
+    public function generarGraficoDeLineas($titulo, $etiquetas, $totales, $filename)
     {
-
-        if (empty($fechas) || empty($totales) || count($fechas) !== count($totales)) {
-            throw new Exception('Los datos para el gráfico de barras son inválidos o están vacíos.');
+        if (empty($etiquetas) || empty($totales) || count($etiquetas) !== count($totales)) {
+            throw new Exception('Los datos para el gráfico de líneas son inválidos o están vacíos.');
         }
 
-        $fechas = array_map(function ($fecha) {
-            return date('Y-m-d', strtotime($fecha));
-        }, $fechas);
+        // Aquí eliminamos el formateo de fechas ya que no siempre usaremos fechas
+        // $etiquetas = array_map(function ($fecha) {
+        //     return date('Y-m-d', strtotime($fecha));
+        // }, $etiquetas);
 
         $totales = array_map('intval', $totales);
 
@@ -64,18 +62,17 @@ class Grafico
         $filename = $filename . '_' . $timestamp . '.png';
 
         $rutaBase = $_SERVER['DOCUMENT_ROOT'] . '/public/img/grafico/';
-
         $rutaCompleta = $rutaBase . $filename;
 
         $grafico = new Graph(600, 400, 'auto');
         $grafico->SetScale('textlin');
         $grafico->title->Set($titulo);
 
-        $lineas = new LinePlot($totales); //sus
+        $lineas = new LinePlot($totales);
         $lineas->SetColor('blue');
         $lineas->SetWeight(2);
 
-        $grafico->xaxis->SetTickLabels($fechas);
+        $grafico->xaxis->SetTickLabels($etiquetas);
 
         $grafico->Add($lineas);
 
@@ -85,8 +82,6 @@ class Grafico
             throw new Exception('Error al guardar la imagen del gráfico en el archivo.');
         }
 
-        return  $filename;
+        return $filename;
     }
-
 }
-

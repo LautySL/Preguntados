@@ -39,8 +39,10 @@ class JuegoController
         }
         if (!$esCorrecta) {
             $_SESSION['finalizado'] = true;
-            // Compara resultados si hubo un versus
-            $this->model->compararResultados($idPartida);
+            
+            if ($_SESSION['modo_versus']) {
+                $this->model->compararResultados($idPartida);
+            }
         }
 
         unset($_SESSION['start_time']);

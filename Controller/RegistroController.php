@@ -76,10 +76,8 @@ class RegistroController
         } catch (Exception $e) {
             $_SESSION['mensaje'] = "Hubo un error en el registro. Por favor, intenta nuevamente.";
             $_SESSION['exito'] = false;
-
         }
-
-        header('Location: /registro');
+        header('Location: /registro/');
         exit();
     }
 }
