@@ -356,6 +356,19 @@ class UserModel
 
     }
 
+    public function getToken($usuario)
+    {
+        $query = "SELECT token FROM usuario WHERE id= '$usuario'";
+        $result = $this->database->execute($query);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return (int) $row['token'];
+        } else {
+            return 0;
+        }
+    }
+
 
 
     private function getBodyMail($nombre, $hash_activacion)

@@ -13,6 +13,10 @@ class AdminModel
         $this->pdf = $pdf;
     }
 
+    public function descargarPDF($html){
+        return $this->pdf->create($html);
+    }
+
     private function ejecutarConsulta($tabla, $columnas, $condiciones, $agrupaciones, $titulo, $nombreArchivo)
     {
         $query = $this->construirConsulta($tabla, $columnas, $condiciones, $agrupaciones);
