@@ -15,9 +15,16 @@ class EdicionController
 
     public function get()
     {
+        $this->checkLoggedIn();
         $this->Presenter->render("view/vistaEditor.mustache");
     }
-
+    private function checkLoggedIn()
+    {
+        if (!isset($_SESSION['usuario'])) {
+            header('Location: /');
+            exit();
+        }
+    }
     public function verPreguntas()
     {
         $preguntas = $this->model->getPreguntas();
@@ -94,7 +101,7 @@ class EdicionController
             $modificado = $this->model->modificarPregunta($id, $nuevaPregunta, $nuevaRespuesta);
 
             if ($modificado) {
-                header('Location: /edicion/verPreguntasReportadas');
+                header('Location: /edicion/verPreguntas');
                 exit;
             } else {
                 echo "Error al intentar modificar la pregunta.";

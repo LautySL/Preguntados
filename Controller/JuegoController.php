@@ -20,7 +20,7 @@ class JuegoController
 
     public function verificarRespuesta()
     {
-        $respuestaId = $_POST['respuesta_id'];
+        $respuestaId = $_POST['respuesta_id'] ?? null;
         $preguntaId = $_POST['pregunta_id'];
         $idPartida = $_SESSION['id_partida'];
         $puntaje = $_SESSION['puntaje'] ?? 0;
