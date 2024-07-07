@@ -149,6 +149,19 @@ class UserModel
         return $rankingData;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function actualizarTokens($usuarioId, $cantidad) {
+        $sql = "UPDATE usuario SET token = token + $cantidad WHERE id = $usuarioId";
+        $result = $this->database->execute($sql);
+
+        if (!$result) {
+            error_log("Error al actualizar tokens para el usuario de id $usuarioId");
+            throw new Exception("Error al actualizar tokens para el usuario");
+        }
+    }
+
     public function obtenerPuntajeTotal($userId)
     {
         $query = "SELECT SUM(puntaje) as total_puntaje FROM partida WHERE jugador = $userId";
@@ -341,6 +354,19 @@ class UserModel
 
         return $tipoUsuario;
 
+    }
+
+    public function getToken($usuario)
+    {
+        $query = "SELECT token FROM usuario WHERE id= '$usuario'";
+        $result = $this->database->execute($query);
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return (int) $row['token'];
+        } else {
+            return 0;
+        }
     }
 
 

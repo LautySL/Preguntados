@@ -1,5 +1,6 @@
 <?php
 include_once ("Configuration.php");
+require 'vendor/autoload.php';
 
 session_start();
 

@@ -1,0 +1,9 @@
+{
+  "require": {
+    "mercadopago/dx-php": "^3.0",
+    "php": "^7.2",
+    "ext-pdo": "*",
+    "other/dependency": "^1.0",
+    "ext-json": "*"
+  }
+}

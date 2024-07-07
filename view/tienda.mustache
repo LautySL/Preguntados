@@ -1,4 +1,4 @@
-
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 <html>
 <head>
     <title>Tienda de Tokens</title>
@@ -42,20 +42,31 @@
     <div class="w3-card-4 w3-pink tarjeta-token">
 
         <div class="w3-container w3-center">
-        <img src="https://via.placeholder.com/100" alt="Token x1">
+        <img src="/public/img/moritas.jpg" alt="Token x1">
         </div>
 
-        <div class="w3-container w3-center">
-            <form method="POST" action="/tienda/comprar">
-            <h3>🍇x1</h3>
-            <p>$1.00</p>
-            <button class="w3-button w3-white w3-border w3-round-large">Comprar</button>
+        <div class="w3-container w3-center" >
+            <form method="POST" id="wallet_container" action="/tienda/comprar">
+                <h3>🍇x1</h3>
+                <p>$10.00</p>
             </form>
 
         </div>
     </div>
 
 </div>
-
 </body>
+<script>
+    const mp = new MercadoPago('APP_USR-e2629d2b-0dd9-4e92-ba90-05d739d02430');
+    mp.bricks().create("wallet", "wallet_container", {
+        initialization: {
+            preferenceId: '<PREFERENCE_ID>',
+        },
+        customization: {
+            texts: {
+                valueProp: 'Compra segura con Mercado Pago',
+            },
+        },
+    });
+</script>
 </html>

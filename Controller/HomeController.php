@@ -50,7 +50,8 @@ class HomeController {
                 'isJugador' => $tipo['esJugador'],
                 'isEditor' => $tipo['esEditor'],
                 'isAdministrador' => $tipo['esAdministrador'],
-                'partidasUsuario' => $ultimasPartidas
+                'partidasUsuario' => $ultimasPartidas,
+                'token' => $this->model->getToken($iduser) ?? null
             ]);
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 
 include_once("vendor\PHPMailer\src\Exception.php");
@@ -22,6 +23,10 @@ include_once ("Controller/EdicionController.php");
 include_once("Controller/SugerirPreguntaController.php");
 include_once ("Controller/VerPartidasController.php");
 include_once ("Controller/TiendaController.php");
+include_once ("Controller/PagoExitosoController.php");
+include_once ("Controller/PagoRechazadoController.php");
+include_once ("Controller/PagoPendienteController.php");
+
 
 include_once ("helper/Router.php");
 include_once ("helper/DataBase.php");
@@ -88,6 +93,21 @@ class Configuration
     public static function getTiendaController()
     {
         return new TiendaController(self::getUserModel(), self::getPresenter());
+    }
+
+    public static function getPagoPendienteController()
+    {
+        return new PagoPendienteController(self::getUserModel(), self::getPresenter());
+    }
+
+    public static function getPagoExitosoController()
+    {
+        return new PagoExitosoController(self::getPresenter(), self::getUserModel());
+    }
+
+    public static function getPagoRechazadoController()
+    {
+        return new PagoRechazadoController(self::getUserModel(), self::getPresenter());
     }
 
     //model
